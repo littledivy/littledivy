@@ -1,19 +1,28 @@
-# Linux
+### OS
 
-OS: [Arch Linux] x86_64
+[Arch Linux] x86_64
 
-Compositor: [Hyprland] + [Waybar]
-https://github.com/littledivy/hypr
-https://github.com/littledivy/waybar
+### Compositor 
 
-Editor: Vim
-https://github.com/littledivy/vimrc
+[Hyprland] - https://github.com/littledivy/hypr
 
-Terminal: Alacritty
+[Waybar] - https://github.com/littledivy/waybar
 
-Shell: Bash
+### Editor
 
-Browser: Google Chrome
+Vim - https://github.com/littledivy/vimrc
+
+### Terminal
+
+Alacritty
+
+### Shell
+
+Bash
+
+### Browser
+
+Google Chrome
 
 [Arch Linux]: https://www.archlinux.org/
 [Hyprland]: https://github.com/hyprwm/Hyprland
