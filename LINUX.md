@@ -22,7 +22,7 @@ Bash
 
 ### Browser
 
-Google Chrome
+Firefox
 
 [Arch Linux]: https://www.archlinux.org/
 [Hyprland]: https://github.com/hyprwm/Hyprland
