@@ -38,8 +38,6 @@ i like digging into runtimes, compilers, cryptography and my bestie's lore.
     - #html.elem("a", attrs: (href: "/turbocall"), [turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.  
     - #html.elem("a", attrs: (href: "/sui"), [sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.  
 
----
-
 #html.elem("div", attrs: (class: "note"), [
   #html.elem("div", attrs: (class: "adm-title"), [miscellany])
 
