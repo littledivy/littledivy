@@ -45,6 +45,7 @@ i like digging into runtimes, compilers, cryptography and my bestie's lore.
     #set list(marker: [--])
     - you may find me rambling on #html.elem("a", attrs: (href: "https://x.com/undefined_void"), [x]).  
     - email: #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
+    - github: #html.elem("a", attrs: (href: "https://github.com/littledivy"), [https://github.com/littledivy])
   ])
 ])
 
