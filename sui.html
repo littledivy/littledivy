@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <title>Inject RO data into existing executables</title>
+    <meta name="description" content="injecting custom section with arbitrary data into prebuilt executables">
+  </head>
+  <body>
+    <h1>Inject RO data into existing executables</h1>
+    <h2>Description</h2>
+    <p>This document describes inner workings of sui, an injection tool for embedding arbitrary data into precompiled executables (ELF, PE and Mach-O).</p>
+    <p>It is cross-platform and supports cross-“patching” for all formats. Under the hood sui uses format-specific features described in Supported formats.</p>
+    <p>It produces valid executables that can be code-signed and distributed.</p>
+    <p>Emebedded data can be accessed by the executable at runtime using libsui library. Using sui</p>
+    <p>It is available as a Rust crate and a command-line tool.</p>
+    <pre><code>cargo add libsui</code></pre>
+    <h2>Run-time</h2>
+    <p>Find and extract the embedded data from the executable:</p>
+    <pre><code data-lang="rust"><span style="color: #d73948">use</span> libsui::find_section;<br><br><span style="color: #d73948">if</span> <span style="color: #d73948">let</span> <span style="color: #4b69c6">Some</span>(data) <span style="color: #d73948">=</span> <span style="color: #4b69c6">find_section</span>(<span style="color: #198810">"</span><span style="color: #198810">mydata</span><span style="color: #198810">"</span>) {<br>  <span style="color: #74747c">//</span><span style="color: #74747c"> found</span><br>}</code></pre>
+    <p>Name of the section is the same as the one used during injection. It refers to the section name in Mach-O, resource name in PE and tag in ELF.</p>
+    <h2>Injecting</h2>
+    <p>Build and sign a new Mach-O executable:</p>
+    <pre><code data-lang="rust"><span style="color: #d73948">use</span> sui::Macho;<br><br>Macho::from(input)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> load an existing executable</span><br>  .<span style="color: #4b69c6">write_section</span>(<span style="color: #198810">"</span><span style="color: #198810">mydata</span><span style="color: #198810">"</span>, data)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> write a new section with auxiliary data</span><br>  .<span style="color: #4b69c6">build_and_sign</span>(output)<span style="color: #d73948">?</span>; <span style="color: #74747c">//</span><span style="color: #74747c"> build and sign the executable</span></code></pre>
+    <p>Build a new Portable Executable:</p>
+    <pre><code data-lang="rust"><span style="color: #d73948">use</span> sui::PortableExecutable;<br><br>PortableExecutable::from(input)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> load an existing executable</span><br>  .<span style="color: #4b69c6">write_resource</span>(<span style="color: #198810">"</span><span style="color: #198810">mydata</span><span style="color: #198810">"</span>, data)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> inject a new resource (RCDATA) with auxiliary data</span><br>  .<span style="color: #4b69c6">build</span>(output)<span style="color: #d73948">?</span>; <span style="color: #74747c">//</span><span style="color: #74747c"> build and sign the executable</span><br></code></pre>
+    <p>Build a new ELF executable:</p>
+    <pre><code data-lang="rust"><span style="color: #d73948">use</span> sui::Elf;<br><br>Elf::from(input)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> load an existing executable</span><br>  .<span style="color: #4b69c6">append</span>(<span style="color: #198810">"</span><span style="color: #198810">mydata</span><span style="color: #198810">"</span>, data)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> tag and append auxiliary data</span><br>  .<span style="color: #4b69c6">build</span>(output)<span style="color: #d73948">?</span>; <span style="color: #74747c">//</span><span style="color: #74747c"> build</span></code></pre>
+    <p>Build a new PE with icon:</p>
+    <pre><code data-lang="rust"><span style="color: #d73948">use</span> sui::PortableExecutable;<br><br>PortableExecutable::from(input)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> load an existing executable</span><br>  .<span style="color: #4b69c6">write_resource</span>(<span style="color: #198810">"</span><span style="color: #198810">mydata</span><span style="color: #198810">"</span>, data)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> inject a new resource (RCDATA) with auxiliary data</span><br>  .<span style="color: #4b69c6">write_icon</span>(<span style="color: #198810">"</span><span style="color: #198810">icon.ico</span><span style="color: #198810">"</span>)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> inject an icon resource (RT_ICON)</span><br>  .<span style="color: #4b69c6">build</span>(output)<span style="color: #d73948">?</span>; <span style="color: #74747c">//</span><span style="color: #74747c"> build</span><br></code></pre>
+    <p>Ad-hoc codesign a modified arm64 Mach-O executable:</p>
+    <pre><code data-lang="rust"><span style="color: #d73948">use</span> sui::apple_codesign::MachoSigner;<br><br>MachoSigner::new(input)<span style="color: #d73948">?</span> <span style="color: #74747c">//</span><span style="color: #74747c"> load an existing executable</span><br>  .<span style="color: #4b69c6">sign</span>(output)<span style="color: #d73948">?</span>; <span style="color: #74747c">//</span><span style="color: #74747c"> sign the executable with ad-hoc signature</span><br></code></pre>
+    <p>Refer to the API documentation for more up-to-date documentation.</p>
+    <h2>Supported formats</h2>
+    <p>ELF, PE and Mach-O are supported.</p>
+    <h3>Mach-O</h3>
+    <p>Resource is added as section in a new segment, load commands are updated and offsets are adjusted. __LINKEDIT is kept at the end of the file.</p>
+    <p>It is similar to linker’s -sectcreate,__FOO,__foo,hello.txt option.</p>
+    <p>Note that Macho::build will invalidate existing code signature. on Apple sillicon, kernel refuses to run executables with bad signatures.</p>
+    <p>Use Macho::build_and_sign to re-sign the binary with ad-hoc signature. See apple_codesign.rs for details. This is similar to <code>codesign -s - ./out</code> command.</p>
+    <pre><code data-lang="rust">Macho::from(exe)<span style="color: #d73948">?</span><br>    .<span style="color: #4b69c6">write_section</span>(<span style="color: #198810">"</span><span style="color: #198810">__sect</span><span style="color: #198810">"</span>, data)<span style="color: #d73948">?</span><br>    .<span style="color: #4b69c6">build_and_sign</span>(<span style="color: #d73948">&amp;</span><span style="color: #d73948">mut</span> out)<span style="color: #d73948">?</span>;<br></code></pre>
+    <pre><code>$ codesign -d -vvv ./out<br><br>Executable=/Users/divy/gh/sui/out<br>Identifier=a.out<br>Format=Mach-O thin (arm64)<br>CodeDirectory v=20400 size=10238 flags=0x20002(adhoc,linker-signed) hashes=317+0 location=embedded<br>Hash type=sha256 size=32<br>CandidateCDHash sha256=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b18<br>CandidateCDHashFull sha256=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b1876153efa17f90dc8b3a8f177<br>Hash choices=sha256<br>CMSDigest=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b1876153efa17f90dc8b3a8f177<br>CMSDigestType=2<br>CDHash=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b18<br>Signature=adhoc<br>Info.plist=not bound<br>TeamIdentifier=not set<br>Sealed Resources=none<br>Internal requirements=none</code></pre>
+    <h3>ELF</h3>
+    <p>Data is simply appended to the end of the file with a tag and magic descriptor. Extracted from current_exe() at run-time.</p>
+    <p>This is subject to change and may use ELF linker notes (PT_NOTE) in the future.</p>
+    <h3>PE</h3>
+    <p>Resource is added into a new PE resource directory as RT_RCDATA type and extracted using FindResource and LoadResource at run-time.</p>
+    <h2>Comparison with postject</h2>
+    <p>Sui supports ad-hoc codesigning for Mach-O executables and Icon resources for PE executables which postject does not.</p>
+    <p>Sui is much faster and lightweight compared to postject which is built on top of LIEF, a heavy C++ dependency.</p>
+    <pre><code>$ time sui ./node test.txt ./out<br>0m0.151s<br><br>$ time postject ./node name test.txt<br>0m8.993s</code></pre>
+    <h2>Conclusion</h2>
+    <p>sui is open-source on Github: <a href="https://github.com/denoland/sui">https://github.com/denoland/sui</a> and is the tech behind deno compile, converts JavaScript and TypeScript code into a single executable.</p>
+  </body>
+</html>

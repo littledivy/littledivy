@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGP Verification</title>
+    <script src="https://unpkg.com/openpgp@latest/dist/openpgp.min.js"></script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: flex;
+        height: 100vh;
+        background: #fafafa;
+      }
+      main {
+        text-align: center;
+        max-width: 500px;
+      }
+      .ok {
+        font-size: 2rem;
+        color: #0f9d58;
+      }
+      .fail {
+        font-size: 2rem;
+        color: #ea4335;
+      }
+      p {
+        margin: 0.5rem 0;
+      }
+      a {
+        color: #0366d6;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="icon">⏳</div>
+      <h1 id="status">Verifying…</h1>
+      <p id="details"></p>
+      <p><a id="pubkey-link" href="me.gpg">Download Public Key</a></p>
+    </main>
+
+    <script type="module">
+      const params = new URLSearchParams(location.search);
+      const data = params.get("inv");
+      const sigParam = params.get("sig");
+
+      const pubkeyArmored = await (await fetch("me.gpg"))
+        .text();
+
+      function base64urlToBytes(b64url) {
+        let b64 = b64url.replace(/-/g, "+").replace(/_/g, "/");
+        const pad = (4 - (b64.length % 4)) % 4;
+        if (pad) b64 += "=".repeat(pad);
+        const bin = atob(b64);
+        return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+      }
+
+      async function verify() {
+        const status = document.getElementById("status");
+        const details = document.getElementById("details");
+        const icon = document.getElementById("icon");
+
+        if (!data || !sigParam) {
+          status.textContent = "Invalid Request";
+          details.textContent = "Missing ref or signature.";
+          icon.textContent = "⚠️";
+          icon.className = "fail";
+          return;
+        }
+
+        try {
+          const publicKey = await openpgp.readKey({
+            armoredKey: pubkeyArmored,
+          });
+          const msg = new TextEncoder().encode(data);
+          const message = await openpgp.createMessage({ binary: msg });
+          const signature = await openpgp.readSignature({
+            binarySignature: base64urlToBytes(sigParam),
+          });
+          const verification = await openpgp.verify({
+            message,
+            signature,
+            verificationKeys: publicKey,
+          });
+          const valid = await verification.signatures[0].verified.catch(
+            () => false,
+          );
+
+          if (valid) {
+            icon.textContent = "✅";
+            icon.className = "ok";
+            status.textContent = "Valid signature";
+            details.textContent = `Ref: ${data}`;
+          } else {
+            icon.textContent = "❌";
+            icon.className = "fail";
+            status.textContent = "Invalid Signature";
+            details.textContent = `Ref: ${data}`;
+          }
+        } catch (err) {
+          icon.textContent = "⚠️";
+          icon.className = "fail";
+          status.textContent = "Error";
+          details.textContent = err.message || err;
+        }
+      }
+
+      verify();
+    </script>
+  </body>
+</html>

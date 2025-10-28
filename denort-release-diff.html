@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>diff</title>
+<meta name="Generator" content="Vim/9.1">
+<meta name="plugin-version" content="vim9.0_v2">
+<meta name="settings" content="number_lines,whole_filler,use_css,no_foldcolumn,expand_tabs,line_ids,prevent_copy=,use_input_for_pc=none">
+<meta name="colorscheme" content="habamax">
+<style>
+<!--
+pre { font-family: monospace; color: #bcbcbc; background-color: #000000; }
+body { font-family: monospace; color: #bcbcbc; background-color: #000000; }
+* { font-size: 1em; }
+a { color: inherit; }
+.Folded { color: #9e9e9e; background-color: #262626; padding-bottom: 1px; }
+.htmlItalic { font-style: italic; }
+.LineNr { color: #585858; }
+.Error { color: #1c1c1c; background-color: #af5f5f; }
+.htmlBold { font-weight: bold; }
+.DiffText { color: #000000; background-color: #af87af; }
+.DiffAdd { color: #000000; background-color: #5faf5f; }
+.DiffChange { color: #000000; background-color: #5f87af; }
+.DiffDelete { color: #000000; background-color: #af5f5f; }
+-->
+<!--
+table { table-layout: fixed; }
+html, body, table, tbody { width: 100%; margin: 0; padding: 0; }
+table, td, th { border: 1px solid; }
+td { vertical-align: top; }
+th, td { width: 50.0%; }
+td div { overflow: auto; }
+-->
+</style>
+<script>
+<!--
+
+/* function to open any folds containing a jumped-to line before jumping to it */
+function JumpToLine()
+{
+  var lineNum;
+  lineNum = window.location.hash;
+  lineNum = lineNum.substr(1); /* strip off '#' */
+
+  if (lineNum.indexOf('L') == -1) {
+    lineNum = 'L'+lineNum;
+  }
+  if (lineNum.indexOf('W') == -1) {
+    lineNum = 'W1'+lineNum;
+  }
+  var lineElem = document.getElementById(lineNum);
+  /* Always jump to new location even if the line was hidden inside a fold, or
+   * we corrected the raw number to a line ID.
+   */
+  if (lineElem) {
+    lineElem.scrollIntoView(true);
+  }
+  return true;
+}
+if ('onhashchange' in window) {
+  window.onhashchange = JumpToLine;
+}
+
+-->
+</script>
+</head>
+<body onload='JumpToLine();'>
+<table id='vimCodeElement'>
+<tr>
+<th>denort.text</th>
+<th>denort_release.text</th>
+</tr><tr>
+<td><div>
+<pre>
+<span id="W1L1" class="LineNr">  1 </span><span class="DiffChange">./denort:</span><span class="DiffChange">                                                                                                                 </span>
+<span id="W1L2" class="LineNr">  2 </span>Load command 0
+<span id="W1L3" class="LineNr">  3 </span>      cmd LC<span class="Error">_</span>SEGMENT<span class="Error">_</span>64
+<span id="W1L4" class="LineNr">  4 </span>  cmdsize 72
+<span id="W1L5" class="LineNr">  5 </span>  segname <span class="htmlBold">__</span><span class="htmlBold">PAGEZERO</span>
+<span id="W1L6" class="LineNr">  6 </span><span class="htmlBold">   vmaddr 0x0000000000000000</span>
+<span id="W1L7" class="LineNr">  7 </span><span class="htmlBold">   vmsize 0x0000000100000000</span>
+<span id="W1L8" class="Folded">  8 </span><span class="Folded">+--  5 lines: fileoff 0-------------------------------------------------------------------------------------------------------</span>
+<span id="W1L13" class="LineNr"> 13 </span><span class="htmlBold">    flags 0x0</span>
+<span id="W1L14" class="LineNr"> 14 </span><span class="htmlBold">Load command 1</span>
+<span id="W1L15" class="LineNr"> 15 </span><span class="htmlBold">      cmd LC_SEGMENT_64</span>
+<span id="W1L16" class="LineNr"> 16 </span><span class="htmlBold">  cmdsize 872</span>
+<span id="W1L17" class="LineNr"> 17 </span><span class="htmlBold">  segname </span><span class="htmlItalic">_</span><span class="htmlItalic">_TEXT</span>
+<span id="W1L18" class="LineNr"> 18 </span><span class="htmlItalic">   vmaddr 0x0000000100000000</span>
+<span id="W1L19" class="LineNr"> 19 </span><span class="htmlItalic DiffChange">   vmsize 0x000000000</span><span class="htmlItalic DiffText">8988</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                              </span>
+<span id="W1L20" class="LineNr"> 20 </span><span class="htmlItalic">  fileoff 0</span>
+<span id="W1L21" class="LineNr"> 21 </span><span class="htmlItalic DiffChange"> filesize </span><span class="htmlItalic DiffText">144211968</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L22" class="LineNr"> 22 </span><span class="htmlItalic">  maxprot 0x00000005</span>
+<span id="W1L23" class="LineNr"> 23 </span><span class="htmlItalic"> initprot 0x00000005</span>
+<span id="W1L24" class="LineNr"> 24 </span><span class="htmlItalic">   nsects 10</span>
+<span id="W1L25" class="LineNr"> 25 </span><span class="htmlItalic">    flags 0x0</span>
+<span id="W1L26" class="LineNr"> 26 </span><span class="htmlItalic">Section</span>
+<span id="W1L27" class="LineNr"> 27 </span><span class="htmlItalic">  sectname __text</span>
+<span id="W1L28" class="LineNr"> 28 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L29" class="LineNr"> 29 </span><span class="htmlItalic DiffChange">      addr 0x000000010000</span><span class="htmlItalic DiffText">0c</span><span class="htmlItalic DiffChange">00</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L30" class="LineNr"> 30 </span><span class="htmlItalic DiffChange">      size 0x000000000</span><span class="htmlItalic DiffText">66d8fa</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L31" class="LineNr"> 31 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">3072</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L32" class="LineNr"> 32 </span><span class="htmlItalic">     align 2^8 (256)</span>
+<span id="W1L33" class="LineNr"> 33 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L34" class="LineNr"> 34 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L35" class="LineNr"> 35 </span><span class="htmlItalic">     flags 0x80000400</span>
+<span id="W1L36" class="LineNr"> 36 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L37" class="LineNr"> 37 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L38" class="LineNr"> 38 </span><span class="htmlItalic">Section</span>
+<span id="W1L39" class="LineNr"> 39 </span><span class="htmlItalic">  sectname __lcxx_override</span>
+<span id="W1L40" class="LineNr"> 40 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L41" class="LineNr"> 41 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">66d9ba</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L42" class="LineNr"> 42 </span><span class="htmlItalic">      size 0x00000000000000da</span>
+<span id="W1L43" class="LineNr"> 43 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">107846560</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L44" class="LineNr"> 44 </span><span class="htmlItalic">     align 2^4 (16)</span>
+<span id="W1L45" class="LineNr"> 45 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L46" class="LineNr"> 46 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L47" class="LineNr"> 47 </span><span class="htmlItalic">     flags 0x80000400</span>
+<span id="W1L48" class="LineNr"> 48 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L49" class="LineNr"> 49 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L50" class="LineNr"> 50 </span><span class="htmlItalic">Section</span>
+<span id="W1L51" class="LineNr"> 51 </span><span class="htmlItalic">  sectname __stubs</span>
+<span id="W1L52" class="LineNr"> 52 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L53" class="LineNr"> 53 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">66d9c7</span><span class="htmlItalic DiffChange">a</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L54" class="LineNr"> 54 </span><span class="htmlItalic DiffChange">      size 0x0000000000000a9</span><span class="htmlItalic DiffText">e</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L55" class="LineNr"> 55 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">107846778</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L56" class="LineNr"> 56 </span><span class="htmlItalic">     align 2^0 (1)</span>
+<span id="W1L57" class="LineNr"> 57 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L58" class="LineNr"> 58 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L59" class="LineNr"> 59 </span><span class="htmlItalic">     flags 0x80000408</span>
+<span id="W1L60" class="LineNr"> 60 </span><span class="htmlItalic"> reserved1 0 (index into indirect symbol table)</span>
+<span id="W1L61" class="LineNr"> 61 </span><span class="htmlItalic"> reserved2 6 (size of stubs)</span>
+<span id="W1L62" class="LineNr"> 62 </span><span class="htmlItalic">Section</span>
+<span id="W1L63" class="LineNr"> 63 </span><span class="htmlItalic">  sectname __stub_helper</span>
+<span id="W1L64" class="LineNr"> 64 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L65" class="LineNr"> 65 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">66da718</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L66" class="LineNr"> 66 </span><span class="htmlItalic DiffChange">      size 0x00000000000011</span><span class="htmlItalic DiffText">c2</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L67" class="LineNr"> 67 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">107849496</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L68" class="LineNr"> 68 </span><span class="htmlItalic">     align 2^0 (1)</span>
+<span id="W1L69" class="LineNr"> 69 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L70" class="LineNr"> 70 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L71" class="LineNr"> 71 </span><span class="htmlItalic">     flags 0x80000400</span>
+<span id="W1L72" class="LineNr"> 72 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L73" class="LineNr"> 73 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L74" class="LineNr"> 74 </span><span class="htmlItalic">Section</span>
+<span id="W1L75" class="LineNr"> 75 </span><span class="htmlItalic">  sectname __gcc_except_tab</span>
+<span id="W1L76" class="LineNr"> 76 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L77" class="LineNr"> 77 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">66db8</span><span class="htmlItalic DiffChange">dc</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L78" class="LineNr"> 78 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">2ec6c0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L79" class="LineNr"> 79 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">107854044</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L80" class="LineNr"> 80 </span><span class="htmlItalic">     align 2^2 (4)</span>
+<span id="W1L81" class="LineNr"> 81 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L82" class="LineNr"> 82 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L83" class="LineNr"> 83 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W1L84" class="LineNr"> 84 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L85" class="LineNr"> 85 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L86" class="LineNr"> 86 </span><span class="htmlItalic">Section</span>
+<span id="W1L87" class="LineNr"> 87 </span><span class="htmlItalic">  sectname __const</span>
+<span id="W1L88" class="LineNr"> 88 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L89" class="LineNr"> 89 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">69c8</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L90" class="LineNr"> 90 </span><span class="htmlItalic DiffChange">      size 0x0000000001</span><span class="htmlItalic DiffText">9a39d4</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L91" class="LineNr"> 91 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">110919680</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L92" class="LineNr"> 92 </span><span class="htmlItalic">     align 2^12 (4096)</span>
+<span id="W1L93" class="LineNr"> 93 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L94" class="LineNr"> 94 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L95" class="LineNr"> 95 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W1L96" class="LineNr"> 96 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L97" class="LineNr"> 97 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L98" class="LineNr"> 98 </span><span class="htmlItalic">Section</span>
+<span id="W1L99" class="LineNr"> 99 </span><span class="htmlItalic">  sectname __cstring</span>
+<span id="W1L100" class="LineNr">100 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L101" class="LineNr">101 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">836b9e</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L102" class="LineNr">102 </span><span class="htmlItalic DiffChange">      size 0x00000000000</span><span class="htmlItalic DiffText">ee781</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L103" class="LineNr">103 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">137804256</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L104" class="LineNr">104 </span><span class="htmlItalic">     align 2^4 (16)</span>
+<span id="W1L105" class="LineNr">105 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L106" class="LineNr">106 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L107" class="LineNr">107 </span><span class="htmlItalic">     flags 0x00000002</span>
+<span id="W1L108" class="LineNr">108 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L109" class="LineNr">109 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L110" class="LineNr">110 </span><span class="htmlItalic">Section</span>
+<span id="W1L111" class="LineNr">111 </span><span class="htmlItalic">  sectname __ustring</span>
+<span id="W1L112" class="LineNr">112 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L113" class="LineNr">113 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">845a17</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L114" class="LineNr">114 </span><span class="htmlItalic DiffChange">      size 0x00000000000014</span><span class="htmlItalic DiffText">b</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L115" class="LineNr">115 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">138781040</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L116" class="LineNr">116 </span><span class="htmlItalic">     align 2^4 (16)</span>
+<span id="W1L117" class="LineNr">117 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L118" class="LineNr">118 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L119" class="LineNr">119 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W1L120" class="LineNr">120 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L121" class="LineNr">121 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L122" class="LineNr">122 </span><span class="htmlItalic">Section</span>
+<span id="W1L123" class="LineNr">123 </span><span class="htmlItalic">  sectname __unwind_info</span>
+<span id="W1L124" class="LineNr">124 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L125" class="LineNr">125 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">845b62</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L126" class="LineNr">126 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">1833d</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L127" class="LineNr">127 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">138786340</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L128" class="LineNr">128 </span><span class="htmlItalic">     align 2^2 (4)</span>
+<span id="W1L129" class="LineNr">129 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L130" class="LineNr">130 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L131" class="LineNr">131 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W1L132" class="LineNr">132 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L133" class="LineNr">133 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L134" class="LineNr">134 </span><span class="htmlItalic">Section</span>
+<span id="W1L135" class="LineNr">135 </span><span class="htmlItalic">  sectname __eh_frame</span>
+<span id="W1L136" class="LineNr">136 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W1L137" class="LineNr">137 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">85de9f</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L138" class="LineNr">138 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">3a8b4</span><span class="htmlItalic DiffChange">2</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L139" class="LineNr">139 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">140372472</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L140" class="LineNr">140 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L141" class="LineNr">141 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L142" class="LineNr">142 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L143" class="LineNr">143 </span><span class="htmlItalic">     flags 0x6800000b</span>
+<span id="W1L144" class="LineNr">144 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L145" class="LineNr">145 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L146" class="LineNr">146 </span><span class="htmlItalic">Load command 2</span>
+<span id="W1L147" class="LineNr">147 </span><span class="htmlItalic">      cmd LC_SEGMENT_64</span>
+<span id="W1L148" class="LineNr">148 </span><span class="htmlItalic">  cmdsize 872</span>
+<span id="W1L149" class="LineNr">149 </span><span class="htmlItalic">  segname __DATA</span>
+<span id="W1L150" class="LineNr">150 </span><span class="htmlItalic DiffChange">   vmaddr 0x000000010</span><span class="htmlItalic DiffText">8988</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                              </span>
+<span id="W1L151" class="LineNr">151 </span><span class="htmlItalic DiffChange">   vmsize 0x0000000000</span><span class="htmlItalic DiffText">45c</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                              </span>
+<span id="W1L152" class="LineNr">152 </span><span class="htmlItalic DiffChange">  fileoff </span><span class="htmlItalic DiffText">144211968</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L153" class="LineNr">153 </span><span class="htmlItalic DiffChange"> filesize </span><span class="htmlItalic DiffText">4378624</span><span class="DiffChange">                                                                                                         </span>
+<span id="W1L154" class="LineNr">154 </span><span class="htmlItalic">  maxprot 0x00000003</span>
+<span id="W1L155" class="LineNr">155 </span><span class="htmlItalic"> initprot 0x00000003</span>
+<span id="W1L156" class="LineNr">156 </span><span class="htmlItalic">   nsects 10</span>
+<span id="W1L157" class="LineNr">157 </span><span class="htmlItalic">    flags 0x0</span>
+<span id="W1L158" class="LineNr">158 </span><span class="htmlItalic">Section</span>
+<span id="W1L159" class="LineNr">159 </span><span class="htmlItalic">  sectname __got</span>
+<span id="W1L160" class="LineNr">160 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L161" class="LineNr">161 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8988</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L162" class="LineNr">162 </span><span class="htmlItalic DiffChange">      size 0x000000000000012</span><span class="htmlItalic DiffText">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L163" class="LineNr">163 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">144211968</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L164" class="LineNr">164 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L165" class="LineNr">165 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L166" class="LineNr">166 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L167" class="LineNr">167 </span><span class="htmlItalic">     flags 0x00000006</span>
+<span id="W1L168" class="LineNr">168 </span><span class="htmlItalic DiffChange"> reserved1 45</span><span class="htmlItalic DiffText">3</span><span class="htmlItalic DiffChange"> (index into indirect symbol table)</span><span class="DiffChange">                                                                         </span>
+<span id="W1L169" class="LineNr">169 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L170" class="LineNr">170 </span><span class="htmlItalic">Section</span>
+<span id="W1L171" class="LineNr">171 </span><span class="htmlItalic">  sectname __la_symbol_ptr</span>
+<span id="W1L172" class="LineNr">172 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L173" class="LineNr">173 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8988120</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L174" class="LineNr">174 </span><span class="htmlItalic DiffChange">      size 0x0000000000000e</span><span class="htmlItalic DiffText">2</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L175" class="LineNr">175 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">14421225</span><span class="htmlItalic DiffChange">6</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L176" class="LineNr">176 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L177" class="LineNr">177 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L178" class="LineNr">178 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L179" class="LineNr">179 </span><span class="htmlItalic">     flags 0x00000007</span>
+<span id="W1L180" class="LineNr">180 </span><span class="htmlItalic DiffChange"> reserved1 48</span><span class="htmlItalic DiffText">9</span><span class="htmlItalic DiffChange"> (index into indirect symbol table)</span><span class="DiffChange">                                                                         </span>
+<span id="W1L181" class="LineNr">181 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L182" class="LineNr">182 </span><span class="htmlItalic">Section</span>
+<span id="W1L183" class="LineNr">183 </span><span class="htmlItalic">  sectname __mod_init_func</span>
+<span id="W1L184" class="LineNr">184 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L185" class="LineNr">185 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8988f48</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L186" class="LineNr">186 </span><span class="htmlItalic">      size 0x0000000000000018</span>
+<span id="W1L187" class="LineNr">187 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">144215880</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L188" class="LineNr">188 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L189" class="LineNr">189 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L190" class="LineNr">190 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L191" class="LineNr">191 </span><span class="htmlItalic">     flags 0x00000009</span>
+<span id="W1L192" class="LineNr">192 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L193" class="LineNr">193 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L194" class="LineNr">194 </span><span class="htmlItalic">Section</span>
+<span id="W1L195" class="LineNr">195 </span><span class="htmlItalic">  sectname __const</span>
+<span id="W1L196" class="LineNr">196 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L197" class="LineNr">197 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8988</span><span class="htmlItalic DiffChange">f80</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L198" class="LineNr">198 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">3fb29</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L199" class="LineNr">199 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">144215936</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L200" class="LineNr">200 </span><span class="htmlItalic">     align 2^6 (64)</span>
+<span id="W1L201" class="LineNr">201 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L202" class="LineNr">202 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L203" class="LineNr">203 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W1L204" class="LineNr">204 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L205" class="LineNr">205 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L206" class="LineNr">206 </span><span class="htmlItalic">Section</span>
+<span id="W1L207" class="LineNr">207 </span><span class="htmlItalic">  sectname __data</span>
+<span id="W1L208" class="LineNr">208 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L209" class="LineNr">209 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8d8</span><span class="htmlItalic DiffChange">5000</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L210" class="LineNr">210 </span><span class="htmlItalic DiffChange">      size 0x000000000002</span><span class="htmlItalic DiffText">d9d0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L211" class="LineNr">211 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">148393984</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L212" class="LineNr">212 </span><span class="htmlItalic">     align 2^12 (4096)</span>
+<span id="W1L213" class="LineNr">213 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L214" class="LineNr">214 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L215" class="LineNr">215 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W1L216" class="LineNr">216 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L217" class="LineNr">217 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L218" class="LineNr">218 </span><span class="htmlItalic">Section</span>
+<span id="W1L219" class="LineNr">219 </span><span class="htmlItalic">  sectname __thread_vars</span>
+<span id="W1L220" class="LineNr">220 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L221" class="LineNr">221 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8db29d0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L222" class="LineNr">222 </span><span class="htmlItalic DiffChange">      size 0x0000000000001</span><span class="htmlItalic DiffText">a1</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L223" class="LineNr">223 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">148580816</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L224" class="LineNr">224 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L225" class="LineNr">225 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L226" class="LineNr">226 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L227" class="LineNr">227 </span><span class="htmlItalic">     flags 0x00000013</span>
+<span id="W1L228" class="LineNr">228 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L229" class="LineNr">229 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L230" class="LineNr">230 </span><span class="htmlItalic">Section</span>
+<span id="W1L231" class="LineNr">231 </span><span class="htmlItalic">  sectname __thread_data</span>
+<span id="W1L232" class="LineNr">232 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L233" class="LineNr">233 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8db43e0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L234" class="LineNr">234 </span><span class="htmlItalic DiffChange">      size 0x0000000000000</span><span class="htmlItalic DiffText">119</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L235" class="LineNr">235 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">14858748</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L236" class="LineNr">236 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L237" class="LineNr">237 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L238" class="LineNr">238 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L239" class="LineNr">239 </span><span class="htmlItalic">     flags 0x00000011</span>
+<span id="W1L240" class="LineNr">240 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L241" class="LineNr">241 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L242" class="LineNr">242 </span><span class="htmlItalic">Section</span>
+<span id="W1L243" class="LineNr">243 </span><span class="htmlItalic">  sectname __thread_bss</span>
+<span id="W1L244" class="LineNr">244 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L245" class="LineNr">245 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8db4500</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L246" class="LineNr">246 </span><span class="htmlItalic DiffChange">      size 0x0000000000000d</span><span class="htmlItalic DiffText">a</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L247" class="LineNr">247 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W1L248" class="LineNr">248 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W1L249" class="LineNr">249 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L250" class="LineNr">250 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L251" class="LineNr">251 </span><span class="htmlItalic">     flags 0x00000012</span>
+<span id="W1L252" class="LineNr">252 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L253" class="LineNr">253 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L254" class="LineNr">254 </span><span class="htmlItalic">Section</span>
+<span id="W1L255" class="LineNr">255 </span><span class="htmlItalic">  sectname __bss</span>
+<span id="W1L256" class="LineNr">256 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L257" class="LineNr">257 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8db52c</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L258" class="LineNr">258 </span><span class="htmlItalic DiffChange">      size 0x000000000002</span><span class="htmlItalic DiffText">b808</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L259" class="LineNr">259 </span><span class="htmlItalic">    offset 0</span>
+<span id="W1L260" class="LineNr">260 </span><span class="htmlItalic DiffChange">     align 2^</span><span class="htmlItalic DiffText">6 (64</span><span class="htmlItalic DiffChange">)</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L261" class="LineNr">261 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L262" class="LineNr">262 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L263" class="LineNr">263 </span><span class="htmlItalic">     flags 0x00000001</span>
+<span id="W1L264" class="LineNr">264 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L265" class="LineNr">265 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L266" class="LineNr">266 </span><span class="htmlItalic">Section</span>
+<span id="W1L267" class="LineNr">267 </span><span class="htmlItalic">  sectname __common</span>
+<span id="W1L268" class="LineNr">268 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W1L269" class="LineNr">269 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">8de0b0</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L270" class="LineNr">270 </span><span class="htmlItalic DiffChange">      size 0x000000000000</span><span class="htmlItalic DiffText">3498</span><span class="DiffChange">                                                                                             </span>
+<span id="W1L271" class="LineNr">271 </span><span class="htmlItalic">    offset 0</span>
+<span id="W1L272" class="LineNr">272 </span><span class="htmlItalic DiffChange">     align 2^</span><span class="htmlItalic DiffText">7 (128</span><span class="htmlItalic DiffChange">)</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L273" class="LineNr">273 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W1L274" class="LineNr">274 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W1L275" class="LineNr">275 </span><span class="htmlItalic">     flags 0x00000001</span>
+<span id="W1L276" class="LineNr">276 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W1L277" class="LineNr">277 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W1L278" class="LineNr">278 </span><span class="htmlItalic">Load command 3</span>
+<span id="W1L279" class="LineNr">279 </span><span class="htmlItalic">      cmd LC_SEGMENT_64</span>
+<span id="W1L280" class="LineNr">280 </span><span class="htmlItalic">  cmdsize 72</span>
+<span id="W1L281" class="LineNr">281 </span><span class="htmlItalic">  segname __LINKEDIT</span>
+<span id="W1L282" class="LineNr">282 </span><span class="htmlItalic DiffChange">   vmaddr 0x000000010</span><span class="htmlItalic DiffText">8de</span><span class="htmlItalic DiffChange">4000</span><span class="DiffChange">                                                                                              </span>
+<span id="W1L283" class="LineNr">283 </span><span class="htmlItalic DiffChange">   vmsize 0x000000000</span><span class="htmlItalic DiffText">397a000</span><span class="DiffChange">                                                                                              </span>
+<span id="W1L284" class="LineNr">284 </span><span class="htmlItalic DiffChange">  fileoff </span><span class="htmlItalic DiffText">14859059</span><span class="htmlItalic DiffChange">2</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L285" class="LineNr">285 </span><span class="htmlItalic DiffChange"> filesize </span><span class="htmlItalic DiffText">6026604</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L286" class="LineNr">286 </span><span class="htmlItalic">  maxprot 0x00000001</span>
+<span id="W1L287" class="LineNr">287 </span><span class="htmlItalic"> initprot 0x00000001</span>
+<span id="W1L288" class="LineNr">288 </span><span class="htmlItalic">   nsects 0</span>
+<span id="W1L289" class="LineNr">289 </span><span class="htmlItalic">    flags 0x0</span>
+<span id="W1L290" class="LineNr">290 </span><span class="htmlItalic">Load command 4</span>
+<span id="W1L291" class="LineNr">291 </span><span class="htmlItalic">            cmd LC_DYLD_INFO_ONLY</span>
+<span id="W1L292" class="LineNr">292 </span><span class="htmlItalic">        cmdsize 48</span>
+<span id="W1L293" class="LineNr">293 </span><span class="htmlItalic DiffChange">     rebase_off </span><span class="htmlItalic DiffText">14859059</span><span class="htmlItalic DiffChange">2</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L294" class="LineNr">294 </span><span class="htmlItalic DiffChange">    rebase_size </span><span class="htmlItalic DiffText">111680</span><span class="DiffChange">                                                                                                    </span>
+<span id="W1L295" class="LineNr">295 </span><span class="htmlItalic DiffChange">       bind_off </span><span class="htmlItalic DiffText">148702272</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L296" class="LineNr">296 </span><span class="htmlItalic DiffChange">      bind_size </span><span class="htmlItalic DiffText">880</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L297" class="LineNr">297 </span><span class="htmlItalic">  weak_bind_off 0</span>
+<span id="W1L298" class="LineNr">298 </span><span class="htmlItalic"> weak_bind_size 0</span>
+<span id="W1L299" class="LineNr">299 </span><span class="htmlItalic DiffChange">  lazy_bind_off </span><span class="htmlItalic DiffText">148703152</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L300" class="LineNr">300 </span><span class="htmlItalic DiffChange"> lazy_bind_size 91</span><span class="htmlItalic DiffText">6</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L301" class="LineNr">301 </span><span class="htmlItalic DiffChange">     export_off </span><span class="htmlItalic DiffText">148712312</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L302" class="LineNr">302 </span><span class="htmlItalic">    export_size 3696</span>
+<span id="W1L303" class="LineNr">303 </span><span class="htmlItalic">Load command 5</span>
+<span id="W1L304" class="LineNr">304 </span><span class="htmlItalic">     cmd LC_SYMTAB</span>
+<span id="W1L305" class="LineNr">305 </span><span class="htmlItalic"> cmdsize 24</span>
+<span id="W1L306" class="LineNr">306 </span><span class="htmlItalic DiffChange">  symoff </span><span class="htmlItalic DiffText">14929226</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L307" class="LineNr">307 </span><span class="htmlItalic DiffChange">   nsyms </span><span class="htmlItalic DiffText">515061</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L308" class="LineNr">308 </span><span class="htmlItalic DiffChange">  stroff </span><span class="htmlItalic DiffText">15753700</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L309" class="LineNr">309 </span><span class="htmlItalic DiffChange"> strsize </span><span class="htmlItalic DiffText">5131962</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                                         </span>
+<span id="W1L310" class="LineNr">310 </span><span class="htmlItalic">Load command 6</span>
+<span id="W1L311" class="LineNr">311 </span><span class="htmlItalic">            cmd LC_DYSYMTAB</span>
+<span id="W1L312" class="LineNr">312 </span><span class="htmlItalic">        cmdsize 80</span>
+<span id="W1L313" class="LineNr">313 </span><span class="htmlItalic">      ilocalsym 0</span>
+<span id="W1L314" class="LineNr">314 </span><span class="htmlItalic DiffChange">      nlocalsym </span><span class="htmlItalic DiffText">514429</span><span class="DiffChange">                                                                                                    </span>
+<span id="W1L315" class="LineNr">315 </span><span class="htmlItalic DiffChange">     iextdefsym </span><span class="htmlItalic DiffText">514429</span><span class="DiffChange">                                                                                                    </span>
+<span id="W1L316" class="LineNr">316 </span><span class="htmlItalic">     nextdefsym 161</span>
+<span id="W1L317" class="LineNr">317 </span><span class="htmlItalic DiffChange">      iundefsym </span><span class="htmlItalic DiffText">514590</span><span class="DiffChange">                                                                                                    </span>
+<span id="W1L318" class="LineNr">318 </span><span class="htmlItalic DiffChange">      nundefsym 4</span><span class="htmlItalic DiffText">71</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L319" class="LineNr">319 </span><span class="htmlItalic">         tocoff 0</span>
+<span id="W1L320" class="LineNr">320 </span><span class="htmlItalic">           ntoc 0</span>
+<span id="W1L321" class="LineNr">321 </span><span class="htmlItalic">      modtaboff 0</span>
+<span id="W1L322" class="LineNr">322 </span><span class="htmlItalic">        nmodtab 0</span>
+<span id="W1L323" class="LineNr">323 </span><span class="htmlItalic">   extrefsymoff 0</span>
+<span id="W1L324" class="LineNr">324 </span><span class="htmlItalic">    nextrefsyms 0</span>
+<span id="W1L325" class="LineNr">325 </span><span class="htmlItalic DiffChange"> indirectsymoff </span><span class="htmlItalic DiffText">157533240</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L326" class="LineNr">326 </span><span class="htmlItalic DiffChange">  nindirectsyms 9</span><span class="htmlItalic DiffText">42</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L327" class="LineNr">327 </span><span class="htmlItalic">      extreloff 0</span>
+<span id="W1L328" class="LineNr">328 </span><span class="htmlItalic">        nextrel 0</span>
+<span id="W1L329" class="LineNr">329 </span><span class="htmlItalic">      locreloff 0</span>
+<span id="W1L330" class="LineNr">330 </span><span class="htmlItalic">        nlocrel 0</span>
+<span id="W1L331" class="LineNr">331 </span><span class="htmlItalic">Load command 7</span>
+<span id="W1L332" class="LineNr">332 </span><span class="htmlItalic">          cmd LC_LOAD_DYLINKER</span>
+<span id="W1L333" class="LineNr">333 </span><span class="htmlItalic">      cmdsize 32</span>
+<span id="W1L334" class="LineNr">334 </span><span class="htmlItalic">         name /usr/lib/dyld (offset 12)</span>
+<span id="W1L335" class="LineNr">335 </span><span class="htmlItalic">Load command 8</span>
+<span id="W1L336" class="LineNr">336 </span><span class="htmlItalic">     cmd LC_UUID</span>
+<span id="W1L337" class="LineNr">337 </span><span class="htmlItalic"> cmdsize 24</span>
+<span id="W1L338" class="LineNr">338 </span><span class="htmlItalic DiffChange">    uuid F</span><span class="htmlItalic DiffText">252F6AB-D7C8-394B-A01E-D22608C83EFB</span><span class="DiffChange">                                                                             </span>
+<span id="W1L339" class="LineNr">339 </span><span class="htmlItalic">Load command 9</span>
+<span id="W1L340" class="LineNr">340 </span><span class="htmlItalic">      cmd LC_VERSION_MIN_MACOSX</span>
+<span id="W1L341" class="LineNr">341 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W1L342" class="LineNr">342 </span><span class="htmlItalic">  version 10.12</span>
+<span id="W1L343" class="LineNr">343 </span><span class="htmlItalic">      sdk 14.2</span>
+<span id="W1L344" class="LineNr">344 </span><span class="htmlItalic">Load command 10</span>
+<span id="W1L345" class="LineNr">345 </span><span class="htmlItalic">      cmd LC_SOURCE_VERSION</span>
+<span id="W1L346" class="LineNr">346 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W1L347" class="LineNr">347 </span><span class="htmlItalic">  version 0.0</span>
+<span id="W1L348" class="LineNr">348 </span><span class="htmlItalic">Load command 11</span>
+<span id="W1L349" class="LineNr">349 </span><span class="htmlItalic">       cmd LC_MAIN</span>
+<span id="W1L350" class="LineNr">350 </span><span class="htmlItalic">   cmdsize 24</span>
+<span id="W1L351" class="LineNr">351 </span><span class="htmlItalic DiffChange">  entryoff 2</span><span class="htmlItalic DiffText">927440</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L352" class="LineNr">352 </span><span class="htmlItalic"> stacksize 0</span>
+<span id="W1L353" class="LineNr">353 </span><span class="htmlItalic">Load command 12</span>
+<span id="W1L354" class="LineNr">354 </span><span class="htmlItalic">          cmd LC_LOAD_DYLIB</span>
+<span id="W1L355" class="LineNr">355 </span><span class="htmlItalic">      cmdsize 104</span>
+<span id="W1L356" class="LineNr">356 </span><span class="htmlItalic">         name /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (offset 24)</span>
+<span id="W1L357" class="LineNr">357 </span><span class="htmlItalic">   time stamp 2 Thu Jan  1 05:30:02 1970</span>
+<span id="W1L358" class="Folded">358 </span><span class="Folded">+-- 55 lines: current version 2202.0.0----------------------------------------------------------------------------------------</span>
+<span id="W1L413" class="LineNr">413 </span><span class="htmlItalic">   time stamp 2 Thu Jan  1 05:30:02 1970</span>
+<span id="W1L414" class="LineNr">414 </span><span class="htmlItalic">      current version 127.1.3</span>
+<span id="W1L415" class="LineNr">415 </span><span class="htmlItalic">compatibility version 1.0.0</span>
+<span id="W1L416" class="LineNr">416 </span><span class="htmlItalic">Load command 21</span>
+<span id="W1L417" class="LineNr">417 </span><span class="htmlItalic">      cmd LC_FUNCTION_STARTS</span>
+<span id="W1L418" class="LineNr">418 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W1L419" class="LineNr">419 </span><span class="htmlItalic DiffChange">  dataoff </span><span class="htmlItalic DiffText">148716008</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L420" class="LineNr">420 </span><span class="htmlItalic DiffChange"> datasize </span><span class="htmlItalic DiffText">576256</span><span class="DiffChange">                                                                                                          </span>
+<span id="W1L421" class="LineNr">421 </span><span class="htmlItalic">Load command 22</span>
+<span id="W1L422" class="LineNr">422 </span><span class="htmlItalic">      cmd LC_DATA_IN_CODE</span>
+<span id="W1L423" class="LineNr">423 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W1L424" class="LineNr">424 </span><span class="htmlItalic DiffChange">  dataoff </span><span class="htmlItalic DiffText">14929226</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L425" class="LineNr">425 </span><span class="htmlItalic"> datasize 0</span>
+</pre>
+</div></td>
+<td><div>
+<pre>
+<span id="W2L1" class="LineNr">  1 </span><span class="DiffChange">./denort</span><span class="Error DiffText">_</span><span class="DiffText">release</span><span class="DiffChange">:                                                                                                         </span>
+<span id="W2L2" class="LineNr">  2 </span>Load command 0
+<span id="W2L3" class="LineNr">  3 </span>      cmd LC<span class="Error">_</span>SEGMENT<span class="Error">_</span>64
+<span id="W2L4" class="LineNr">  4 </span>  cmdsize 72
+<span id="W2L5" class="LineNr">  5 </span>  segname <span class="htmlBold">__</span><span class="htmlBold">PAGEZERO</span>
+<span id="W2L6" class="LineNr">  6 </span><span class="htmlBold">   vmaddr 0x0000000000000000</span>
+<span id="W2L7" class="LineNr">  7 </span><span class="htmlBold">   vmsize 0x0000000100000000</span>
+<span id="W2L8" class="Folded">  8 </span><span class="Folded">+--  5 lines: fileoff 0-------------------------------------------------------------------------------------------------------</span>
+<span id="W2L13" class="LineNr"> 13 </span><span class="htmlBold">    flags 0x0</span>
+<span id="W2L14" class="LineNr"> 14 </span><span class="htmlBold">Load command 1</span>
+<span id="W2L15" class="LineNr"> 15 </span><span class="htmlBold">      cmd LC_SEGMENT_64</span>
+<span id="W2L16" class="LineNr"> 16 </span><span class="htmlBold">  cmdsize 872</span>
+<span id="W2L17" class="LineNr"> 17 </span><span class="htmlBold">  segname </span><span class="htmlItalic">_</span><span class="htmlItalic">_TEXT</span>
+<span id="W2L18" class="LineNr"> 18 </span><span class="htmlItalic">   vmaddr 0x0000000100000000</span>
+<span id="W2L19" class="LineNr"> 19 </span><span class="htmlItalic DiffChange">   vmsize 0x000000000</span><span class="htmlItalic DiffText">486c</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                              </span>
+<span id="W2L20" class="LineNr"> 20 </span><span class="htmlItalic">  fileoff 0</span>
+<span id="W2L21" class="LineNr"> 21 </span><span class="htmlItalic DiffChange"> filesize </span><span class="htmlItalic DiffText">75939840</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L22" class="LineNr"> 22 </span><span class="htmlItalic">  maxprot 0x00000005</span>
+<span id="W2L23" class="LineNr"> 23 </span><span class="htmlItalic"> initprot 0x00000005</span>
+<span id="W2L24" class="LineNr"> 24 </span><span class="htmlItalic">   nsects 10</span>
+<span id="W2L25" class="LineNr"> 25 </span><span class="htmlItalic">    flags 0x0</span>
+<span id="W2L26" class="LineNr"> 26 </span><span class="htmlItalic">Section</span>
+<span id="W2L27" class="LineNr"> 27 </span><span class="htmlItalic">  sectname __text</span>
+<span id="W2L28" class="LineNr"> 28 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L29" class="LineNr"> 29 </span><span class="htmlItalic DiffChange">      addr 0x000000010000</span><span class="htmlItalic DiffText">15</span><span class="htmlItalic DiffChange">00</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L30" class="LineNr"> 30 </span><span class="htmlItalic DiffChange">      size 0x000000000</span><span class="htmlItalic DiffText">2f7f9c</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L31" class="LineNr"> 31 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">5376</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L32" class="LineNr"> 32 </span><span class="htmlItalic">     align 2^8 (256)</span>
+<span id="W2L33" class="LineNr"> 33 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L34" class="LineNr"> 34 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L35" class="LineNr"> 35 </span><span class="htmlItalic">     flags 0x80000400</span>
+<span id="W2L36" class="LineNr"> 36 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L37" class="LineNr"> 37 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L38" class="LineNr"> 38 </span><span class="htmlItalic">Section</span>
+<span id="W2L39" class="LineNr"> 39 </span><span class="htmlItalic">  sectname __lcxx_override</span>
+<span id="W2L40" class="LineNr"> 40 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L41" class="LineNr"> 41 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">2f80ec</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L42" class="LineNr"> 42 </span><span class="htmlItalic">      size 0x00000000000000da</span>
+<span id="W2L43" class="LineNr"> 43 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">49811136</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L44" class="LineNr"> 44 </span><span class="htmlItalic">     align 2^4 (16)</span>
+<span id="W2L45" class="LineNr"> 45 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L46" class="LineNr"> 46 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L47" class="LineNr"> 47 </span><span class="htmlItalic">     flags 0x80000400</span>
+<span id="W2L48" class="LineNr"> 48 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L49" class="LineNr"> 49 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L50" class="LineNr"> 50 </span><span class="htmlItalic">Section</span>
+<span id="W2L51" class="LineNr"> 51 </span><span class="htmlItalic">  sectname __stubs</span>
+<span id="W2L52" class="LineNr"> 52 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L53" class="LineNr"> 53 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">2f80f9</span><span class="htmlItalic DiffChange">a</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L54" class="LineNr"> 54 </span><span class="htmlItalic DiffChange">      size 0x0000000000000a9</span><span class="htmlItalic DiffText">2</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L55" class="LineNr"> 55 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">49811354</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L56" class="LineNr"> 56 </span><span class="htmlItalic">     align 2^0 (1)</span>
+<span id="W2L57" class="LineNr"> 57 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L58" class="LineNr"> 58 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L59" class="LineNr"> 59 </span><span class="htmlItalic">     flags 0x80000408</span>
+<span id="W2L60" class="LineNr"> 60 </span><span class="htmlItalic"> reserved1 0 (index into indirect symbol table)</span>
+<span id="W2L61" class="LineNr"> 61 </span><span class="htmlItalic"> reserved2 6 (size of stubs)</span>
+<span id="W2L62" class="LineNr"> 62 </span><span class="htmlItalic">Section</span>
+<span id="W2L63" class="LineNr"> 63 </span><span class="htmlItalic">  sectname __stub_helper</span>
+<span id="W2L64" class="LineNr"> 64 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L65" class="LineNr"> 65 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">2f81a2c</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L66" class="LineNr"> 66 </span><span class="htmlItalic DiffChange">      size 0x00000000000011</span><span class="htmlItalic DiffText">ae</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L67" class="LineNr"> 67 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">49814060</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L68" class="LineNr"> 68 </span><span class="htmlItalic">     align 2^0 (1)</span>
+<span id="W2L69" class="LineNr"> 69 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L70" class="LineNr"> 70 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L71" class="LineNr"> 71 </span><span class="htmlItalic">     flags 0x80000400</span>
+<span id="W2L72" class="LineNr"> 72 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L73" class="LineNr"> 73 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L74" class="LineNr"> 74 </span><span class="htmlItalic">Section</span>
+<span id="W2L75" class="LineNr"> 75 </span><span class="htmlItalic">  sectname __gcc_except_tab</span>
+<span id="W2L76" class="LineNr"> 76 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L77" class="LineNr"> 77 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">2f82b</span><span class="htmlItalic DiffChange">dc</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L78" class="LineNr"> 78 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">10d3b8</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L79" class="LineNr"> 79 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">49818588</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L80" class="LineNr"> 80 </span><span class="htmlItalic">     align 2^2 (4)</span>
+<span id="W2L81" class="LineNr"> 81 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L82" class="LineNr"> 82 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L83" class="LineNr"> 83 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W2L84" class="LineNr"> 84 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L85" class="LineNr"> 85 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L86" class="LineNr"> 86 </span><span class="htmlItalic">Section</span>
+<span id="W2L87" class="LineNr"> 87 </span><span class="htmlItalic">  sectname __const</span>
+<span id="W2L88" class="LineNr"> 88 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L89" class="LineNr"> 89 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">3090</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L90" class="LineNr"> 90 </span><span class="htmlItalic DiffChange">      size 0x0000000001</span><span class="htmlItalic DiffText">57cca2</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L91" class="LineNr"> 91 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">50921472</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L92" class="LineNr"> 92 </span><span class="htmlItalic">     align 2^12 (4096)</span>
+<span id="W2L93" class="LineNr"> 93 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L94" class="LineNr"> 94 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L95" class="LineNr"> 95 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W2L96" class="LineNr"> 96 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L97" class="LineNr"> 97 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L98" class="LineNr"> 98 </span><span class="htmlItalic">Section</span>
+<span id="W2L99" class="LineNr"> 99 </span><span class="htmlItalic">  sectname __cstring</span>
+<span id="W2L100" class="LineNr">100 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L101" class="LineNr">101 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">460ccb</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L102" class="LineNr">102 </span><span class="htmlItalic DiffChange">      size 0x00000000000</span><span class="htmlItalic DiffText">d2e70</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L103" class="LineNr">103 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">73452720</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L104" class="LineNr">104 </span><span class="htmlItalic">     align 2^4 (16)</span>
+<span id="W2L105" class="LineNr">105 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L106" class="LineNr">106 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L107" class="LineNr">107 </span><span class="htmlItalic">     flags 0x00000002</span>
+<span id="W2L108" class="LineNr">108 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L109" class="LineNr">109 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L110" class="LineNr">110 </span><span class="htmlItalic">Section</span>
+<span id="W2L111" class="LineNr">111 </span><span class="htmlItalic">  sectname __ustring</span>
+<span id="W2L112" class="LineNr">112 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L113" class="LineNr">113 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">46dfb2</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L114" class="LineNr">114 </span><span class="htmlItalic DiffChange">      size 0x00000000000014</span><span class="htmlItalic DiffText">c</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L115" class="LineNr">115 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">74316576</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L116" class="LineNr">116 </span><span class="htmlItalic">     align 2^4 (16)</span>
+<span id="W2L117" class="LineNr">117 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L118" class="LineNr">118 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L119" class="LineNr">119 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W2L120" class="LineNr">120 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L121" class="LineNr">121 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L122" class="LineNr">122 </span><span class="htmlItalic">Section</span>
+<span id="W2L123" class="LineNr">123 </span><span class="htmlItalic">  sectname __unwind_info</span>
+<span id="W2L124" class="LineNr">124 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L125" class="LineNr">125 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">46e0fe</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L126" class="LineNr">126 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">08a6a</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L127" class="LineNr">127 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">74321892</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L128" class="LineNr">128 </span><span class="htmlItalic">     align 2^2 (4)</span>
+<span id="W2L129" class="LineNr">129 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L130" class="LineNr">130 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L131" class="LineNr">131 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W2L132" class="LineNr">132 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L133" class="LineNr">133 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L134" class="LineNr">134 </span><span class="htmlItalic">Section</span>
+<span id="W2L135" class="LineNr">135 </span><span class="htmlItalic">  sectname __eh_frame</span>
+<span id="W2L136" class="LineNr">136 </span><span class="htmlItalic">   segname __TEXT</span>
+<span id="W2L137" class="LineNr">137 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">476b68</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L138" class="LineNr">138 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">10016</span><span class="htmlItalic DiffChange">2</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L139" class="LineNr">139 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">74888840</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L140" class="LineNr">140 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L141" class="LineNr">141 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L142" class="LineNr">142 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L143" class="LineNr">143 </span><span class="htmlItalic">     flags 0x6800000b</span>
+<span id="W2L144" class="LineNr">144 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L145" class="LineNr">145 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L146" class="LineNr">146 </span><span class="htmlItalic">Load command 2</span>
+<span id="W2L147" class="LineNr">147 </span><span class="htmlItalic">      cmd LC_SEGMENT_64</span>
+<span id="W2L148" class="LineNr">148 </span><span class="htmlItalic">  cmdsize 872</span>
+<span id="W2L149" class="LineNr">149 </span><span class="htmlItalic">  segname __DATA</span>
+<span id="W2L150" class="LineNr">150 </span><span class="htmlItalic DiffChange">   vmaddr 0x000000010</span><span class="htmlItalic DiffText">486c</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                              </span>
+<span id="W2L151" class="LineNr">151 </span><span class="htmlItalic DiffChange">   vmsize 0x0000000000</span><span class="htmlItalic DiffText">258</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                              </span>
+<span id="W2L152" class="LineNr">152 </span><span class="htmlItalic DiffChange">  fileoff </span><span class="htmlItalic DiffText">75939840</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L153" class="LineNr">153 </span><span class="htmlItalic DiffChange"> filesize </span><span class="htmlItalic DiffText">2260992</span><span class="DiffChange">                                                                                                         </span>
+<span id="W2L154" class="LineNr">154 </span><span class="htmlItalic">  maxprot 0x00000003</span>
+<span id="W2L155" class="LineNr">155 </span><span class="htmlItalic"> initprot 0x00000003</span>
+<span id="W2L156" class="LineNr">156 </span><span class="htmlItalic">   nsects 10</span>
+<span id="W2L157" class="LineNr">157 </span><span class="htmlItalic">    flags 0x0</span>
+<span id="W2L158" class="LineNr">158 </span><span class="htmlItalic">Section</span>
+<span id="W2L159" class="LineNr">159 </span><span class="htmlItalic">  sectname __got</span>
+<span id="W2L160" class="LineNr">160 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L161" class="LineNr">161 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">486c</span><span class="htmlItalic DiffChange">000</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L162" class="LineNr">162 </span><span class="htmlItalic DiffChange">      size 0x000000000000012</span><span class="htmlItalic DiffText">8</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L163" class="LineNr">163 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">75939840</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L164" class="LineNr">164 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L165" class="LineNr">165 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L166" class="LineNr">166 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L167" class="LineNr">167 </span><span class="htmlItalic">     flags 0x00000006</span>
+<span id="W2L168" class="LineNr">168 </span><span class="htmlItalic DiffChange"> reserved1 45</span><span class="htmlItalic DiffText">1</span><span class="htmlItalic DiffChange"> (index into indirect symbol table)</span><span class="DiffChange">                                                                         </span>
+<span id="W2L169" class="LineNr">169 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L170" class="LineNr">170 </span><span class="htmlItalic">Section</span>
+<span id="W2L171" class="LineNr">171 </span><span class="htmlItalic">  sectname __la_symbol_ptr</span>
+<span id="W2L172" class="LineNr">172 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L173" class="LineNr">173 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">486c128</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L174" class="LineNr">174 </span><span class="htmlItalic DiffChange">      size 0x0000000000000e</span><span class="htmlItalic DiffText">1</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L175" class="LineNr">175 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">7594013</span><span class="htmlItalic DiffChange">6</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L176" class="LineNr">176 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L177" class="LineNr">177 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L178" class="LineNr">178 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L179" class="LineNr">179 </span><span class="htmlItalic">     flags 0x00000007</span>
+<span id="W2L180" class="LineNr">180 </span><span class="htmlItalic DiffChange"> reserved1 48</span><span class="htmlItalic DiffText">8</span><span class="htmlItalic DiffChange"> (index into indirect symbol table)</span><span class="DiffChange">                                                                         </span>
+<span id="W2L181" class="LineNr">181 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L182" class="LineNr">182 </span><span class="htmlItalic">Section</span>
+<span id="W2L183" class="LineNr">183 </span><span class="htmlItalic">  sectname __mod_init_func</span>
+<span id="W2L184" class="LineNr">184 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L185" class="LineNr">185 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">486cf40</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L186" class="LineNr">186 </span><span class="htmlItalic">      size 0x0000000000000018</span>
+<span id="W2L187" class="LineNr">187 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">75943744</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L188" class="LineNr">188 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L189" class="LineNr">189 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L190" class="LineNr">190 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L191" class="LineNr">191 </span><span class="htmlItalic">     flags 0x00000009</span>
+<span id="W2L192" class="LineNr">192 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L193" class="LineNr">193 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L194" class="LineNr">194 </span><span class="htmlItalic">Section</span>
+<span id="W2L195" class="LineNr">195 </span><span class="htmlItalic">  sectname __const</span>
+<span id="W2L196" class="LineNr">196 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L197" class="LineNr">197 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">486c</span><span class="htmlItalic DiffChange">f80</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L198" class="LineNr">198 </span><span class="htmlItalic DiffChange">      size 0x0000000000</span><span class="htmlItalic DiffText">1f7c6</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L199" class="LineNr">199 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">75943808</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L200" class="LineNr">200 </span><span class="htmlItalic">     align 2^6 (64)</span>
+<span id="W2L201" class="LineNr">201 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L202" class="LineNr">202 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L203" class="LineNr">203 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W2L204" class="LineNr">204 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L205" class="LineNr">205 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L206" class="LineNr">206 </span><span class="htmlItalic">Section</span>
+<span id="W2L207" class="LineNr">207 </span><span class="htmlItalic">  sectname __data</span>
+<span id="W2L208" class="LineNr">208 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L209" class="LineNr">209 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">4a6</span><span class="htmlItalic DiffChange">5000</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L210" class="LineNr">210 </span><span class="htmlItalic DiffChange">      size 0x000000000002</span><span class="htmlItalic DiffText">ae88</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L211" class="LineNr">211 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">78008320</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L212" class="LineNr">212 </span><span class="htmlItalic">     align 2^12 (4096)</span>
+<span id="W2L213" class="LineNr">213 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L214" class="LineNr">214 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L215" class="LineNr">215 </span><span class="htmlItalic">     flags 0x00000000</span>
+<span id="W2L216" class="LineNr">216 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L217" class="LineNr">217 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L218" class="LineNr">218 </span><span class="htmlItalic">Section</span>
+<span id="W2L219" class="LineNr">219 </span><span class="htmlItalic">  sectname __thread_vars</span>
+<span id="W2L220" class="LineNr">220 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L221" class="LineNr">221 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">4a8fe88</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L222" class="LineNr">222 </span><span class="htmlItalic DiffChange">      size 0x0000000000001</span><span class="htmlItalic DiffText">9b</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L223" class="LineNr">223 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">78184072</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L224" class="LineNr">224 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L225" class="LineNr">225 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L226" class="LineNr">226 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L227" class="LineNr">227 </span><span class="htmlItalic">     flags 0x00000013</span>
+<span id="W2L228" class="LineNr">228 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L229" class="LineNr">229 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L230" class="LineNr">230 </span><span class="htmlItalic">Section</span>
+<span id="W2L231" class="LineNr">231 </span><span class="htmlItalic">  sectname __thread_data</span>
+<span id="W2L232" class="LineNr">232 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L233" class="LineNr">233 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">4a91838</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L234" class="LineNr">234 </span><span class="htmlItalic DiffChange">      size 0x0000000000000</span><span class="htmlItalic DiffText">09c</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L235" class="LineNr">235 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">7819064</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L236" class="LineNr">236 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L237" class="LineNr">237 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L238" class="LineNr">238 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L239" class="LineNr">239 </span><span class="htmlItalic">     flags 0x00000011</span>
+<span id="W2L240" class="LineNr">240 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L241" class="LineNr">241 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L242" class="LineNr">242 </span><span class="htmlItalic">Section</span>
+<span id="W2L243" class="LineNr">243 </span><span class="htmlItalic">  sectname __thread_bss</span>
+<span id="W2L244" class="LineNr">244 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L245" class="LineNr">245 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">4a918d8</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L246" class="LineNr">246 </span><span class="htmlItalic DiffChange">      size 0x0000000000000d</span><span class="htmlItalic DiffText">8</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L247" class="LineNr">247 </span><span class="htmlItalic DiffChange">    offset </span><span class="htmlItalic DiffText">78190808</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L248" class="LineNr">248 </span><span class="htmlItalic">     align 2^3 (8)</span>
+<span id="W2L249" class="LineNr">249 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L250" class="LineNr">250 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L251" class="LineNr">251 </span><span class="htmlItalic">     flags 0x00000012</span>
+<span id="W2L252" class="LineNr">252 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L253" class="LineNr">253 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L254" class="LineNr">254 </span><span class="htmlItalic">Section</span>
+<span id="W2L255" class="LineNr">255 </span><span class="htmlItalic">  sectname __bss</span>
+<span id="W2L256" class="LineNr">256 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L257" class="LineNr">257 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">4a9268</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L258" class="LineNr">258 </span><span class="htmlItalic DiffChange">      size 0x000000000002</span><span class="htmlItalic DiffText">daf0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L259" class="LineNr">259 </span><span class="htmlItalic">    offset 0</span>
+<span id="W2L260" class="LineNr">260 </span><span class="htmlItalic DiffChange">     align 2^</span><span class="htmlItalic DiffText">7 (128</span><span class="htmlItalic DiffChange">)</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L261" class="LineNr">261 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L262" class="LineNr">262 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L263" class="LineNr">263 </span><span class="htmlItalic">     flags 0x00000001</span>
+<span id="W2L264" class="LineNr">264 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L265" class="LineNr">265 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L266" class="LineNr">266 </span><span class="htmlItalic">Section</span>
+<span id="W2L267" class="LineNr">267 </span><span class="htmlItalic">  sectname __common</span>
+<span id="W2L268" class="LineNr">268 </span><span class="htmlItalic">   segname __DATA</span>
+<span id="W2L269" class="LineNr">269 </span><span class="htmlItalic DiffChange">      addr 0x000000010</span><span class="htmlItalic DiffText">4ac017</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L270" class="LineNr">270 </span><span class="htmlItalic DiffChange">      size 0x000000000000</span><span class="htmlItalic DiffText">11b1</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L271" class="LineNr">271 </span><span class="htmlItalic">    offset 0</span>
+<span id="W2L272" class="LineNr">272 </span><span class="htmlItalic DiffChange">     align 2^</span><span class="htmlItalic DiffText">4 (16</span><span class="htmlItalic DiffChange">)</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L273" class="LineNr">273 </span><span class="htmlItalic">    reloff 0</span>
+<span id="W2L274" class="LineNr">274 </span><span class="htmlItalic">    nreloc 0</span>
+<span id="W2L275" class="LineNr">275 </span><span class="htmlItalic">     flags 0x00000001</span>
+<span id="W2L276" class="LineNr">276 </span><span class="htmlItalic"> reserved1 0</span>
+<span id="W2L277" class="LineNr">277 </span><span class="htmlItalic"> reserved2 0</span>
+<span id="W2L278" class="LineNr">278 </span><span class="htmlItalic">Load command 3</span>
+<span id="W2L279" class="LineNr">279 </span><span class="htmlItalic">      cmd LC_SEGMENT_64</span>
+<span id="W2L280" class="LineNr">280 </span><span class="htmlItalic">  cmdsize 72</span>
+<span id="W2L281" class="LineNr">281 </span><span class="htmlItalic">  segname __LINKEDIT</span>
+<span id="W2L282" class="LineNr">282 </span><span class="htmlItalic DiffChange">   vmaddr 0x000000010</span><span class="htmlItalic DiffText">4ac</span><span class="htmlItalic DiffChange">4000</span><span class="DiffChange">                                                                                              </span>
+<span id="W2L283" class="LineNr">283 </span><span class="htmlItalic DiffChange">   vmsize 0x000000000</span><span class="htmlItalic DiffText">0047158</span><span class="DiffChange">                                                                                              </span>
+<span id="W2L284" class="LineNr">284 </span><span class="htmlItalic DiffChange">  fileoff </span><span class="htmlItalic DiffText">7820083</span><span class="htmlItalic DiffChange">2</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L285" class="LineNr">285 </span><span class="htmlItalic DiffChange"> filesize </span><span class="htmlItalic DiffText">29116</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                                          </span>
+<span id="W2L286" class="LineNr">286 </span><span class="htmlItalic">  maxprot 0x00000001</span>
+<span id="W2L287" class="LineNr">287 </span><span class="htmlItalic"> initprot 0x00000001</span>
+<span id="W2L288" class="LineNr">288 </span><span class="htmlItalic">   nsects 0</span>
+<span id="W2L289" class="LineNr">289 </span><span class="htmlItalic">    flags 0x0</span>
+<span id="W2L290" class="LineNr">290 </span><span class="htmlItalic">Load command 4</span>
+<span id="W2L291" class="LineNr">291 </span><span class="htmlItalic">            cmd LC_DYLD_INFO_ONLY</span>
+<span id="W2L292" class="LineNr">292 </span><span class="htmlItalic">        cmdsize 48</span>
+<span id="W2L293" class="LineNr">293 </span><span class="htmlItalic DiffChange">     rebase_off </span><span class="htmlItalic DiffText">7820083</span><span class="htmlItalic DiffChange">2</span><span class="DiffChange">                                                                                                  </span>
+<span id="W2L294" class="LineNr">294 </span><span class="htmlItalic DiffChange">    rebase_size </span><span class="htmlItalic DiffText">66112</span><span class="DiffChange">                                                                                                     </span>
+<span id="W2L295" class="LineNr">295 </span><span class="htmlItalic DiffChange">       bind_off </span><span class="htmlItalic DiffText">78266944</span><span class="DiffChange">                                                                                                  </span>
+<span id="W2L296" class="LineNr">296 </span><span class="htmlItalic DiffChange">      bind_size </span><span class="htmlItalic DiffText">784</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L297" class="LineNr">297 </span><span class="htmlItalic">  weak_bind_off 0</span>
+<span id="W2L298" class="LineNr">298 </span><span class="htmlItalic"> weak_bind_size 0</span>
+<span id="W2L299" class="LineNr">299 </span><span class="htmlItalic DiffChange">  lazy_bind_off </span><span class="htmlItalic DiffText">78267728</span><span class="DiffChange">                                                                                                  </span>
+<span id="W2L300" class="LineNr">300 </span><span class="htmlItalic DiffChange"> lazy_bind_size 91</span><span class="htmlItalic DiffText">2</span><span class="htmlItalic DiffChange">0</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L301" class="LineNr">301 </span><span class="htmlItalic DiffChange">     export_off </span><span class="htmlItalic DiffText">78276848</span><span class="DiffChange">                                                                                                  </span>
+<span id="W2L302" class="LineNr">302 </span><span class="htmlItalic">    export_size 3696</span>
+<span id="W2L303" class="LineNr">303 </span><span class="htmlItalic">Load command 5</span>
+<span id="W2L304" class="LineNr">304 </span><span class="htmlItalic">     cmd LC_SYMTAB</span>
+<span id="W2L305" class="LineNr">305 </span><span class="htmlItalic"> cmdsize 24</span>
+<span id="W2L306" class="LineNr">306 </span><span class="htmlItalic DiffChange">  symoff </span><span class="htmlItalic DiffText">7846822</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                                         </span>
+<span id="W2L307" class="LineNr">307 </span><span class="htmlItalic DiffChange">   nsyms </span><span class="htmlItalic DiffText">629</span><span class="DiffChange">                                                                                                              </span>
+<span id="W2L308" class="LineNr">308 </span><span class="htmlItalic DiffChange">  stroff </span><span class="htmlItalic DiffText">7848204</span><span class="htmlItalic DiffChange">8</span><span class="DiffChange">                                                                                                         </span>
+<span id="W2L309" class="LineNr">309 </span><span class="htmlItalic DiffChange"> strsize </span><span class="htmlItalic DiffText">994</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                                             </span>
+<span id="W2L310" class="LineNr">310 </span><span class="htmlItalic">Load command 6</span>
+<span id="W2L311" class="LineNr">311 </span><span class="htmlItalic">            cmd LC_DYSYMTAB</span>
+<span id="W2L312" class="LineNr">312 </span><span class="htmlItalic">        cmdsize 80</span>
+<span id="W2L313" class="LineNr">313 </span><span class="htmlItalic">      ilocalsym 0</span>
+<span id="W2L314" class="LineNr">314 </span><span class="htmlItalic DiffChange">      nlocalsym </span><span class="htmlItalic DiffText">1</span><span class="DiffChange">                                                                                                         </span>
+<span id="W2L315" class="LineNr">315 </span><span class="htmlItalic DiffChange">     iextdefsym </span><span class="htmlItalic DiffText">1</span><span class="DiffChange">                                                                                                         </span>
+<span id="W2L316" class="LineNr">316 </span><span class="htmlItalic">     nextdefsym 161</span>
+<span id="W2L317" class="LineNr">317 </span><span class="htmlItalic DiffChange">      iundefsym </span><span class="htmlItalic DiffText">162</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L318" class="LineNr">318 </span><span class="htmlItalic DiffChange">      nundefsym 4</span><span class="htmlItalic DiffText">67</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L319" class="LineNr">319 </span><span class="htmlItalic">         tocoff 0</span>
+<span id="W2L320" class="LineNr">320 </span><span class="htmlItalic">           ntoc 0</span>
+<span id="W2L321" class="LineNr">321 </span><span class="htmlItalic">      modtaboff 0</span>
+<span id="W2L322" class="LineNr">322 </span><span class="htmlItalic">        nmodtab 0</span>
+<span id="W2L323" class="LineNr">323 </span><span class="htmlItalic">   extrefsymoff 0</span>
+<span id="W2L324" class="LineNr">324 </span><span class="htmlItalic">    nextrefsyms 0</span>
+<span id="W2L325" class="LineNr">325 </span><span class="htmlItalic DiffChange"> indirectsymoff </span><span class="htmlItalic DiffText">78478288</span><span class="DiffChange">                                                                                                  </span>
+<span id="W2L326" class="LineNr">326 </span><span class="htmlItalic DiffChange">  nindirectsyms 9</span><span class="htmlItalic DiffText">39</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L327" class="LineNr">327 </span><span class="htmlItalic">      extreloff 0</span>
+<span id="W2L328" class="LineNr">328 </span><span class="htmlItalic">        nextrel 0</span>
+<span id="W2L329" class="LineNr">329 </span><span class="htmlItalic">      locreloff 0</span>
+<span id="W2L330" class="LineNr">330 </span><span class="htmlItalic">        nlocrel 0</span>
+<span id="W2L331" class="LineNr">331 </span><span class="htmlItalic">Load command 7</span>
+<span id="W2L332" class="LineNr">332 </span><span class="htmlItalic">          cmd LC_LOAD_DYLINKER</span>
+<span id="W2L333" class="LineNr">333 </span><span class="htmlItalic">      cmdsize 32</span>
+<span id="W2L334" class="LineNr">334 </span><span class="htmlItalic">         name /usr/lib/dyld (offset 12)</span>
+<span id="W2L335" class="LineNr">335 </span><span class="htmlItalic">Load command 8</span>
+<span id="W2L336" class="LineNr">336 </span><span class="htmlItalic">     cmd LC_UUID</span>
+<span id="W2L337" class="LineNr">337 </span><span class="htmlItalic"> cmdsize 24</span>
+<span id="W2L338" class="LineNr">338 </span><span class="htmlItalic DiffChange">    uuid F</span><span class="htmlItalic DiffText">3DB8AA9-3E26-3608-97DB-93097259D025</span><span class="DiffChange">                                                                             </span>
+<span id="W2L339" class="LineNr">339 </span><span class="htmlItalic">Load command 9</span>
+<span id="W2L340" class="LineNr">340 </span><span class="htmlItalic">      cmd LC_VERSION_MIN_MACOSX</span>
+<span id="W2L341" class="LineNr">341 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W2L342" class="LineNr">342 </span><span class="htmlItalic">  version 10.12</span>
+<span id="W2L343" class="LineNr">343 </span><span class="htmlItalic">      sdk 14.2</span>
+<span id="W2L344" class="LineNr">344 </span><span class="htmlItalic">Load command 10</span>
+<span id="W2L345" class="LineNr">345 </span><span class="htmlItalic">      cmd LC_SOURCE_VERSION</span>
+<span id="W2L346" class="LineNr">346 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W2L347" class="LineNr">347 </span><span class="htmlItalic">  version 0.0</span>
+<span id="W2L348" class="LineNr">348 </span><span class="htmlItalic">Load command 11</span>
+<span id="W2L349" class="LineNr">349 </span><span class="htmlItalic">       cmd LC_MAIN</span>
+<span id="W2L350" class="LineNr">350 </span><span class="htmlItalic">   cmdsize 24</span>
+<span id="W2L351" class="LineNr">351 </span><span class="htmlItalic DiffChange">  entryoff 2</span><span class="htmlItalic DiffText">022928</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L352" class="LineNr">352 </span><span class="htmlItalic"> stacksize 0</span>
+<span id="W2L353" class="LineNr">353 </span><span class="htmlItalic">Load command 12</span>
+<span id="W2L354" class="LineNr">354 </span><span class="htmlItalic">          cmd LC_LOAD_DYLIB</span>
+<span id="W2L355" class="LineNr">355 </span><span class="htmlItalic">      cmdsize 104</span>
+<span id="W2L356" class="LineNr">356 </span><span class="htmlItalic">         name /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (offset 24)</span>
+<span id="W2L357" class="LineNr">357 </span><span class="htmlItalic">   time stamp 2 Thu Jan  1 05:30:02 1970</span>
+<span id="W2L358" class="Folded">358 </span><span class="Folded">+-- 55 lines: current version 2202.0.0----------------------------------------------------------------------------------------</span>
+<span id="W2L413" class="LineNr">413 </span><span class="htmlItalic">   time stamp 2 Thu Jan  1 05:30:02 1970</span>
+<span id="W2L414" class="LineNr">414 </span><span class="htmlItalic">      current version 127.1.3</span>
+<span id="W2L415" class="LineNr">415 </span><span class="htmlItalic">compatibility version 1.0.0</span>
+<span id="W2L416" class="LineNr">416 </span><span class="htmlItalic">Load command 21</span>
+<span id="W2L417" class="LineNr">417 </span><span class="htmlItalic">      cmd LC_FUNCTION_STARTS</span>
+<span id="W2L418" class="LineNr">418 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W2L419" class="LineNr">419 </span><span class="htmlItalic DiffChange">  dataoff </span><span class="htmlItalic DiffText">78280544</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L420" class="LineNr">420 </span><span class="htmlItalic DiffChange"> datasize </span><span class="htmlItalic DiffText">187680</span><span class="DiffChange">                                                                                                          </span>
+<span id="W2L421" class="LineNr">421 </span><span class="htmlItalic">Load command 22</span>
+<span id="W2L422" class="LineNr">422 </span><span class="htmlItalic">      cmd LC_DATA_IN_CODE</span>
+<span id="W2L423" class="LineNr">423 </span><span class="htmlItalic">  cmdsize 16</span>
+<span id="W2L424" class="LineNr">424 </span><span class="htmlItalic DiffChange">  dataoff </span><span class="htmlItalic DiffText">7846822</span><span class="htmlItalic DiffChange">4</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L425" class="LineNr">425 </span><span class="htmlItalic"> datasize 0</span>
+</pre>
+</div></td>
+</tr>
+</table>
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <title>Just-in-time compiler for Deno FFI</title>
+    <meta name="description" content="Technical notes on how Deno compiles jit trampolines for FFI bindings">
+  </head>
+  <body>
+    <h1>Just-in-time compiler for Deno FFI</h1>
+    <p>V8 Isolates are little sandboxes that run JS. JavaScript runtimes give you the ability to call native functions by reaching out of this sandbox. These native functions are often referred to as “bindings”.</p>
+    <p>Optimizing these bindings are one of the most important optimizations in a JavaScript runtime. Over the years, V8 has made significant improvements in this area to make bindings faster for embedders.</p>
+    <p>Let’s look at an example of a V8 C++ binding:</p>
+    <pre><code data-lang="cpp"><span style="color: #d73948">void</span> <span style="color: #4b69c6">Add</span>(<span style="color: #d73948">const</span> FunctionCallbackInfo&lt;Value><span style="color: #d73948">&amp;</span> args) {<br>  Isolate<span style="color: #d73948">*</span> isolate <span style="color: #d73948">=</span> args.<span style="color: #4b69c6">GetIsolate</span>();<br>  <span style="color: #74747c">//</span><span style="color: #74747c"> Check the number of arguments passed.</span><br>  <span style="color: #d73948">if</span> (args.<span style="color: #4b69c6">Length</span>() <span style="color: #d73948">&lt;</span> <span style="color: #b60157">2</span>) {<br>    isolate-><span style="color: #4b69c6">ThrowException</span>(Exception::<span style="color: #4b69c6">TypeError</span>(<br>        String::<span style="color: #4b69c6">NewFromUtf8</span>(isolate, <span style="color: #198810">"</span><span style="color: #198810">Wrong number of arguments</span><span style="color: #198810">"</span>, NewStringType::<span style="color: #b60157">kNormal</span>).<span style="color: #4b69c6">ToLocalChecked</span>()));<br>    <span style="color: #d73948">return</span>;<br>  }<br>  <span style="color: #74747c">//</span><span style="color: #74747c"> Check the argument types</span><br>  <span style="color: #d73948">if</span> (<span style="color: #d73948">!</span>args[<span style="color: #b60157">0</span>]-><span style="color: #4b69c6">IsNumber</span>() <span style="color: #d73948">||</span> <span style="color: #d73948">!</span>args[<span style="color: #b60157">1</span>]-><span style="color: #4b69c6">IsNumber</span>()) {<br>    isolate-><span style="color: #4b69c6">ThrowException</span>(Exception::<span style="color: #4b69c6">TypeError</span>(<br>        String::<span style="color: #4b69c6">NewFromUtf8</span>(isolate, <span style="color: #198810">"</span><span style="color: #198810">Wrong arguments</span><span style="color: #198810">"</span>, NewStringType::<span style="color: #b60157">kNormal</span>).<span style="color: #4b69c6">ToLocalChecked</span>()));<br>    <span style="color: #d73948">return</span>;<br>  }<br>  <span style="color: #74747c">//</span><span style="color: #74747c"> Convert the arguments to numbers.</span><br>  <span style="color: #d73948">double</span> value <span style="color: #d73948">=</span> args[<span style="color: #b60157">0</span>]-><span style="color: #4b69c6">NumberValue</span>(isolate) <span style="color: #d73948">+</span> args[<span style="color: #b60157">1</span>]-><span style="color: #4b69c6">NumberValue</span>(isolate);<br>  <span style="color: #74747c">//</span><span style="color: #74747c"> Create a new Number value and set it as the return value.</span><br>  Local&lt;Number> num <span style="color: #d73948">=</span> Number::<span style="color: #4b69c6">New</span>(isolate, value);<br>  args.<span style="color: #4b69c6">GetReturnValue</span>().<span style="color: #4b69c6">Set</span>(num);<br>}</code></pre>
+    <p>This does a bunch of stuff, like checking the number of arguments, type checking, converting arguments and setting the return value. Moreover, V8 has to jump through (quite literally) a lot of hoops to make this work. It sets up guards and jumps out of the optimized JIT code to the runtime.</p>
+    <p>What if there was a way to call bindings without moving out of the optimized JIT code and without all the type checks?</p>
+    <h2 class="!text-foreground">V8 Fast API Calls</h2>
+    <p>V8 Fast calls are a relatively new optimization in V8.</p>
+    <p>V8 can call our native binding directly from the optimized JIT code if we provide it with the necessary type information. The necessary typechecks happen in the compiler itself including fallback to the slow path.</p>
+    <pre><code data-lang="cpp"><span style="color: #d73948">int</span> <span style="color: #4b69c6">FastAdd</span>(<span style="color: #d73948">int</span> a, <span style="color: #d73948">int</span> b);<br><br><span style="color: #74747c">//</span><span style="color: #74747c"> Extracts type information from the function signature</span><br>v8::CFunction fast_add <span style="color: #d73948">=</span> <span style="color: #4b69c6">MakeV8CFunction</span>(FastAdd);</code></pre>
+    <p>This results in massive speedups for repetitve native calls from optimized JavaScript. The calls are inlined and theoretically as fast as calling a native function.</p>
+    <p>Apart from native runtime bindings, one of the most common places where this optimization is used is in FFI (Foreign Function Interface) calls.</p>
+    <h2 class="!text-foreground">Enter Deno FFI</h2>
+    <pre><code data-lang="typescript"><span style="color: #d73948">const</span> { symbols } <span style="color: #d73948">=</span> Deno.<span style="color: #4b69c6">dlopen</span>(<span style="color: #198810">"</span><span style="color: #198810">libc.6.so</span><span style="color: #198810">"</span>, {<br>  open: {<br>    parameters: [<span style="color: #198810">"</span><span style="color: #198810">buffer</span><span style="color: #198810">"</span>, <span style="color: #198810">"</span><span style="color: #198810">i32</span><span style="color: #198810">"</span>],<br>    result: <span style="color: #198810">"</span><span style="color: #198810">i32</span><span style="color: #198810">"</span>,<br>  },<br>});</code></pre>
+    <p>Deno.dlopen is the API to open a dynamic library. Notice anything familiar? We are defining the number of arguments, types and the return value.</p>
+    <p>We could use this information to generate optimized native binding and give it to V8!</p>
+    <h2 class="!text-foreground">Turbocall: a JIT for JIT^1</h2>
+    <p>Deno created a tiny assembler (in Rust ofc) to generate optimized bindings for FFI calls based on the type information.</p>
+    <pre><code data-lang="typescript">Deno.<span style="color: #4b69c6">dlopen</span>(<span style="color: #198810">"</span><span style="color: #198810">libtest.so</span><span style="color: #198810">"</span>, {<br>  func: {<br>    parameters: [<span style="color: #198810">"</span><span style="color: #198810">buffer</span><span style="color: #198810">"</span>, <span style="color: #198810">"</span><span style="color: #198810">i32</span><span style="color: #198810">"</span>, <span style="color: #198810">"</span><span style="color: #198810">i32</span><span style="color: #198810">"</span>],<br>    result: <span style="color: #198810">"</span><span style="color: #198810">i32</span><span style="color: #198810">"</span>,<br>  },<br>});</code></pre>
+    <p>Turbocall generates the following bindings:</p>
+    <pre><code data-lang="asm"><span style="color: #d73948">.</span><span style="color: #4b69c6">arch</span> <span style="color: #4b69c6">aarch64</span><br><br><span style="color: #4b69c6">ldr</span> <span style="color: #4b69c6">x0</span>, [<span style="color: #4b69c6">x1</span>, #<span style="color: #b60157">8</span>] <span style="color: #74747c">;</span><span style="color: #74747c"> buffer->data</span><br><span style="color: #d73948">mov</span> <span style="color: #4b69c6">x1</span>, <span style="color: #4b69c6">x2</span>       <span style="color: #74747c">;</span><span style="color: #74747c"> a</span><br><span style="color: #d73948">mov</span> <span style="color: #4b69c6">x2</span>, <span style="color: #4b69c6">x3</span>       <span style="color: #74747c">;</span><span style="color: #74747c"> b</span><br><br><span style="color: #4b69c6">moxz</span> <span style="color: #4b69c6">x8</span>, <span style="color: #b60157">0</span><br><span style="color: #4b69c6">br</span> <span style="color: #4b69c6">x8</span>            <span style="color: #74747c">;</span><span style="color: #74747c"> tailcall</span></code></pre>
+    <p>This is simply ARM64 assembly for something like this in C:</p>
+    <pre><code data-lang="c"><span style="color: #d73948">int</span> <span style="color: #4b69c6">func_trampoline</span>(<br>  <span style="color: #d73948">void</span><span style="color: #d73948">*</span> _this,<br>  FastApiTypedArray<span style="color: #d73948">*</span> buffer,<br>  <span style="color: #d73948">int</span> a,<br>  <span style="color: #d73948">int</span> b<br>) {<br>  <span style="color: #d73948">return</span> <span style="color: #4b69c6">func</span>(buffer->data, a, b);<br>}</code></pre>
+    <p>Most notably, it generates code to properly pass JS typed arrays and arguments to the native FFI symbol.</p>
+    <p>I gave a talk on this topic at the DenoFest Meetup in Tokyo^2 which goes into more detail about the implementation.</p>
+    <h2 class="!text-foreground">Benchmarks</h2>
+    <p>This made FFI calls 100x faster in Deno: <a href="https://github.com/denoland/deno/pull/15125">https://github.com/denoland/deno/pull/15125</a></p>
+    <p>Let’s see how this compares against other runtimes.</p>
+    <p>Benchmark comparing Deno, Bun and Node.js on Sqlite and DuckDB</p>
+    <figure>
+      <p>/static/img/deno.png</p>
+    </figure>
+    <p>This is running sqlite3 and duckdb benchmarks on Deno, Bun and Node.js. See benchmark source.^3</p>
+    <h2 class="!text-foreground">Turbocall in action</h2>
+    <p>Slide from the DenoFest talk:</p>
+    <figure>
+      <p>/static/img/turbocall-slide.png</p>
+    </figure>
+    <h2 class="!text-foreground">Future</h2>
+    <p>It will be interesting to see how Static Hermes^4 will compare against V8 fast calls. Both can probably generate similar code at runtime but implemented very differently.</p>
+    <p>I’m also excited about just-js/lo^5 which is a WIP low-level JS runtime that aims to generate V8 fast calls bindings ahead-of-time (similar to Deno) but also allow for a more engine-agnostic design where you could swap out V8 for other engines like Hermes, Quickjs.</p>
+    <p>That’s it! Feel free to follow me on Twitter: <a href="https://twitter.com/undefined_void">https://twitter.com/undefined_void</a></p>
+    <p>This document is available as PDF: <a href="https://littledivy.com/turbocall.pdf">https://littledivy.com/turbocall.pdf</a></p>
+  </body>
+</html>

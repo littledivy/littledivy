@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>diff</title>
+<meta name="Generator" content="Vim/9.1">
+<meta name="plugin-version" content="vim9.0_v2">
+<meta name="settings" content="number_lines,whole_filler,use_css,no_foldcolumn,expand_tabs,line_ids,prevent_copy=,use_input_for_pc=none">
+<meta name="colorscheme" content="habamax">
+<style>
+<!--
+pre { font-family: monospace; color: #bcbcbc; background-color: #000000; }
+body { font-family: monospace; color: #bcbcbc; background-color: #000000; }
+* { font-size: 1em; }
+a { color: inherit; }
+.Folded { color: #9e9e9e; background-color: #262626; padding-bottom: 1px; }
+.LineNr { color: #585858; }
+.DiffText { color: #000000; background-color: #af87af; }
+.DiffAdd { color: #000000; background-color: #5faf5f; }
+.DiffChange { color: #000000; background-color: #5f87af; }
+.DiffDelete { color: #000000; background-color: #af5f5f; }
+-->
+<!--
+table { table-layout: fixed; }
+html, body, table, tbody { width: 100%; margin: 0; padding: 0; }
+table, td, th { border: 1px solid; }
+td { vertical-align: top; }
+th, td { width: 33.3%; }
+td div { overflow: auto; }
+-->
+</style>
+<script>
+<!--
+
+/* function to open any folds containing a jumped-to line before jumping to it */
+function JumpToLine()
+{
+  var lineNum;
+  lineNum = window.location.hash;
+  lineNum = lineNum.substr(1); /* strip off '#' */
+
+  if (lineNum.indexOf('L') == -1) {
+    lineNum = 'L'+lineNum;
+  }
+  if (lineNum.indexOf('W') == -1) {
+    lineNum = 'W1'+lineNum;
+  }
+  var lineElem = document.getElementById(lineNum);
+  /* Always jump to new location even if the line was hidden inside a fold, or
+   * we corrected the raw number to a line ID.
+   */
+  if (lineElem) {
+    lineElem.scrollIntoView(true);
+  }
+  return true;
+}
+if ('onhashchange' in window) {
+  window.onhashchange = JumpToLine;
+}
+
+-->
+</script>
+</head>
+<body onload='JumpToLine();'>
+<table id='vimCodeElement'>
+<tr>
+<th>otool-denort</th>
+<th>out-otool</th>
+<th>out-lief-otool</th>
+</tr><tr>
+<td><div>
+<pre>
+<span id="W1L1" class="LineNr">  1 </span><span class="DiffChange">./</span><span class="DiffText">denort</span><span class="DiffChange">:                                                                                                                 </span>
+<span id="W1L2" class="LineNr">  2 </span>Load command 0
+<span id="W1L3" class="LineNr">  3 </span>      cmd LC_SEGMENT_64
+<span id="W1L4" class="LineNr">  4 </span>  cmdsize 72
+<span id="W1L5" class="LineNr">  5 </span>  segname __PAGEZERO
+<span id="W1L6" class="LineNr">  6 </span>   vmaddr 0x0000000000000000
+<span id="W1L7" class="LineNr">  7 </span>   vmsize 0x0000000100000000
+<span id="W1L8" class="Folded">  8 </span><span class="Folded">+--  5 lines: fileoff 0-------------------------------------------------------------------------------------------------------</span>
+<span id="W1L13" class="LineNr"> 13 </span>    flags 0x0
+<span id="W1L14" class="LineNr"> 14 </span>Load command 1
+<span id="W1L15" class="LineNr"> 15 </span>      cmd LC_SEGMENT_64
+<span id="W1L16" class="LineNr"> 16 </span>  cmdsize 872
+<span id="W1L17" class="LineNr"> 17 </span>  segname __TEXT
+<span id="W1L18" class="LineNr"> 18 </span>   vmaddr 0x0000000100000000
+<span id="W1L19" class="LineNr"> 19 </span><span class="DiffChange">   vmsize 0x000000000898</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                              </span>
+<span id="W1L20" class="LineNr"> 20 </span>  fileoff 0
+<span id="W1L21" class="LineNr"> 21 </span><span class="DiffChange"> filesize 14421</span><span class="DiffText">1968</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L22" class="LineNr"> 22 </span>  maxprot 0x00000005
+<span id="W1L23" class="LineNr"> 23 </span> initprot 0x00000005
+<span id="W1L24" class="LineNr"> 24 </span>   nsects 10
+<span id="W1L25" class="LineNr"> 25 </span>    flags 0x0
+<span id="W1L26" class="LineNr"> 26 </span>Section
+<span id="W1L27" class="LineNr"> 27 </span>  sectname __text
+<span id="W1L28" class="LineNr"> 28 </span>   segname __TEXT
+<span id="W1L29" class="LineNr"> 29 </span><span class="DiffChange">      addr 0x000000010000</span><span class="DiffText">0</span><span class="DiffChange">c00                                                                                             </span>
+<span id="W1L30" class="LineNr"> 30 </span>      size 0x00000000066d8fa0
+<span id="W1L31" class="LineNr"> 31 </span><span class="DiffChange">    offset </span><span class="DiffText">3072</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L32" class="LineNr"> 32 </span>     align 2^8 (256)
+<span id="W1L33" class="LineNr"> 33 </span>    reloff 0
+<span id="W1L34" class="LineNr"> 34 </span>    nreloc 0
+<span id="W1L35" class="LineNr"> 35 </span>     flags 0x80000400
+<span id="W1L36" class="LineNr"> 36 </span> reserved1 0
+<span id="W1L37" class="LineNr"> 37 </span> reserved2 0
+<span id="W1L38" class="LineNr"> 38 </span>Section
+<span id="W1L39" class="LineNr"> 39 </span>  sectname __lcxx_override
+<span id="W1L40" class="LineNr"> 40 </span>   segname __TEXT
+<span id="W1L41" class="LineNr"> 41 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">9</span><span class="DiffChange">ba0                                                                                             </span>
+<span id="W1L42" class="LineNr"> 42 </span>      size 0x00000000000000da
+<span id="W1L43" class="LineNr"> 43 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">46560</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L44" class="LineNr"> 44 </span>     align 2^4 (16)
+<span id="W1L45" class="LineNr"> 45 </span>    reloff 0
+<span id="W1L46" class="LineNr"> 46 </span>    nreloc 0
+<span id="W1L47" class="LineNr"> 47 </span>     flags 0x80000400
+<span id="W1L48" class="LineNr"> 48 </span> reserved1 0
+<span id="W1L49" class="LineNr"> 49 </span> reserved2 0
+<span id="W1L50" class="LineNr"> 50 </span>Section
+<span id="W1L51" class="LineNr"> 51 </span>  sectname __stubs
+<span id="W1L52" class="LineNr"> 52 </span>   segname __TEXT
+<span id="W1L53" class="LineNr"> 53 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">9</span><span class="DiffChange">c7a                                                                                             </span>
+<span id="W1L54" class="LineNr"> 54 </span>      size 0x0000000000000a9e
+<span id="W1L55" class="LineNr"> 55 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">46778</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L56" class="LineNr"> 56 </span>     align 2^0 (1)
+<span id="W1L57" class="LineNr"> 57 </span>    reloff 0
+<span id="W1L58" class="LineNr"> 58 </span>    nreloc 0
+<span id="W1L59" class="LineNr"> 59 </span>     flags 0x80000408
+<span id="W1L60" class="LineNr"> 60 </span> reserved1 0 (index into indirect symbol table)
+<span id="W1L61" class="LineNr"> 61 </span> reserved2 6 (size of stubs)
+<span id="W1L62" class="LineNr"> 62 </span>Section
+<span id="W1L63" class="LineNr"> 63 </span>  sectname __stub_helper
+<span id="W1L64" class="LineNr"> 64 </span>   segname __TEXT
+<span id="W1L65" class="LineNr"> 65 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">a</span><span class="DiffChange">718                                                                                             </span>
+<span id="W1L66" class="LineNr"> 66 </span>      size 0x00000000000011c2
+<span id="W1L67" class="LineNr"> 67 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">49496</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L68" class="LineNr"> 68 </span>     align 2^0 (1)
+<span id="W1L69" class="LineNr"> 69 </span>    reloff 0
+<span id="W1L70" class="LineNr"> 70 </span>    nreloc 0
+<span id="W1L71" class="LineNr"> 71 </span>     flags 0x80000400
+<span id="W1L72" class="LineNr"> 72 </span> reserved1 0
+<span id="W1L73" class="LineNr"> 73 </span> reserved2 0
+<span id="W1L74" class="LineNr"> 74 </span>Section
+<span id="W1L75" class="LineNr"> 75 </span>  sectname __gcc_except_tab
+<span id="W1L76" class="LineNr"> 76 </span>   segname __TEXT
+<span id="W1L77" class="LineNr"> 77 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">b</span><span class="DiffChange">8dc                                                                                             </span>
+<span id="W1L78" class="LineNr"> 78 </span>      size 0x00000000002ec6c0
+<span id="W1L79" class="LineNr"> 79 </span><span class="DiffChange">    offset 10785</span><span class="DiffText">4044</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L80" class="LineNr"> 80 </span>     align 2^2 (4)
+<span id="W1L81" class="LineNr"> 81 </span>    reloff 0
+<span id="W1L82" class="LineNr"> 82 </span>    nreloc 0
+<span id="W1L83" class="LineNr"> 83 </span>     flags 0x00000000
+<span id="W1L84" class="LineNr"> 84 </span> reserved1 0
+<span id="W1L85" class="LineNr"> 85 </span> reserved2 0
+<span id="W1L86" class="LineNr"> 86 </span>Section
+<span id="W1L87" class="LineNr"> 87 </span>  sectname __const
+<span id="W1L88" class="LineNr"> 88 </span>   segname __TEXT
+<span id="W1L89" class="LineNr"> 89 </span><span class="DiffChange">      addr 0x00000001069c</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                             </span>
+<span id="W1L90" class="LineNr"> 90 </span>      size 0x00000000019a39d4
+<span id="W1L91" class="LineNr"> 91 </span><span class="DiffChange">    offset 1109</span><span class="DiffText">19680</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L92" class="LineNr"> 92 </span>     align 2^12 (4096)
+<span id="W1L93" class="LineNr"> 93 </span>    reloff 0
+<span id="W1L94" class="LineNr"> 94 </span>    nreloc 0
+<span id="W1L95" class="LineNr"> 95 </span>     flags 0x00000000
+<span id="W1L96" class="LineNr"> 96 </span> reserved1 0
+<span id="W1L97" class="LineNr"> 97 </span> reserved2 0
+<span id="W1L98" class="LineNr"> 98 </span>Section
+<span id="W1L99" class="LineNr"> 99 </span>  sectname __cstring
+<span id="W1L100" class="LineNr">100 </span>   segname __TEXT
+<span id="W1L101" class="LineNr">101 </span><span class="DiffChange">      addr 0x000000010836</span><span class="DiffText">b</span><span class="DiffChange">9e0                                                                                             </span>
+<span id="W1L102" class="LineNr">102 </span>      size 0x00000000000ee781
+<span id="W1L103" class="LineNr">103 </span><span class="DiffChange">    offset 13780</span><span class="DiffText">4256</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L104" class="LineNr">104 </span>     align 2^4 (16)
+<span id="W1L105" class="LineNr">105 </span>    reloff 0
+<span id="W1L106" class="LineNr">106 </span>    nreloc 0
+<span id="W1L107" class="LineNr">107 </span>     flags 0x00000002
+<span id="W1L108" class="LineNr">108 </span> reserved1 0
+<span id="W1L109" class="LineNr">109 </span> reserved2 0
+<span id="W1L110" class="LineNr">110 </span>Section
+<span id="W1L111" class="LineNr">111 </span>  sectname __ustring
+<span id="W1L112" class="LineNr">112 </span>   segname __TEXT
+<span id="W1L113" class="LineNr">113 </span><span class="DiffChange">      addr 0x000000010845</span><span class="DiffText">a</span><span class="DiffChange">170                                                                                             </span>
+<span id="W1L114" class="LineNr">114 </span>      size 0x00000000000014b4
+<span id="W1L115" class="LineNr">115 </span><span class="DiffChange">    offset 13878</span><span class="DiffText">1040</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L116" class="LineNr">116 </span>     align 2^4 (16)
+<span id="W1L117" class="LineNr">117 </span>    reloff 0
+<span id="W1L118" class="LineNr">118 </span>    nreloc 0
+<span id="W1L119" class="LineNr">119 </span>     flags 0x00000000
+<span id="W1L120" class="LineNr">120 </span> reserved1 0
+<span id="W1L121" class="LineNr">121 </span> reserved2 0
+<span id="W1L122" class="LineNr">122 </span>Section
+<span id="W1L123" class="LineNr">123 </span>  sectname __unwind_info
+<span id="W1L124" class="LineNr">124 </span>   segname __TEXT
+<span id="W1L125" class="LineNr">125 </span><span class="DiffChange">      addr 0x000000010845</span><span class="DiffText">b</span><span class="DiffChange">624                                                                                             </span>
+<span id="W1L126" class="LineNr">126 </span>      size 0x00000000001833d0
+<span id="W1L127" class="LineNr">127 </span><span class="DiffChange">    offset 1387</span><span class="DiffText">86340</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L128" class="LineNr">128 </span>     align 2^2 (4)
+<span id="W1L129" class="LineNr">129 </span>    reloff 0
+<span id="W1L130" class="LineNr">130 </span>    nreloc 0
+<span id="W1L131" class="LineNr">131 </span>     flags 0x00000000
+<span id="W1L132" class="LineNr">132 </span> reserved1 0
+<span id="W1L133" class="LineNr">133 </span> reserved2 0
+<span id="W1L134" class="LineNr">134 </span>Section
+<span id="W1L135" class="LineNr">135 </span>  sectname __eh_frame
+<span id="W1L136" class="LineNr">136 </span>   segname __TEXT
+<span id="W1L137" class="LineNr">137 </span><span class="DiffChange">      addr 0x00000001085d</span><span class="DiffText">e</span><span class="DiffChange">9f8                                                                                             </span>
+<span id="W1L138" class="LineNr">138 </span>      size 0x00000000003a8b42
+<span id="W1L139" class="LineNr">139 </span><span class="DiffChange">    offset 14037</span><span class="DiffText">2472</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L140" class="LineNr">140 </span>     align 2^3 (8)
+<span id="W1L141" class="LineNr">141 </span>    reloff 0
+<span id="W1L142" class="LineNr">142 </span>    nreloc 0
+<span id="W1L143" class="LineNr">143 </span>     flags 0x6800000b
+<span id="W1L144" class="LineNr">144 </span> reserved1 0
+<span id="W1L145" class="LineNr">145 </span> reserved2 0
+<span id="W1L146" class="LineNr">146 </span>Load command 2
+<span id="W1L147" class="LineNr">147 </span>      cmd LC_SEGMENT_64
+<span id="W1L148" class="LineNr">148 </span>  cmdsize 872
+<span id="W1L149" class="LineNr">149 </span>  segname __DATA
+<span id="W1L150" class="LineNr">150 </span><span class="DiffChange">   vmaddr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                              </span>
+<span id="W1L151" class="LineNr">151 </span>   vmsize 0x000000000045c000
+<span id="W1L152" class="LineNr">152 </span><span class="DiffChange">  fileoff 14421</span><span class="DiffText">1968</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L153" class="LineNr">153 </span> filesize 4378624
+<span id="W1L154" class="LineNr">154 </span>  maxprot 0x00000003
+<span id="W1L155" class="LineNr">155 </span> initprot 0x00000003
+<span id="W1L156" class="LineNr">156 </span>   nsects 10
+<span id="W1L157" class="LineNr">157 </span>    flags 0x0
+<span id="W1L158" class="LineNr">158 </span>Section
+<span id="W1L159" class="LineNr">159 </span>  sectname __got
+<span id="W1L160" class="LineNr">160 </span>   segname __DATA
+<span id="W1L161" class="LineNr">161 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                             </span>
+<span id="W1L162" class="LineNr">162 </span>      size 0x0000000000000120
+<span id="W1L163" class="LineNr">163 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">1968</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L164" class="LineNr">164 </span>     align 2^3 (8)
+<span id="W1L165" class="LineNr">165 </span>    reloff 0
+<span id="W1L166" class="LineNr">166 </span>    nreloc 0
+<span id="W1L167" class="LineNr">167 </span>     flags 0x00000006
+<span id="W1L168" class="LineNr">168 </span> reserved1 453 (index into indirect symbol table)
+<span id="W1L169" class="LineNr">169 </span> reserved2 0
+<span id="W1L170" class="LineNr">170 </span>Section
+<span id="W1L171" class="LineNr">171 </span>  sectname __la_symbol_ptr
+<span id="W1L172" class="LineNr">172 </span>   segname __DATA
+<span id="W1L173" class="LineNr">173 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">120                                                                                             </span>
+<span id="W1L174" class="LineNr">174 </span>      size 0x0000000000000e28
+<span id="W1L175" class="LineNr">175 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">2256</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L176" class="LineNr">176 </span>     align 2^3 (8)
+<span id="W1L177" class="LineNr">177 </span>    reloff 0
+<span id="W1L178" class="LineNr">178 </span>    nreloc 0
+<span id="W1L179" class="LineNr">179 </span>     flags 0x00000007
+<span id="W1L180" class="LineNr">180 </span> reserved1 489 (index into indirect symbol table)
+<span id="W1L181" class="LineNr">181 </span> reserved2 0
+<span id="W1L182" class="LineNr">182 </span>Section
+<span id="W1L183" class="LineNr">183 </span>  sectname __mod_init_func
+<span id="W1L184" class="LineNr">184 </span>   segname __DATA
+<span id="W1L185" class="LineNr">185 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">f48                                                                                             </span>
+<span id="W1L186" class="LineNr">186 </span>      size 0x0000000000000018
+<span id="W1L187" class="LineNr">187 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">5880</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L188" class="LineNr">188 </span>     align 2^3 (8)
+<span id="W1L189" class="LineNr">189 </span>    reloff 0
+<span id="W1L190" class="LineNr">190 </span>    nreloc 0
+<span id="W1L191" class="LineNr">191 </span>     flags 0x00000009
+<span id="W1L192" class="LineNr">192 </span> reserved1 0
+<span id="W1L193" class="LineNr">193 </span> reserved2 0
+<span id="W1L194" class="LineNr">194 </span>Section
+<span id="W1L195" class="LineNr">195 </span>  sectname __const
+<span id="W1L196" class="LineNr">196 </span>   segname __DATA
+<span id="W1L197" class="LineNr">197 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">f80                                                                                             </span>
+<span id="W1L198" class="LineNr">198 </span>      size 0x00000000003fb290
+<span id="W1L199" class="LineNr">199 </span><span class="DiffChange">    offset 1442</span><span class="DiffText">15936</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L200" class="LineNr">200 </span>     align 2^6 (64)
+<span id="W1L201" class="LineNr">201 </span>    reloff 0
+<span id="W1L202" class="LineNr">202 </span>    nreloc 0
+<span id="W1L203" class="LineNr">203 </span>     flags 0x00000000
+<span id="W1L204" class="LineNr">204 </span> reserved1 0
+<span id="W1L205" class="LineNr">205 </span> reserved2 0
+<span id="W1L206" class="LineNr">206 </span>Section
+<span id="W1L207" class="LineNr">207 </span>  sectname __data
+<span id="W1L208" class="LineNr">208 </span>   segname __DATA
+<span id="W1L209" class="LineNr">209 </span><span class="DiffChange">      addr 0x0000000108d8</span><span class="DiffText">5</span><span class="DiffChange">000                                                                                             </span>
+<span id="W1L210" class="LineNr">210 </span>      size 0x000000000002d9d0
+<span id="W1L211" class="LineNr">211 </span><span class="DiffChange">    offset 14839</span><span class="DiffText">3984</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L212" class="LineNr">212 </span>     align 2^12 (4096)
+<span id="W1L213" class="LineNr">213 </span>    reloff 0
+<span id="W1L214" class="LineNr">214 </span>    nreloc 0
+<span id="W1L215" class="LineNr">215 </span>     flags 0x00000000
+<span id="W1L216" class="LineNr">216 </span> reserved1 0
+<span id="W1L217" class="LineNr">217 </span> reserved2 0
+<span id="W1L218" class="LineNr">218 </span>Section
+<span id="W1L219" class="LineNr">219 </span>  sectname __thread_vars
+<span id="W1L220" class="LineNr">220 </span>   segname __DATA
+<span id="W1L221" class="LineNr">221 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">2</span><span class="DiffChange">9d0                                                                                             </span>
+<span id="W1L222" class="LineNr">222 </span>      size 0x0000000000001a10
+<span id="W1L223" class="LineNr">223 </span><span class="DiffChange">    offset 14858</span><span class="DiffText">0816</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L224" class="LineNr">224 </span>     align 2^3 (8)
+<span id="W1L225" class="LineNr">225 </span>    reloff 0
+<span id="W1L226" class="LineNr">226 </span>    nreloc 0
+<span id="W1L227" class="LineNr">227 </span>     flags 0x00000013
+<span id="W1L228" class="LineNr">228 </span> reserved1 0
+<span id="W1L229" class="LineNr">229 </span> reserved2 0
+<span id="W1L230" class="LineNr">230 </span>Section
+<span id="W1L231" class="LineNr">231 </span>  sectname __thread_data
+<span id="W1L232" class="LineNr">232 </span>   segname __DATA
+<span id="W1L233" class="LineNr">233 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">4</span><span class="DiffChange">3e0                                                                                             </span>
+<span id="W1L234" class="LineNr">234 </span>      size 0x0000000000000119
+<span id="W1L235" class="LineNr">235 </span><span class="DiffChange">    offset 1485</span><span class="DiffText">87488</span><span class="DiffChange">                                                                                                      </span>
+<span id="W1L236" class="LineNr">236 </span>     align 2^3 (8)
+<span id="W1L237" class="LineNr">237 </span>    reloff 0
+<span id="W1L238" class="LineNr">238 </span>    nreloc 0
+<span id="W1L239" class="LineNr">239 </span>     flags 0x00000011
+<span id="W1L240" class="LineNr">240 </span> reserved1 0
+<span id="W1L241" class="LineNr">241 </span> reserved2 0
+<span id="W1L242" class="LineNr">242 </span>Section
+<span id="W1L243" class="LineNr">243 </span>  sectname __thread_bss
+<span id="W1L244" class="LineNr">244 </span>   segname __DATA
+<span id="W1L245" class="LineNr">245 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">4</span><span class="DiffChange">500                                                                                             </span>
+<span id="W1L246" class="LineNr">246 </span>      size 0x0000000000000da0
+<span id="W1L247" class="LineNr">247 </span>    offset 0
+<span id="W1L248" class="LineNr">248 </span>     align 2^3 (8)
+<span id="W1L249" class="LineNr">249 </span>    reloff 0
+<span id="W1L250" class="LineNr">250 </span>    nreloc 0
+<span id="W1L251" class="LineNr">251 </span>     flags 0x00000012
+<span id="W1L252" class="LineNr">252 </span> reserved1 0
+<span id="W1L253" class="LineNr">253 </span> reserved2 0
+<span id="W1L254" class="LineNr">254 </span>Section
+<span id="W1L255" class="LineNr">255 </span>  sectname __bss
+<span id="W1L256" class="LineNr">256 </span>   segname __DATA
+<span id="W1L257" class="LineNr">257 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">5</span><span class="DiffChange">2c0                                                                                             </span>
+<span id="W1L258" class="LineNr">258 </span>      size 0x000000000002b808
+<span id="W1L259" class="LineNr">259 </span>    offset 0
+<span id="W1L260" class="LineNr">260 </span>     align 2^6 (64)
+<span id="W1L261" class="LineNr">261 </span>    reloff 0
+<span id="W1L262" class="LineNr">262 </span>    nreloc 0
+<span id="W1L263" class="LineNr">263 </span>     flags 0x00000001
+<span id="W1L264" class="LineNr">264 </span> reserved1 0
+<span id="W1L265" class="LineNr">265 </span> reserved2 0
+<span id="W1L266" class="LineNr">266 </span>Section
+<span id="W1L267" class="LineNr">267 </span>  sectname __common
+<span id="W1L268" class="LineNr">268 </span>   segname __DATA
+<span id="W1L269" class="LineNr">269 </span><span class="DiffChange">      addr 0x0000000108de</span><span class="DiffText">0</span><span class="DiffChange">b00                                                                                             </span>
+<span id="W1L270" class="LineNr">270 </span>      size 0x0000000000003498
+<span id="W1L271" class="LineNr">271 </span>    offset 0
+<span id="W1L272" class="LineNr">272 </span>     align 2^7 (128)
+<span id="W1L273" class="LineNr">273 </span>    reloff 0
+<span id="W1L274" class="LineNr">274 </span>    nreloc 0
+<span id="W1L275" class="LineNr">275 </span>     flags 0x00000001
+<span id="W1L276" class="LineNr">276 </span> reserved1 0
+<span id="W1L277" class="LineNr">277 </span> reserved2 0
+<span id="W1L278" class="LineNr">278 </span>Load command 3
+<span id="W1L279" class="LineNr">279 </span>      cmd LC_SEGMENT_64
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span class="LineNr">    </span><span class="DiffDelete">--------------------------------------------------------------------------------------------------------------------------</span>
+<span id="W1L280" class="LineNr">280 </span>  cmdsize 72
+<span id="W1L281" class="LineNr">281 </span>  segname __LINKEDIT
+<span id="W1L282" class="LineNr">282 </span><span class="DiffChange">   vmaddr 0x0000000108de</span><span class="DiffText">4</span><span class="DiffChange">000                                                                                              </span>
+<span id="W1L283" class="LineNr">283 </span>   vmsize 0x000000000397a000
+<span id="W1L284" class="LineNr">284 </span><span class="DiffChange">  fileoff 148</span><span class="DiffText">590592</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L285" class="LineNr">285 </span> filesize 60266040
+<span id="W1L286" class="LineNr">286 </span>  maxprot 0x00000001
+<span id="W1L287" class="LineNr">287 </span> initprot 0x00000001
+<span id="W1L288" class="LineNr">288 </span>   nsects 0
+<span id="W1L289" class="LineNr">289 </span>    flags 0x0
+<span id="W1L290" class="LineNr">290 </span><span class="DiffChange">Load command </span><span class="DiffText">4</span><span class="DiffChange">                                                                                                            </span>
+<span id="W1L291" class="LineNr">291 </span>            cmd LC_DYLD_INFO_ONLY
+<span id="W1L292" class="LineNr">292 </span>        cmdsize 48
+<span id="W1L293" class="LineNr">293 </span><span class="DiffChange">     rebase_off 148</span><span class="DiffText">590592</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L294" class="LineNr">294 </span>    rebase_size 111680
+<span id="W1L295" class="LineNr">295 </span><span class="DiffChange">       bind_off 1487</span><span class="DiffText">02272</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L296" class="LineNr">296 </span>      bind_size 880
+<span id="W1L297" class="LineNr">297 </span>  weak_bind_off 0
+<span id="W1L298" class="LineNr">298 </span> weak_bind_size 0
+<span id="W1L299" class="LineNr">299 </span><span class="DiffChange">  lazy_bind_off 1487</span><span class="DiffText">03152</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L300" class="LineNr">300 </span> lazy_bind_size 9160
+<span id="W1L301" class="LineNr">301 </span><span class="DiffChange">     export_off 1487</span><span class="DiffText">12312</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L302" class="LineNr">302 </span>    export_size 3696
+<span id="W1L303" class="LineNr">303 </span><span class="DiffChange">Load command </span><span class="DiffText">5</span><span class="DiffChange">                                                                                                            </span>
+<span id="W1L304" class="LineNr">304 </span>     cmd LC_SYMTAB
+<span id="W1L305" class="LineNr">305 </span> cmdsize 24
+<span id="W1L306" class="LineNr">306 </span><span class="DiffChange">  symoff 149</span><span class="DiffText">292264</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L307" class="LineNr">307 </span>   nsyms 515061
+<span id="W1L308" class="LineNr">308 </span><span class="DiffChange">  stroff 1575</span><span class="DiffText">37008</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L309" class="LineNr">309 </span> strsize 51319624
+<span id="W1L310" class="LineNr">310 </span><span class="DiffChange">Load command </span><span class="DiffText">6</span><span class="DiffChange">                                                                                                            </span>
+<span id="W1L311" class="LineNr">311 </span>            cmd LC_DYSYMTAB
+<span id="W1L312" class="LineNr">312 </span>        cmdsize 80
+<span id="W1L313" class="LineNr">313 </span>      ilocalsym 0
+<span id="W1L314" class="LineNr">314 </span>      nlocalsym 514429
+<span id="W1L315" class="LineNr">315 </span>     iextdefsym 514429
+<span id="W1L316" class="LineNr">316 </span>     nextdefsym 161
+<span id="W1L317" class="Folded">317 </span><span class="Folded">+--  2 lines: iundefsym 514590------------------------------------------------------------------------------------------------</span>
+<span id="W1L319" class="LineNr">319 </span>         tocoff 0
+<span id="W1L320" class="LineNr">320 </span>           ntoc 0
+<span id="W1L321" class="LineNr">321 </span>      modtaboff 0
+<span id="W1L322" class="LineNr">322 </span>        nmodtab 0
+<span id="W1L323" class="LineNr">323 </span>   extrefsymoff 0
+<span id="W1L324" class="LineNr">324 </span>    nextrefsyms 0
+<span id="W1L325" class="LineNr">325 </span><span class="DiffChange"> indirectsymoff 1575</span><span class="DiffText">33240</span><span class="DiffChange">                                                                                                 </span>
+<span id="W1L326" class="LineNr">326 </span>  nindirectsyms 942
+<span id="W1L327" class="LineNr">327 </span>      extreloff 0
+<span id="W1L328" class="LineNr">328 </span>        nextrel 0
+<span id="W1L329" class="LineNr">329 </span>      locreloff 0
+<span id="W1L330" class="LineNr">330 </span>        nlocrel 0
+<span id="W1L331" class="LineNr">331 </span><span class="DiffChange">Load command </span><span class="DiffText">7</span><span class="DiffChange">                                                                                                            </span>
+<span id="W1L332" class="LineNr">332 </span>          cmd LC_LOAD_DYLINKER
+<span id="W1L333" class="LineNr">333 </span>      cmdsize 32
+<span id="W1L334" class="LineNr">334 </span>         name /usr/lib/dyld (offset 12)
+<span id="W1L335" class="LineNr">335 </span><span class="DiffChange">Load command </span><span class="DiffText">8</span><span class="DiffChange">                                                                                                            </span>
+<span id="W1L336" class="LineNr">336 </span>     cmd LC_UUID
+<span id="W1L337" class="LineNr">337 </span> cmdsize 24
+<span id="W1L338" class="LineNr">338 </span>    uuid F252F6AB-D7C8-394B-A01E-D22608C83EFB
+<span id="W1L339" class="LineNr">339 </span><span class="DiffChange">Load command </span><span class="DiffText">9</span><span class="DiffChange">                                                                                                            </span>
+<span id="W1L340" class="LineNr">340 </span>      cmd LC_VERSION_MIN_MACOSX
+<span id="W1L341" class="LineNr">341 </span>  cmdsize 16
+<span id="W1L342" class="LineNr">342 </span>  version 10.12
+<span id="W1L343" class="LineNr">343 </span>      sdk 14.2
+<span id="W1L344" class="LineNr">344 </span><span class="DiffChange">Load command 1</span><span class="DiffText">0</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L345" class="LineNr">345 </span>      cmd LC_SOURCE_VERSION
+<span id="W1L346" class="LineNr">346 </span>  cmdsize 16
+<span id="W1L347" class="LineNr">347 </span>  version 0.0
+<span id="W1L348" class="LineNr">348 </span><span class="DiffChange">Load command 1</span><span class="DiffText">1</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L349" class="LineNr">349 </span>       cmd LC_MAIN
+<span id="W1L350" class="LineNr">350 </span>   cmdsize 24
+<span id="W1L351" class="LineNr">351 </span><span class="DiffChange">  entryoff 29</span><span class="DiffText">27440</span><span class="DiffChange">                                                                                                        </span>
+<span id="W1L352" class="LineNr">352 </span> stacksize 0
+<span id="W1L353" class="LineNr">353 </span><span class="DiffChange">Load command 1</span><span class="DiffText">2</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L354" class="LineNr">354 </span>          cmd LC_LOAD_DYLIB
+<span id="W1L355" class="LineNr">355 </span>      cmdsize 104
+<span id="W1L356" class="LineNr">356 </span>         name /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (offset 24)
+<span id="W1L357" class="LineNr">357 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L358" class="LineNr">358 </span>      current version 2202.0.0
+<span id="W1L359" class="LineNr">359 </span>compatibility version 150.0.0
+<span id="W1L360" class="LineNr">360 </span><span class="DiffChange">Load command 1</span><span class="DiffText">3</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L361" class="LineNr">361 </span>          cmd LC_LOAD_DYLIB
+<span id="W1L362" class="LineNr">362 </span>      cmdsize 104
+<span id="W1L363" class="LineNr">363 </span>         name /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (offset 24)
+<span id="W1L364" class="LineNr">364 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L365" class="LineNr">365 </span>      current version 1226.0.0
+<span id="W1L366" class="LineNr">366 </span>compatibility version 1.0.0
+<span id="W1L367" class="LineNr">367 </span><span class="DiffChange">Load command 1</span><span class="DiffText">4</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L368" class="LineNr">368 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W1L369" class="LineNr">369 </span>      cmdsize 96
+<span id="W1L370" class="LineNr">370 </span>         name /System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore (offset 24)
+<span id="W1L371" class="LineNr">371 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L372" class="LineNr">372 </span>      current version 1.11.0
+<span id="W1L373" class="LineNr">373 </span>compatibility version 1.2.0
+<span id="W1L374" class="LineNr">374 </span><span class="DiffChange">Load command 1</span><span class="DiffText">5</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L375" class="LineNr">375 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W1L376" class="LineNr">376 </span>      cmdsize 88
+<span id="W1L377" class="LineNr">377 </span>         name /System/Library/Frameworks/Metal.framework/Versions/A/Metal (offset 24)
+<span id="W1L378" class="LineNr">378 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L379" class="LineNr">379 </span>      current version 341.35.0
+<span id="W1L380" class="LineNr">380 </span>compatibility version 1.0.0
+<span id="W1L381" class="LineNr">381 </span><span class="DiffChange">Load command 1</span><span class="DiffText">6</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L382" class="LineNr">382 </span>          cmd LC_LOAD_DYLIB
+<span id="W1L383" class="LineNr">383 </span>      cmdsize 56
+<span id="W1L384" class="LineNr">384 </span>         name /usr/lib/libSystem.B.dylib (offset 24)
+<span id="W1L385" class="LineNr">385 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L386" class="LineNr">386 </span>      current version 1336.61.1
+<span id="W1L387" class="LineNr">387 </span>compatibility version 1.0.0
+<span id="W1L388" class="LineNr">388 </span><span class="DiffChange">Load command 1</span><span class="DiffText">7</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L389" class="LineNr">389 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W1L390" class="LineNr">390 </span>      cmdsize 104
+<span id="W1L391" class="LineNr">391 </span>         name /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics (offset 24)
+<span id="W1L392" class="LineNr">392 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L393" class="LineNr">393 </span>      current version 1774.2.3
+<span id="W1L394" class="LineNr">394 </span>compatibility version 64.0.0
+<span id="W1L395" class="LineNr">395 </span><span class="DiffChange">Load command 1</span><span class="DiffText">8</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L396" class="LineNr">396 </span>          cmd LC_LOAD_DYLIB
+<span id="W1L397" class="LineNr">397 </span>      cmdsize 56
+<span id="W1L398" class="LineNr">398 </span>         name /usr/lib/libobjc.A.dylib (offset 24)
+<span id="W1L399" class="LineNr">399 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L400" class="LineNr">400 </span>      current version 228.0.0
+<span id="W1L401" class="LineNr">401 </span>compatibility version 1.0.0
+<span id="W1L402" class="LineNr">402 </span><span class="DiffChange">Load command </span><span class="DiffText">19</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L403" class="LineNr">403 </span>          cmd LC_LOAD_DYLIB
+<span id="W1L404" class="LineNr">404 </span>      cmdsize 56
+<span id="W1L405" class="LineNr">405 </span>         name /usr/lib/libiconv.2.dylib (offset 24)
+<span id="W1L406" class="LineNr">406 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L407" class="LineNr">407 </span>      current version 7.0.0
+<span id="W1L408" class="LineNr">408 </span>compatibility version 7.0.0
+<span id="W1L409" class="LineNr">409 </span><span class="DiffChange">Load command 2</span><span class="DiffText">0</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L410" class="LineNr">410 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W1L411" class="LineNr">411 </span>      cmdsize 120
+<span id="W1L412" class="LineNr">412 </span>         name /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders (offset 24)
+<span id="W1L413" class="LineNr">413 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W1L414" class="LineNr">414 </span>      current version 127.1.3
+<span id="W1L415" class="LineNr">415 </span>compatibility version 1.0.0
+<span id="W1L416" class="LineNr">416 </span><span class="DiffChange">Load command 2</span><span class="DiffText">1</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L417" class="LineNr">417 </span>      cmd LC_FUNCTION_STARTS
+<span id="W1L418" class="LineNr">418 </span>  cmdsize 16
+<span id="W1L419" class="LineNr">419 </span><span class="DiffChange">  dataoff 1487</span><span class="DiffText">16008</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L420" class="LineNr">420 </span> datasize 576256
+<span id="W1L421" class="LineNr">421 </span><span class="DiffChange">Load command 2</span><span class="DiffText">2</span><span class="DiffChange">                                                                                                           </span>
+<span id="W1L422" class="LineNr">422 </span>      cmd LC_DATA_IN_CODE
+<span id="W1L423" class="LineNr">423 </span>  cmdsize 16
+<span id="W1L424" class="LineNr">424 </span><span class="DiffChange">  dataoff 149</span><span class="DiffText">292264</span><span class="DiffChange">                                                                                                       </span>
+<span id="W1L425" class="LineNr">425 </span> datasize 0
+</pre>
+</div></td>
+<td><div>
+<pre>
+<span id="W2L1" class="LineNr">  1 </span><span class="DiffChange">./</span><span class="DiffText">out</span><span class="DiffChange">:                                                                                                                    </span>
+<span id="W2L2" class="LineNr">  2 </span>Load command 0
+<span id="W2L3" class="LineNr">  3 </span>      cmd LC_SEGMENT_64
+<span id="W2L4" class="LineNr">  4 </span>  cmdsize 72
+<span id="W2L5" class="LineNr">  5 </span>  segname __PAGEZERO
+<span id="W2L6" class="LineNr">  6 </span>   vmaddr 0x0000000000000000
+<span id="W2L7" class="LineNr">  7 </span>   vmsize 0x0000000100000000
+<span id="W2L8" class="Folded">  8 </span><span class="Folded">+--  5 lines: fileoff 0-------------------------------------------------------------------------------------------------------</span>
+<span id="W2L13" class="LineNr"> 13 </span>    flags 0x0
+<span id="W2L14" class="LineNr"> 14 </span>Load command 1
+<span id="W2L15" class="LineNr"> 15 </span>      cmd LC_SEGMENT_64
+<span id="W2L16" class="LineNr"> 16 </span>  cmdsize 872
+<span id="W2L17" class="LineNr"> 17 </span>  segname __TEXT
+<span id="W2L18" class="LineNr"> 18 </span>   vmaddr 0x0000000100000000
+<span id="W2L19" class="LineNr"> 19 </span><span class="DiffChange">   vmsize 0x000000000898</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                              </span>
+<span id="W2L20" class="LineNr"> 20 </span>  fileoff 0
+<span id="W2L21" class="LineNr"> 21 </span><span class="DiffChange"> filesize 14421</span><span class="DiffText">1968</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L22" class="LineNr"> 22 </span>  maxprot 0x00000005
+<span id="W2L23" class="LineNr"> 23 </span> initprot 0x00000005
+<span id="W2L24" class="LineNr"> 24 </span>   nsects 10
+<span id="W2L25" class="LineNr"> 25 </span>    flags 0x0
+<span id="W2L26" class="LineNr"> 26 </span>Section
+<span id="W2L27" class="LineNr"> 27 </span>  sectname __text
+<span id="W2L28" class="LineNr"> 28 </span>   segname __TEXT
+<span id="W2L29" class="LineNr"> 29 </span><span class="DiffChange">      addr 0x000000010000</span><span class="DiffText">0</span><span class="DiffChange">c00                                                                                             </span>
+<span id="W2L30" class="LineNr"> 30 </span>      size 0x00000000066d8fa0
+<span id="W2L31" class="LineNr"> 31 </span><span class="DiffChange">    offset </span><span class="DiffText">3224</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L32" class="LineNr"> 32 </span>     align 2^8 (256)
+<span id="W2L33" class="LineNr"> 33 </span>    reloff 0
+<span id="W2L34" class="LineNr"> 34 </span>    nreloc 0
+<span id="W2L35" class="LineNr"> 35 </span>     flags 0x80000400
+<span id="W2L36" class="LineNr"> 36 </span> reserved1 0
+<span id="W2L37" class="LineNr"> 37 </span> reserved2 0
+<span id="W2L38" class="LineNr"> 38 </span>Section
+<span id="W2L39" class="LineNr"> 39 </span>  sectname __lcxx_override
+<span id="W2L40" class="LineNr"> 40 </span>   segname __TEXT
+<span id="W2L41" class="LineNr"> 41 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">9</span><span class="DiffChange">ba0                                                                                             </span>
+<span id="W2L42" class="LineNr"> 42 </span>      size 0x00000000000000da
+<span id="W2L43" class="LineNr"> 43 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">46712</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L44" class="LineNr"> 44 </span>     align 2^4 (16)
+<span id="W2L45" class="LineNr"> 45 </span>    reloff 0
+<span id="W2L46" class="LineNr"> 46 </span>    nreloc 0
+<span id="W2L47" class="LineNr"> 47 </span>     flags 0x80000400
+<span id="W2L48" class="LineNr"> 48 </span> reserved1 0
+<span id="W2L49" class="LineNr"> 49 </span> reserved2 0
+<span id="W2L50" class="LineNr"> 50 </span>Section
+<span id="W2L51" class="LineNr"> 51 </span>  sectname __stubs
+<span id="W2L52" class="LineNr"> 52 </span>   segname __TEXT
+<span id="W2L53" class="LineNr"> 53 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">9</span><span class="DiffChange">c7a                                                                                             </span>
+<span id="W2L54" class="LineNr"> 54 </span>      size 0x0000000000000a9e
+<span id="W2L55" class="LineNr"> 55 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">46930</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L56" class="LineNr"> 56 </span>     align 2^0 (1)
+<span id="W2L57" class="LineNr"> 57 </span>    reloff 0
+<span id="W2L58" class="LineNr"> 58 </span>    nreloc 0
+<span id="W2L59" class="LineNr"> 59 </span>     flags 0x80000408
+<span id="W2L60" class="LineNr"> 60 </span> reserved1 0 (index into indirect symbol table)
+<span id="W2L61" class="LineNr"> 61 </span> reserved2 6 (size of stubs)
+<span id="W2L62" class="LineNr"> 62 </span>Section
+<span id="W2L63" class="LineNr"> 63 </span>  sectname __stub_helper
+<span id="W2L64" class="LineNr"> 64 </span>   segname __TEXT
+<span id="W2L65" class="LineNr"> 65 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">a</span><span class="DiffChange">718                                                                                             </span>
+<span id="W2L66" class="LineNr"> 66 </span>      size 0x00000000000011c2
+<span id="W2L67" class="LineNr"> 67 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">49648</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L68" class="LineNr"> 68 </span>     align 2^0 (1)
+<span id="W2L69" class="LineNr"> 69 </span>    reloff 0
+<span id="W2L70" class="LineNr"> 70 </span>    nreloc 0
+<span id="W2L71" class="LineNr"> 71 </span>     flags 0x80000400
+<span id="W2L72" class="LineNr"> 72 </span> reserved1 0
+<span id="W2L73" class="LineNr"> 73 </span> reserved2 0
+<span id="W2L74" class="LineNr"> 74 </span>Section
+<span id="W2L75" class="LineNr"> 75 </span>  sectname __gcc_except_tab
+<span id="W2L76" class="LineNr"> 76 </span>   segname __TEXT
+<span id="W2L77" class="LineNr"> 77 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">b</span><span class="DiffChange">8dc                                                                                             </span>
+<span id="W2L78" class="LineNr"> 78 </span>      size 0x00000000002ec6c0
+<span id="W2L79" class="LineNr"> 79 </span><span class="DiffChange">    offset 10785</span><span class="DiffText">4196</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L80" class="LineNr"> 80 </span>     align 2^2 (4)
+<span id="W2L81" class="LineNr"> 81 </span>    reloff 0
+<span id="W2L82" class="LineNr"> 82 </span>    nreloc 0
+<span id="W2L83" class="LineNr"> 83 </span>     flags 0x00000000
+<span id="W2L84" class="LineNr"> 84 </span> reserved1 0
+<span id="W2L85" class="LineNr"> 85 </span> reserved2 0
+<span id="W2L86" class="LineNr"> 86 </span>Section
+<span id="W2L87" class="LineNr"> 87 </span>  sectname __const
+<span id="W2L88" class="LineNr"> 88 </span>   segname __TEXT
+<span id="W2L89" class="LineNr"> 89 </span><span class="DiffChange">      addr 0x00000001069c</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                             </span>
+<span id="W2L90" class="LineNr"> 90 </span>      size 0x00000000019a39d4
+<span id="W2L91" class="LineNr"> 91 </span><span class="DiffChange">    offset 1109</span><span class="DiffText">19832</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L92" class="LineNr"> 92 </span>     align 2^12 (4096)
+<span id="W2L93" class="LineNr"> 93 </span>    reloff 0
+<span id="W2L94" class="LineNr"> 94 </span>    nreloc 0
+<span id="W2L95" class="LineNr"> 95 </span>     flags 0x00000000
+<span id="W2L96" class="LineNr"> 96 </span> reserved1 0
+<span id="W2L97" class="LineNr"> 97 </span> reserved2 0
+<span id="W2L98" class="LineNr"> 98 </span>Section
+<span id="W2L99" class="LineNr"> 99 </span>  sectname __cstring
+<span id="W2L100" class="LineNr">100 </span>   segname __TEXT
+<span id="W2L101" class="LineNr">101 </span><span class="DiffChange">      addr 0x000000010836</span><span class="DiffText">b</span><span class="DiffChange">9e0                                                                                             </span>
+<span id="W2L102" class="LineNr">102 </span>      size 0x00000000000ee781
+<span id="W2L103" class="LineNr">103 </span><span class="DiffChange">    offset 13780</span><span class="DiffText">4408</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L104" class="LineNr">104 </span>     align 2^4 (16)
+<span id="W2L105" class="LineNr">105 </span>    reloff 0
+<span id="W2L106" class="LineNr">106 </span>    nreloc 0
+<span id="W2L107" class="LineNr">107 </span>     flags 0x00000002
+<span id="W2L108" class="LineNr">108 </span> reserved1 0
+<span id="W2L109" class="LineNr">109 </span> reserved2 0
+<span id="W2L110" class="LineNr">110 </span>Section
+<span id="W2L111" class="LineNr">111 </span>  sectname __ustring
+<span id="W2L112" class="LineNr">112 </span>   segname __TEXT
+<span id="W2L113" class="LineNr">113 </span><span class="DiffChange">      addr 0x000000010845</span><span class="DiffText">a</span><span class="DiffChange">170                                                                                             </span>
+<span id="W2L114" class="LineNr">114 </span>      size 0x00000000000014b4
+<span id="W2L115" class="LineNr">115 </span><span class="DiffChange">    offset 13878</span><span class="DiffText">1192</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L116" class="LineNr">116 </span>     align 2^4 (16)
+<span id="W2L117" class="LineNr">117 </span>    reloff 0
+<span id="W2L118" class="LineNr">118 </span>    nreloc 0
+<span id="W2L119" class="LineNr">119 </span>     flags 0x00000000
+<span id="W2L120" class="LineNr">120 </span> reserved1 0
+<span id="W2L121" class="LineNr">121 </span> reserved2 0
+<span id="W2L122" class="LineNr">122 </span>Section
+<span id="W2L123" class="LineNr">123 </span>  sectname __unwind_info
+<span id="W2L124" class="LineNr">124 </span>   segname __TEXT
+<span id="W2L125" class="LineNr">125 </span><span class="DiffChange">      addr 0x000000010845</span><span class="DiffText">b</span><span class="DiffChange">624                                                                                             </span>
+<span id="W2L126" class="LineNr">126 </span>      size 0x00000000001833d0
+<span id="W2L127" class="LineNr">127 </span><span class="DiffChange">    offset 1387</span><span class="DiffText">86492</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L128" class="LineNr">128 </span>     align 2^2 (4)
+<span id="W2L129" class="LineNr">129 </span>    reloff 0
+<span id="W2L130" class="LineNr">130 </span>    nreloc 0
+<span id="W2L131" class="LineNr">131 </span>     flags 0x00000000
+<span id="W2L132" class="LineNr">132 </span> reserved1 0
+<span id="W2L133" class="LineNr">133 </span> reserved2 0
+<span id="W2L134" class="LineNr">134 </span>Section
+<span id="W2L135" class="LineNr">135 </span>  sectname __eh_frame
+<span id="W2L136" class="LineNr">136 </span>   segname __TEXT
+<span id="W2L137" class="LineNr">137 </span><span class="DiffChange">      addr 0x00000001085d</span><span class="DiffText">e</span><span class="DiffChange">9f8                                                                                             </span>
+<span id="W2L138" class="LineNr">138 </span>      size 0x00000000003a8b42
+<span id="W2L139" class="LineNr">139 </span><span class="DiffChange">    offset 14037</span><span class="DiffText">2624</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L140" class="LineNr">140 </span>     align 2^3 (8)
+<span id="W2L141" class="LineNr">141 </span>    reloff 0
+<span id="W2L142" class="LineNr">142 </span>    nreloc 0
+<span id="W2L143" class="LineNr">143 </span>     flags 0x6800000b
+<span id="W2L144" class="LineNr">144 </span> reserved1 0
+<span id="W2L145" class="LineNr">145 </span> reserved2 0
+<span id="W2L146" class="LineNr">146 </span>Load command 2
+<span id="W2L147" class="LineNr">147 </span>      cmd LC_SEGMENT_64
+<span id="W2L148" class="LineNr">148 </span>  cmdsize 872
+<span id="W2L149" class="LineNr">149 </span>  segname __DATA
+<span id="W2L150" class="LineNr">150 </span><span class="DiffChange">   vmaddr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                              </span>
+<span id="W2L151" class="LineNr">151 </span>   vmsize 0x000000000045c000
+<span id="W2L152" class="LineNr">152 </span><span class="DiffChange">  fileoff 14421</span><span class="DiffText">1968</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L153" class="LineNr">153 </span> filesize 4378624
+<span id="W2L154" class="LineNr">154 </span>  maxprot 0x00000003
+<span id="W2L155" class="LineNr">155 </span> initprot 0x00000003
+<span id="W2L156" class="LineNr">156 </span>   nsects 10
+<span id="W2L157" class="LineNr">157 </span>    flags 0x0
+<span id="W2L158" class="LineNr">158 </span>Section
+<span id="W2L159" class="LineNr">159 </span>  sectname __got
+<span id="W2L160" class="LineNr">160 </span>   segname __DATA
+<span id="W2L161" class="LineNr">161 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                             </span>
+<span id="W2L162" class="LineNr">162 </span>      size 0x0000000000000120
+<span id="W2L163" class="LineNr">163 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">2120</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L164" class="LineNr">164 </span>     align 2^3 (8)
+<span id="W2L165" class="LineNr">165 </span>    reloff 0
+<span id="W2L166" class="LineNr">166 </span>    nreloc 0
+<span id="W2L167" class="LineNr">167 </span>     flags 0x00000006
+<span id="W2L168" class="LineNr">168 </span> reserved1 453 (index into indirect symbol table)
+<span id="W2L169" class="LineNr">169 </span> reserved2 0
+<span id="W2L170" class="LineNr">170 </span>Section
+<span id="W2L171" class="LineNr">171 </span>  sectname __la_symbol_ptr
+<span id="W2L172" class="LineNr">172 </span>   segname __DATA
+<span id="W2L173" class="LineNr">173 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">120                                                                                             </span>
+<span id="W2L174" class="LineNr">174 </span>      size 0x0000000000000e28
+<span id="W2L175" class="LineNr">175 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">2408</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L176" class="LineNr">176 </span>     align 2^3 (8)
+<span id="W2L177" class="LineNr">177 </span>    reloff 0
+<span id="W2L178" class="LineNr">178 </span>    nreloc 0
+<span id="W2L179" class="LineNr">179 </span>     flags 0x00000007
+<span id="W2L180" class="LineNr">180 </span> reserved1 489 (index into indirect symbol table)
+<span id="W2L181" class="LineNr">181 </span> reserved2 0
+<span id="W2L182" class="LineNr">182 </span>Section
+<span id="W2L183" class="LineNr">183 </span>  sectname __mod_init_func
+<span id="W2L184" class="LineNr">184 </span>   segname __DATA
+<span id="W2L185" class="LineNr">185 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">f48                                                                                             </span>
+<span id="W2L186" class="LineNr">186 </span>      size 0x0000000000000018
+<span id="W2L187" class="LineNr">187 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">6032</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L188" class="LineNr">188 </span>     align 2^3 (8)
+<span id="W2L189" class="LineNr">189 </span>    reloff 0
+<span id="W2L190" class="LineNr">190 </span>    nreloc 0
+<span id="W2L191" class="LineNr">191 </span>     flags 0x00000009
+<span id="W2L192" class="LineNr">192 </span> reserved1 0
+<span id="W2L193" class="LineNr">193 </span> reserved2 0
+<span id="W2L194" class="LineNr">194 </span>Section
+<span id="W2L195" class="LineNr">195 </span>  sectname __const
+<span id="W2L196" class="LineNr">196 </span>   segname __DATA
+<span id="W2L197" class="LineNr">197 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">8</span><span class="DiffChange">f80                                                                                             </span>
+<span id="W2L198" class="LineNr">198 </span>      size 0x00000000003fb290
+<span id="W2L199" class="LineNr">199 </span><span class="DiffChange">    offset 1442</span><span class="DiffText">16088</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L200" class="LineNr">200 </span>     align 2^6 (64)
+<span id="W2L201" class="LineNr">201 </span>    reloff 0
+<span id="W2L202" class="LineNr">202 </span>    nreloc 0
+<span id="W2L203" class="LineNr">203 </span>     flags 0x00000000
+<span id="W2L204" class="LineNr">204 </span> reserved1 0
+<span id="W2L205" class="LineNr">205 </span> reserved2 0
+<span id="W2L206" class="LineNr">206 </span>Section
+<span id="W2L207" class="LineNr">207 </span>  sectname __data
+<span id="W2L208" class="LineNr">208 </span>   segname __DATA
+<span id="W2L209" class="LineNr">209 </span><span class="DiffChange">      addr 0x0000000108d8</span><span class="DiffText">5</span><span class="DiffChange">000                                                                                             </span>
+<span id="W2L210" class="LineNr">210 </span>      size 0x000000000002d9d0
+<span id="W2L211" class="LineNr">211 </span><span class="DiffChange">    offset 14839</span><span class="DiffText">4136</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L212" class="LineNr">212 </span>     align 2^12 (4096)
+<span id="W2L213" class="LineNr">213 </span>    reloff 0
+<span id="W2L214" class="LineNr">214 </span>    nreloc 0
+<span id="W2L215" class="LineNr">215 </span>     flags 0x00000000
+<span id="W2L216" class="LineNr">216 </span> reserved1 0
+<span id="W2L217" class="LineNr">217 </span> reserved2 0
+<span id="W2L218" class="LineNr">218 </span>Section
+<span id="W2L219" class="LineNr">219 </span>  sectname __thread_vars
+<span id="W2L220" class="LineNr">220 </span>   segname __DATA
+<span id="W2L221" class="LineNr">221 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">2</span><span class="DiffChange">9d0                                                                                             </span>
+<span id="W2L222" class="LineNr">222 </span>      size 0x0000000000001a10
+<span id="W2L223" class="LineNr">223 </span><span class="DiffChange">    offset 14858</span><span class="DiffText">0968</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L224" class="LineNr">224 </span>     align 2^3 (8)
+<span id="W2L225" class="LineNr">225 </span>    reloff 0
+<span id="W2L226" class="LineNr">226 </span>    nreloc 0
+<span id="W2L227" class="LineNr">227 </span>     flags 0x00000013
+<span id="W2L228" class="LineNr">228 </span> reserved1 0
+<span id="W2L229" class="LineNr">229 </span> reserved2 0
+<span id="W2L230" class="LineNr">230 </span>Section
+<span id="W2L231" class="LineNr">231 </span>  sectname __thread_data
+<span id="W2L232" class="LineNr">232 </span>   segname __DATA
+<span id="W2L233" class="LineNr">233 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">4</span><span class="DiffChange">3e0                                                                                             </span>
+<span id="W2L234" class="LineNr">234 </span>      size 0x0000000000000119
+<span id="W2L235" class="LineNr">235 </span><span class="DiffChange">    offset 1485</span><span class="DiffText">87640</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L236" class="LineNr">236 </span>     align 2^3 (8)
+<span id="W2L237" class="LineNr">237 </span>    reloff 0
+<span id="W2L238" class="LineNr">238 </span>    nreloc 0
+<span id="W2L239" class="LineNr">239 </span>     flags 0x00000011
+<span id="W2L240" class="LineNr">240 </span> reserved1 0
+<span id="W2L241" class="LineNr">241 </span> reserved2 0
+<span id="W2L242" class="LineNr">242 </span>Section
+<span id="W2L243" class="LineNr">243 </span>  sectname __thread_bss
+<span id="W2L244" class="LineNr">244 </span>   segname __DATA
+<span id="W2L245" class="LineNr">245 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">4</span><span class="DiffChange">500                                                                                             </span>
+<span id="W2L246" class="LineNr">246 </span>      size 0x0000000000000da0
+<span id="W2L247" class="LineNr">247 </span>    offset 0
+<span id="W2L248" class="LineNr">248 </span>     align 2^3 (8)
+<span id="W2L249" class="LineNr">249 </span>    reloff 0
+<span id="W2L250" class="LineNr">250 </span>    nreloc 0
+<span id="W2L251" class="LineNr">251 </span>     flags 0x00000012
+<span id="W2L252" class="LineNr">252 </span> reserved1 0
+<span id="W2L253" class="LineNr">253 </span> reserved2 0
+<span id="W2L254" class="LineNr">254 </span>Section
+<span id="W2L255" class="LineNr">255 </span>  sectname __bss
+<span id="W2L256" class="LineNr">256 </span>   segname __DATA
+<span id="W2L257" class="LineNr">257 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">5</span><span class="DiffChange">2c0                                                                                             </span>
+<span id="W2L258" class="LineNr">258 </span>      size 0x000000000002b808
+<span id="W2L259" class="LineNr">259 </span>    offset 0
+<span id="W2L260" class="LineNr">260 </span>     align 2^6 (64)
+<span id="W2L261" class="LineNr">261 </span>    reloff 0
+<span id="W2L262" class="LineNr">262 </span>    nreloc 0
+<span id="W2L263" class="LineNr">263 </span>     flags 0x00000001
+<span id="W2L264" class="LineNr">264 </span> reserved1 0
+<span id="W2L265" class="LineNr">265 </span> reserved2 0
+<span id="W2L266" class="LineNr">266 </span>Section
+<span id="W2L267" class="LineNr">267 </span>  sectname __common
+<span id="W2L268" class="LineNr">268 </span>   segname __DATA
+<span id="W2L269" class="LineNr">269 </span><span class="DiffChange">      addr 0x0000000108de</span><span class="DiffText">0</span><span class="DiffChange">b00                                                                                             </span>
+<span id="W2L270" class="LineNr">270 </span>      size 0x0000000000003498
+<span id="W2L271" class="LineNr">271 </span>    offset 0
+<span id="W2L272" class="LineNr">272 </span>     align 2^7 (128)
+<span id="W2L273" class="LineNr">273 </span>    reloff 0
+<span id="W2L274" class="LineNr">274 </span>    nreloc 0
+<span id="W2L275" class="LineNr">275 </span>     flags 0x00000001
+<span id="W2L276" class="LineNr">276 </span> reserved1 0
+<span id="W2L277" class="LineNr">277 </span> reserved2 0
+<span id="W2L278" class="LineNr">278 </span>Load command 3
+<span id="W2L279" class="LineNr">279 </span>      cmd LC_SEGMENT_64
+<span id="W2L280" class="LineNr">280 </span><span class="DiffChange">  cmdsize 152</span><span class="DiffChange">                                                                                                             </span>
+<span id="W2L281" class="LineNr">281 </span><span class="DiffChange">  segname __SUI</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L282" class="LineNr">282 </span><span class="DiffChange">   vmaddr 0x0000000108de</span><span class="DiffText">4</span><span class="DiffChange">000                                                                                              </span>
+<span id="W2L283" class="LineNr">283 </span><span class="DiffChange">   vmsize 0x000000000000</span><span class="DiffText">4</span><span class="DiffChange">000                                                                                              </span>
+<span id="W2L284" class="LineNr">284 </span><span class="DiffChange">  fileoff 14859</span><span class="DiffText">0592</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L285" class="LineNr">285 </span><span class="DiffChange"> filesize 1</span><span class="DiffText">6384</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L286" class="LineNr">286 </span><span class="DiffChange">  maxprot 0x00000001</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L287" class="LineNr">287 </span><span class="DiffChange"> initprot 0x00000001</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L288" class="LineNr">288 </span><span class="DiffChange">   nsects 1</span><span class="DiffChange">                                                                                                               </span>
+<span id="W2L289" class="LineNr">289 </span><span class="DiffChange">    flags 0x0</span><span class="DiffChange">                                                                                                             </span>
+<span id="W2L290" class="LineNr">290 </span><span class="DiffChange">Section</span><span class="DiffChange">                                                                                                                   </span>
+<span id="W2L291" class="LineNr">291 </span><span class="DiffChange">  sectname d3n0l4nd</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L292" class="LineNr">292 </span><span class="DiffChange">   segname __SUI</span><span class="DiffChange">                                                                                                          </span>
+<span id="W2L293" class="LineNr">293 </span><span class="DiffChange">      addr 0x0000000108de</span><span class="DiffText">4</span><span class="DiffChange">000                                                                                             </span>
+<span id="W2L294" class="LineNr">294 </span><span class="DiffChange">      size 0x0000000000000597</span><span class="DiffChange">                                                                                             </span>
+<span id="W2L295" class="LineNr">295 </span><span class="DiffChange">    offset 14859</span><span class="DiffText">0592</span><span class="DiffChange">                                                                                                      </span>
+<span id="W2L296" class="LineNr">296 </span><span class="DiffChange">     align 2^</span><span class="DiffText">4 (16</span><span class="DiffChange">)                                                                                                       </span>
+<span id="W2L297" class="LineNr">297 </span><span class="DiffChange">    reloff 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W2L298" class="LineNr">298 </span><span class="DiffChange">    nreloc 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W2L299" class="LineNr">299 </span><span class="DiffChange">     flags 0x00000000</span><span class="DiffChange">                                                                                                     </span>
+<span id="W2L300" class="LineNr">300 </span><span class="DiffChange"> reserved1 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W2L301" class="LineNr">301 </span><span class="DiffChange"> reserved2 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W2L302" class="LineNr">302 </span><span class="DiffChange">Load command 4</span><span class="DiffChange">                                                                                                            </span>
+<span id="W2L303" class="LineNr">303 </span><span class="DiffChange">      cmd LC_SEGMENT_64</span><span class="DiffChange">                                                                                                   </span>
+<span id="W2L304" class="LineNr">304 </span>  cmdsize 72
+<span id="W2L305" class="LineNr">305 </span>  segname __LINKEDIT
+<span id="W2L306" class="LineNr">306 </span><span class="DiffChange">   vmaddr 0x0000000108de</span><span class="DiffText">8</span><span class="DiffChange">000                                                                                              </span>
+<span id="W2L307" class="LineNr">307 </span>   vmsize 0x000000000397a000
+<span id="W2L308" class="LineNr">308 </span><span class="DiffChange">  fileoff 148</span><span class="DiffText">606976</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L309" class="LineNr">309 </span> filesize 60266040
+<span id="W2L310" class="LineNr">310 </span>  maxprot 0x00000001
+<span id="W2L311" class="LineNr">311 </span> initprot 0x00000001
+<span id="W2L312" class="LineNr">312 </span>   nsects 0
+<span id="W2L313" class="LineNr">313 </span>    flags 0x0
+<span id="W2L314" class="LineNr">314 </span><span class="DiffChange">Load command </span><span class="DiffText">5</span><span class="DiffChange">                                                                                                            </span>
+<span id="W2L315" class="LineNr">315 </span>            cmd LC_DYLD_INFO_ONLY
+<span id="W2L316" class="LineNr">316 </span>        cmdsize 48
+<span id="W2L317" class="LineNr">317 </span><span class="DiffChange">     rebase_off 148</span><span class="DiffText">606976</span><span class="DiffChange">                                                                                                 </span>
+<span id="W2L318" class="LineNr">318 </span>    rebase_size 111680
+<span id="W2L319" class="LineNr">319 </span><span class="DiffChange">       bind_off 1487</span><span class="DiffText">18656</span><span class="DiffChange">                                                                                                 </span>
+<span id="W2L320" class="LineNr">320 </span>      bind_size 880
+<span id="W2L321" class="LineNr">321 </span>  weak_bind_off 0
+<span id="W2L322" class="LineNr">322 </span> weak_bind_size 0
+<span id="W2L323" class="LineNr">323 </span><span class="DiffChange">  lazy_bind_off 1487</span><span class="DiffText">19536</span><span class="DiffChange">                                                                                                 </span>
+<span id="W2L324" class="LineNr">324 </span> lazy_bind_size 9160
+<span id="W2L325" class="LineNr">325 </span><span class="DiffChange">     export_off 1487</span><span class="DiffText">28696</span><span class="DiffChange">                                                                                                 </span>
+<span id="W2L326" class="LineNr">326 </span>    export_size 3696
+<span id="W2L327" class="LineNr">327 </span><span class="DiffChange">Load command </span><span class="DiffText">6</span><span class="DiffChange">                                                                                                            </span>
+<span id="W2L328" class="LineNr">328 </span>     cmd LC_SYMTAB
+<span id="W2L329" class="LineNr">329 </span> cmdsize 24
+<span id="W2L330" class="LineNr">330 </span><span class="DiffChange">  symoff 149</span><span class="DiffText">308648</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L331" class="LineNr">331 </span>   nsyms 515061
+<span id="W2L332" class="LineNr">332 </span><span class="DiffChange">  stroff 1575</span><span class="DiffText">53392</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L333" class="LineNr">333 </span> strsize 51319624
+<span id="W2L334" class="LineNr">334 </span><span class="DiffChange">Load command </span><span class="DiffText">7</span><span class="DiffChange">                                                                                                            </span>
+<span id="W2L335" class="LineNr">335 </span>            cmd LC_DYSYMTAB
+<span id="W2L336" class="LineNr">336 </span>        cmdsize 80
+<span id="W2L337" class="LineNr">337 </span>      ilocalsym 0
+<span id="W2L338" class="LineNr">338 </span>      nlocalsym 514429
+<span id="W2L339" class="LineNr">339 </span>     iextdefsym 514429
+<span id="W2L340" class="LineNr">340 </span>     nextdefsym 161
+<span id="W2L341" class="Folded">341 </span><span class="Folded">+--  2 lines: iundefsym 514590------------------------------------------------------------------------------------------------</span>
+<span id="W2L343" class="LineNr">343 </span>         tocoff 0
+<span id="W2L344" class="LineNr">344 </span>           ntoc 0
+<span id="W2L345" class="LineNr">345 </span>      modtaboff 0
+<span id="W2L346" class="LineNr">346 </span>        nmodtab 0
+<span id="W2L347" class="LineNr">347 </span>   extrefsymoff 0
+<span id="W2L348" class="LineNr">348 </span>    nextrefsyms 0
+<span id="W2L349" class="LineNr">349 </span><span class="DiffChange"> indirectsymoff 1575</span><span class="DiffText">49624</span><span class="DiffChange">                                                                                                 </span>
+<span id="W2L350" class="LineNr">350 </span>  nindirectsyms 942
+<span id="W2L351" class="LineNr">351 </span>      extreloff 0
+<span id="W2L352" class="LineNr">352 </span>        nextrel 0
+<span id="W2L353" class="LineNr">353 </span>      locreloff 0
+<span id="W2L354" class="LineNr">354 </span>        nlocrel 0
+<span id="W2L355" class="LineNr">355 </span><span class="DiffChange">Load command </span><span class="DiffText">8</span><span class="DiffChange">                                                                                                            </span>
+<span id="W2L356" class="LineNr">356 </span>          cmd LC_LOAD_DYLINKER
+<span id="W2L357" class="LineNr">357 </span>      cmdsize 32
+<span id="W2L358" class="LineNr">358 </span>         name /usr/lib/dyld (offset 12)
+<span id="W2L359" class="LineNr">359 </span><span class="DiffChange">Load command </span><span class="DiffText">9</span><span class="DiffChange">                                                                                                            </span>
+<span id="W2L360" class="LineNr">360 </span>     cmd LC_UUID
+<span id="W2L361" class="LineNr">361 </span> cmdsize 24
+<span id="W2L362" class="LineNr">362 </span>    uuid F252F6AB-D7C8-394B-A01E-D22608C83EFB
+<span id="W2L363" class="LineNr">363 </span><span class="DiffChange">Load command </span><span class="DiffText">10</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L364" class="LineNr">364 </span>      cmd LC_VERSION_MIN_MACOSX
+<span id="W2L365" class="LineNr">365 </span>  cmdsize 16
+<span id="W2L366" class="LineNr">366 </span>  version 10.12
+<span id="W2L367" class="LineNr">367 </span>      sdk 14.2
+<span id="W2L368" class="LineNr">368 </span><span class="DiffChange">Load command 1</span><span class="DiffText">1</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L369" class="LineNr">369 </span>      cmd LC_SOURCE_VERSION
+<span id="W2L370" class="LineNr">370 </span>  cmdsize 16
+<span id="W2L371" class="LineNr">371 </span>  version 0.0
+<span id="W2L372" class="LineNr">372 </span><span class="DiffChange">Load command 1</span><span class="DiffText">2</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L373" class="LineNr">373 </span>       cmd LC_MAIN
+<span id="W2L374" class="LineNr">374 </span>   cmdsize 24
+<span id="W2L375" class="LineNr">375 </span><span class="DiffChange">  entryoff 29</span><span class="DiffText">27440</span><span class="DiffChange">                                                                                                        </span>
+<span id="W2L376" class="LineNr">376 </span> stacksize 0
+<span id="W2L377" class="LineNr">377 </span><span class="DiffChange">Load command 1</span><span class="DiffText">3</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L378" class="LineNr">378 </span>          cmd LC_LOAD_DYLIB
+<span id="W2L379" class="LineNr">379 </span>      cmdsize 104
+<span id="W2L380" class="LineNr">380 </span>         name /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (offset 24)
+<span id="W2L381" class="LineNr">381 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L382" class="LineNr">382 </span>      current version 2202.0.0
+<span id="W2L383" class="LineNr">383 </span>compatibility version 150.0.0
+<span id="W2L384" class="LineNr">384 </span><span class="DiffChange">Load command 1</span><span class="DiffText">4</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L385" class="LineNr">385 </span>          cmd LC_LOAD_DYLIB
+<span id="W2L386" class="LineNr">386 </span>      cmdsize 104
+<span id="W2L387" class="LineNr">387 </span>         name /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (offset 24)
+<span id="W2L388" class="LineNr">388 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L389" class="LineNr">389 </span>      current version 1226.0.0
+<span id="W2L390" class="LineNr">390 </span>compatibility version 1.0.0
+<span id="W2L391" class="LineNr">391 </span><span class="DiffChange">Load command 1</span><span class="DiffText">5</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L392" class="LineNr">392 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W2L393" class="LineNr">393 </span>      cmdsize 96
+<span id="W2L394" class="LineNr">394 </span>         name /System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore (offset 24)
+<span id="W2L395" class="LineNr">395 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L396" class="LineNr">396 </span>      current version 1.11.0
+<span id="W2L397" class="LineNr">397 </span>compatibility version 1.2.0
+<span id="W2L398" class="LineNr">398 </span><span class="DiffChange">Load command 1</span><span class="DiffText">6</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L399" class="LineNr">399 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W2L400" class="LineNr">400 </span>      cmdsize 88
+<span id="W2L401" class="LineNr">401 </span>         name /System/Library/Frameworks/Metal.framework/Versions/A/Metal (offset 24)
+<span id="W2L402" class="LineNr">402 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L403" class="LineNr">403 </span>      current version 341.35.0
+<span id="W2L404" class="LineNr">404 </span>compatibility version 1.0.0
+<span id="W2L405" class="LineNr">405 </span><span class="DiffChange">Load command 1</span><span class="DiffText">7</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L406" class="LineNr">406 </span>          cmd LC_LOAD_DYLIB
+<span id="W2L407" class="LineNr">407 </span>      cmdsize 56
+<span id="W2L408" class="LineNr">408 </span>         name /usr/lib/libSystem.B.dylib (offset 24)
+<span id="W2L409" class="LineNr">409 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L410" class="LineNr">410 </span>      current version 1336.61.1
+<span id="W2L411" class="LineNr">411 </span>compatibility version 1.0.0
+<span id="W2L412" class="LineNr">412 </span><span class="DiffChange">Load command 1</span><span class="DiffText">8</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L413" class="LineNr">413 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W2L414" class="LineNr">414 </span>      cmdsize 104
+<span id="W2L415" class="LineNr">415 </span>         name /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics (offset 24)
+<span id="W2L416" class="LineNr">416 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L417" class="LineNr">417 </span>      current version 1774.2.3
+<span id="W2L418" class="LineNr">418 </span>compatibility version 64.0.0
+<span id="W2L419" class="LineNr">419 </span><span class="DiffChange">Load command 1</span><span class="DiffText">9</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L420" class="LineNr">420 </span>          cmd LC_LOAD_DYLIB
+<span id="W2L421" class="LineNr">421 </span>      cmdsize 56
+<span id="W2L422" class="LineNr">422 </span>         name /usr/lib/libobjc.A.dylib (offset 24)
+<span id="W2L423" class="LineNr">423 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L424" class="LineNr">424 </span>      current version 228.0.0
+<span id="W2L425" class="LineNr">425 </span>compatibility version 1.0.0
+<span id="W2L426" class="LineNr">426 </span><span class="DiffChange">Load command </span><span class="DiffText">20</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L427" class="LineNr">427 </span>          cmd LC_LOAD_DYLIB
+<span id="W2L428" class="LineNr">428 </span>      cmdsize 56
+<span id="W2L429" class="LineNr">429 </span>         name /usr/lib/libiconv.2.dylib (offset 24)
+<span id="W2L430" class="LineNr">430 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L431" class="LineNr">431 </span>      current version 7.0.0
+<span id="W2L432" class="LineNr">432 </span>compatibility version 7.0.0
+<span id="W2L433" class="LineNr">433 </span><span class="DiffChange">Load command 2</span><span class="DiffText">1</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L434" class="LineNr">434 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W2L435" class="LineNr">435 </span>      cmdsize 120
+<span id="W2L436" class="LineNr">436 </span>         name /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders (offset 24)
+<span id="W2L437" class="LineNr">437 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W2L438" class="LineNr">438 </span>      current version 127.1.3
+<span id="W2L439" class="LineNr">439 </span>compatibility version 1.0.0
+<span id="W2L440" class="LineNr">440 </span><span class="DiffChange">Load command 2</span><span class="DiffText">2</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L441" class="LineNr">441 </span>      cmd LC_FUNCTION_STARTS
+<span id="W2L442" class="LineNr">442 </span>  cmdsize 16
+<span id="W2L443" class="LineNr">443 </span><span class="DiffChange">  dataoff 1487</span><span class="DiffText">32392</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L444" class="LineNr">444 </span> datasize 576256
+<span id="W2L445" class="LineNr">445 </span><span class="DiffChange">Load command 2</span><span class="DiffText">3</span><span class="DiffChange">                                                                                                           </span>
+<span id="W2L446" class="LineNr">446 </span>      cmd LC_DATA_IN_CODE
+<span id="W2L447" class="LineNr">447 </span>  cmdsize 16
+<span id="W2L448" class="LineNr">448 </span><span class="DiffChange">  dataoff 149</span><span class="DiffText">308648</span><span class="DiffChange">                                                                                                       </span>
+<span id="W2L449" class="LineNr">449 </span> datasize 0
+</pre>
+</div></td>
+<td><div>
+<pre>
+<span id="W3L1" class="LineNr">  1 </span><span class="DiffChange">./</span><span class="DiffText">out_lief</span><span class="DiffChange">:                                                                                                               </span>
+<span id="W3L2" class="LineNr">  2 </span>Load command 0
+<span id="W3L3" class="LineNr">  3 </span>      cmd LC_SEGMENT_64
+<span id="W3L4" class="LineNr">  4 </span>  cmdsize 72
+<span id="W3L5" class="LineNr">  5 </span>  segname __PAGEZERO
+<span id="W3L6" class="LineNr">  6 </span>   vmaddr 0x0000000000000000
+<span id="W3L7" class="LineNr">  7 </span>   vmsize 0x0000000100000000
+<span id="W3L8" class="Folded">  8 </span><span class="Folded">+--  5 lines: fileoff 0-------------------------------------------------------------------------------------------------------</span>
+<span id="W3L13" class="LineNr"> 13 </span>    flags 0x0
+<span id="W3L14" class="LineNr"> 14 </span>Load command 1
+<span id="W3L15" class="LineNr"> 15 </span>      cmd LC_SEGMENT_64
+<span id="W3L16" class="LineNr"> 16 </span>  cmdsize 872
+<span id="W3L17" class="LineNr"> 17 </span>  segname __TEXT
+<span id="W3L18" class="LineNr"> 18 </span>   vmaddr 0x0000000100000000
+<span id="W3L19" class="LineNr"> 19 </span><span class="DiffChange">   vmsize 0x000000000898</span><span class="DiffText">9</span><span class="DiffChange">000                                                                                              </span>
+<span id="W3L20" class="LineNr"> 20 </span>  fileoff 0
+<span id="W3L21" class="LineNr"> 21 </span><span class="DiffChange"> filesize 14421</span><span class="DiffText">6064</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L22" class="LineNr"> 22 </span>  maxprot 0x00000005
+<span id="W3L23" class="LineNr"> 23 </span> initprot 0x00000005
+<span id="W3L24" class="LineNr"> 24 </span>   nsects 10
+<span id="W3L25" class="LineNr"> 25 </span>    flags 0x0
+<span id="W3L26" class="LineNr"> 26 </span>Section
+<span id="W3L27" class="LineNr"> 27 </span>  sectname __text
+<span id="W3L28" class="LineNr"> 28 </span>   segname __TEXT
+<span id="W3L29" class="LineNr"> 29 </span><span class="DiffChange">      addr 0x000000010000</span><span class="DiffText">1</span><span class="DiffChange">c00                                                                                             </span>
+<span id="W3L30" class="LineNr"> 30 </span>      size 0x00000000066d8fa0
+<span id="W3L31" class="LineNr"> 31 </span><span class="DiffChange">    offset </span><span class="DiffText">7168</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L32" class="LineNr"> 32 </span>     align 2^8 (256)
+<span id="W3L33" class="LineNr"> 33 </span>    reloff 0
+<span id="W3L34" class="LineNr"> 34 </span>    nreloc 0
+<span id="W3L35" class="LineNr"> 35 </span>     flags 0x80000400
+<span id="W3L36" class="LineNr"> 36 </span> reserved1 0
+<span id="W3L37" class="LineNr"> 37 </span> reserved2 0
+<span id="W3L38" class="LineNr"> 38 </span>Section
+<span id="W3L39" class="LineNr"> 39 </span>  sectname __lcxx_override
+<span id="W3L40" class="LineNr"> 40 </span>   segname __TEXT
+<span id="W3L41" class="LineNr"> 41 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">a</span><span class="DiffChange">ba0                                                                                             </span>
+<span id="W3L42" class="LineNr"> 42 </span>      size 0x00000000000000da
+<span id="W3L43" class="LineNr"> 43 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">50656</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L44" class="LineNr"> 44 </span>     align 2^4 (16)
+<span id="W3L45" class="LineNr"> 45 </span>    reloff 0
+<span id="W3L46" class="LineNr"> 46 </span>    nreloc 0
+<span id="W3L47" class="LineNr"> 47 </span>     flags 0x80000400
+<span id="W3L48" class="LineNr"> 48 </span> reserved1 0
+<span id="W3L49" class="LineNr"> 49 </span> reserved2 0
+<span id="W3L50" class="LineNr"> 50 </span>Section
+<span id="W3L51" class="LineNr"> 51 </span>  sectname __stubs
+<span id="W3L52" class="LineNr"> 52 </span>   segname __TEXT
+<span id="W3L53" class="LineNr"> 53 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">a</span><span class="DiffChange">c7a                                                                                             </span>
+<span id="W3L54" class="LineNr"> 54 </span>      size 0x0000000000000a9e
+<span id="W3L55" class="LineNr"> 55 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">50874</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L56" class="LineNr"> 56 </span>     align 2^0 (1)
+<span id="W3L57" class="LineNr"> 57 </span>    reloff 0
+<span id="W3L58" class="LineNr"> 58 </span>    nreloc 0
+<span id="W3L59" class="LineNr"> 59 </span>     flags 0x80000408
+<span id="W3L60" class="LineNr"> 60 </span> reserved1 0 (index into indirect symbol table)
+<span id="W3L61" class="LineNr"> 61 </span> reserved2 6 (size of stubs)
+<span id="W3L62" class="LineNr"> 62 </span>Section
+<span id="W3L63" class="LineNr"> 63 </span>  sectname __stub_helper
+<span id="W3L64" class="LineNr"> 64 </span>   segname __TEXT
+<span id="W3L65" class="LineNr"> 65 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">b</span><span class="DiffChange">718                                                                                             </span>
+<span id="W3L66" class="LineNr"> 66 </span>      size 0x00000000000011c2
+<span id="W3L67" class="LineNr"> 67 </span><span class="DiffChange">    offset 1078</span><span class="DiffText">53592</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L68" class="LineNr"> 68 </span>     align 2^0 (1)
+<span id="W3L69" class="LineNr"> 69 </span>    reloff 0
+<span id="W3L70" class="LineNr"> 70 </span>    nreloc 0
+<span id="W3L71" class="LineNr"> 71 </span>     flags 0x80000400
+<span id="W3L72" class="LineNr"> 72 </span> reserved1 0
+<span id="W3L73" class="LineNr"> 73 </span> reserved2 0
+<span id="W3L74" class="LineNr"> 74 </span>Section
+<span id="W3L75" class="LineNr"> 75 </span>  sectname __gcc_except_tab
+<span id="W3L76" class="LineNr"> 76 </span>   segname __TEXT
+<span id="W3L77" class="LineNr"> 77 </span><span class="DiffChange">      addr 0x00000001066d</span><span class="DiffText">c</span><span class="DiffChange">8dc                                                                                             </span>
+<span id="W3L78" class="LineNr"> 78 </span>      size 0x00000000002ec6c0
+<span id="W3L79" class="LineNr"> 79 </span><span class="DiffChange">    offset 10785</span><span class="DiffText">8140</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L80" class="LineNr"> 80 </span>     align 2^2 (4)
+<span id="W3L81" class="LineNr"> 81 </span>    reloff 0
+<span id="W3L82" class="LineNr"> 82 </span>    nreloc 0
+<span id="W3L83" class="LineNr"> 83 </span>     flags 0x00000000
+<span id="W3L84" class="LineNr"> 84 </span> reserved1 0
+<span id="W3L85" class="LineNr"> 85 </span> reserved2 0
+<span id="W3L86" class="LineNr"> 86 </span>Section
+<span id="W3L87" class="LineNr"> 87 </span>  sectname __const
+<span id="W3L88" class="LineNr"> 88 </span>   segname __TEXT
+<span id="W3L89" class="LineNr"> 89 </span><span class="DiffChange">      addr 0x00000001069c</span><span class="DiffText">9</span><span class="DiffChange">000                                                                                             </span>
+<span id="W3L90" class="LineNr"> 90 </span>      size 0x00000000019a39d4
+<span id="W3L91" class="LineNr"> 91 </span><span class="DiffChange">    offset 1109</span><span class="DiffText">23776</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L92" class="LineNr"> 92 </span>     align 2^12 (4096)
+<span id="W3L93" class="LineNr"> 93 </span>    reloff 0
+<span id="W3L94" class="LineNr"> 94 </span>    nreloc 0
+<span id="W3L95" class="LineNr"> 95 </span>     flags 0x00000000
+<span id="W3L96" class="LineNr"> 96 </span> reserved1 0
+<span id="W3L97" class="LineNr"> 97 </span> reserved2 0
+<span id="W3L98" class="LineNr"> 98 </span>Section
+<span id="W3L99" class="LineNr"> 99 </span>  sectname __cstring
+<span id="W3L100" class="LineNr">100 </span>   segname __TEXT
+<span id="W3L101" class="LineNr">101 </span><span class="DiffChange">      addr 0x000000010836</span><span class="DiffText">c</span><span class="DiffChange">9e0                                                                                             </span>
+<span id="W3L102" class="LineNr">102 </span>      size 0x00000000000ee781
+<span id="W3L103" class="LineNr">103 </span><span class="DiffChange">    offset 13780</span><span class="DiffText">8352</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L104" class="LineNr">104 </span>     align 2^4 (16)
+<span id="W3L105" class="LineNr">105 </span>    reloff 0
+<span id="W3L106" class="LineNr">106 </span>    nreloc 0
+<span id="W3L107" class="LineNr">107 </span>     flags 0x00000002
+<span id="W3L108" class="LineNr">108 </span> reserved1 0
+<span id="W3L109" class="LineNr">109 </span> reserved2 0
+<span id="W3L110" class="LineNr">110 </span>Section
+<span id="W3L111" class="LineNr">111 </span>  sectname __ustring
+<span id="W3L112" class="LineNr">112 </span>   segname __TEXT
+<span id="W3L113" class="LineNr">113 </span><span class="DiffChange">      addr 0x000000010845</span><span class="DiffText">b</span><span class="DiffChange">170                                                                                             </span>
+<span id="W3L114" class="LineNr">114 </span>      size 0x00000000000014b4
+<span id="W3L115" class="LineNr">115 </span><span class="DiffChange">    offset 13878</span><span class="DiffText">5136</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L116" class="LineNr">116 </span>     align 2^4 (16)
+<span id="W3L117" class="LineNr">117 </span>    reloff 0
+<span id="W3L118" class="LineNr">118 </span>    nreloc 0
+<span id="W3L119" class="LineNr">119 </span>     flags 0x00000000
+<span id="W3L120" class="LineNr">120 </span> reserved1 0
+<span id="W3L121" class="LineNr">121 </span> reserved2 0
+<span id="W3L122" class="LineNr">122 </span>Section
+<span id="W3L123" class="LineNr">123 </span>  sectname __unwind_info
+<span id="W3L124" class="LineNr">124 </span>   segname __TEXT
+<span id="W3L125" class="LineNr">125 </span><span class="DiffChange">      addr 0x000000010845</span><span class="DiffText">c</span><span class="DiffChange">624                                                                                             </span>
+<span id="W3L126" class="LineNr">126 </span>      size 0x00000000001833d0
+<span id="W3L127" class="LineNr">127 </span><span class="DiffChange">    offset 1387</span><span class="DiffText">90436</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L128" class="LineNr">128 </span>     align 2^2 (4)
+<span id="W3L129" class="LineNr">129 </span>    reloff 0
+<span id="W3L130" class="LineNr">130 </span>    nreloc 0
+<span id="W3L131" class="LineNr">131 </span>     flags 0x00000000
+<span id="W3L132" class="LineNr">132 </span> reserved1 0
+<span id="W3L133" class="LineNr">133 </span> reserved2 0
+<span id="W3L134" class="LineNr">134 </span>Section
+<span id="W3L135" class="LineNr">135 </span>  sectname __eh_frame
+<span id="W3L136" class="LineNr">136 </span>   segname __TEXT
+<span id="W3L137" class="LineNr">137 </span><span class="DiffChange">      addr 0x00000001085d</span><span class="DiffText">f</span><span class="DiffChange">9f8                                                                                             </span>
+<span id="W3L138" class="LineNr">138 </span>      size 0x00000000003a8b42
+<span id="W3L139" class="LineNr">139 </span><span class="DiffChange">    offset 14037</span><span class="DiffText">6568</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L140" class="LineNr">140 </span>     align 2^3 (8)
+<span id="W3L141" class="LineNr">141 </span>    reloff 0
+<span id="W3L142" class="LineNr">142 </span>    nreloc 0
+<span id="W3L143" class="LineNr">143 </span>     flags 0x6800000b
+<span id="W3L144" class="LineNr">144 </span> reserved1 0
+<span id="W3L145" class="LineNr">145 </span> reserved2 0
+<span id="W3L146" class="LineNr">146 </span>Load command 2
+<span id="W3L147" class="LineNr">147 </span>      cmd LC_SEGMENT_64
+<span id="W3L148" class="LineNr">148 </span>  cmdsize 872
+<span id="W3L149" class="LineNr">149 </span>  segname __DATA
+<span id="W3L150" class="LineNr">150 </span><span class="DiffChange">   vmaddr 0x000000010898</span><span class="DiffText">9</span><span class="DiffChange">000                                                                                              </span>
+<span id="W3L151" class="LineNr">151 </span>   vmsize 0x000000000045c000
+<span id="W3L152" class="LineNr">152 </span><span class="DiffChange">  fileoff 14421</span><span class="DiffText">6064</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L153" class="LineNr">153 </span> filesize 4378624
+<span id="W3L154" class="LineNr">154 </span>  maxprot 0x00000003
+<span id="W3L155" class="LineNr">155 </span> initprot 0x00000003
+<span id="W3L156" class="LineNr">156 </span>   nsects 10
+<span id="W3L157" class="LineNr">157 </span>    flags 0x0
+<span id="W3L158" class="LineNr">158 </span>Section
+<span id="W3L159" class="LineNr">159 </span>  sectname __got
+<span id="W3L160" class="LineNr">160 </span>   segname __DATA
+<span id="W3L161" class="LineNr">161 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">9</span><span class="DiffChange">000                                                                                             </span>
+<span id="W3L162" class="LineNr">162 </span>      size 0x0000000000000120
+<span id="W3L163" class="LineNr">163 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">6064</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L164" class="LineNr">164 </span>     align 2^3 (8)
+<span id="W3L165" class="LineNr">165 </span>    reloff 0
+<span id="W3L166" class="LineNr">166 </span>    nreloc 0
+<span id="W3L167" class="LineNr">167 </span>     flags 0x00000006
+<span id="W3L168" class="LineNr">168 </span> reserved1 453 (index into indirect symbol table)
+<span id="W3L169" class="LineNr">169 </span> reserved2 0
+<span id="W3L170" class="LineNr">170 </span>Section
+<span id="W3L171" class="LineNr">171 </span>  sectname __la_symbol_ptr
+<span id="W3L172" class="LineNr">172 </span>   segname __DATA
+<span id="W3L173" class="LineNr">173 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">9</span><span class="DiffChange">120                                                                                             </span>
+<span id="W3L174" class="LineNr">174 </span>      size 0x0000000000000e28
+<span id="W3L175" class="LineNr">175 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">6352</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L176" class="LineNr">176 </span>     align 2^3 (8)
+<span id="W3L177" class="LineNr">177 </span>    reloff 0
+<span id="W3L178" class="LineNr">178 </span>    nreloc 0
+<span id="W3L179" class="LineNr">179 </span>     flags 0x00000007
+<span id="W3L180" class="LineNr">180 </span> reserved1 489 (index into indirect symbol table)
+<span id="W3L181" class="LineNr">181 </span> reserved2 0
+<span id="W3L182" class="LineNr">182 </span>Section
+<span id="W3L183" class="LineNr">183 </span>  sectname __mod_init_func
+<span id="W3L184" class="LineNr">184 </span>   segname __DATA
+<span id="W3L185" class="LineNr">185 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">9</span><span class="DiffChange">f48                                                                                             </span>
+<span id="W3L186" class="LineNr">186 </span>      size 0x0000000000000018
+<span id="W3L187" class="LineNr">187 </span><span class="DiffChange">    offset 14421</span><span class="DiffText">9976</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L188" class="LineNr">188 </span>     align 2^3 (8)
+<span id="W3L189" class="LineNr">189 </span>    reloff 0
+<span id="W3L190" class="LineNr">190 </span>    nreloc 0
+<span id="W3L191" class="LineNr">191 </span>     flags 0x00000009
+<span id="W3L192" class="LineNr">192 </span> reserved1 0
+<span id="W3L193" class="LineNr">193 </span> reserved2 0
+<span id="W3L194" class="LineNr">194 </span>Section
+<span id="W3L195" class="LineNr">195 </span>  sectname __const
+<span id="W3L196" class="LineNr">196 </span>   segname __DATA
+<span id="W3L197" class="LineNr">197 </span><span class="DiffChange">      addr 0x000000010898</span><span class="DiffText">9</span><span class="DiffChange">f80                                                                                             </span>
+<span id="W3L198" class="LineNr">198 </span>      size 0x00000000003fb290
+<span id="W3L199" class="LineNr">199 </span><span class="DiffChange">    offset 1442</span><span class="DiffText">20032</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L200" class="LineNr">200 </span>     align 2^6 (64)
+<span id="W3L201" class="LineNr">201 </span>    reloff 0
+<span id="W3L202" class="LineNr">202 </span>    nreloc 0
+<span id="W3L203" class="LineNr">203 </span>     flags 0x00000000
+<span id="W3L204" class="LineNr">204 </span> reserved1 0
+<span id="W3L205" class="LineNr">205 </span> reserved2 0
+<span id="W3L206" class="LineNr">206 </span>Section
+<span id="W3L207" class="LineNr">207 </span>  sectname __data
+<span id="W3L208" class="LineNr">208 </span>   segname __DATA
+<span id="W3L209" class="LineNr">209 </span><span class="DiffChange">      addr 0x0000000108d8</span><span class="DiffText">6</span><span class="DiffChange">000                                                                                             </span>
+<span id="W3L210" class="LineNr">210 </span>      size 0x000000000002d9d0
+<span id="W3L211" class="LineNr">211 </span><span class="DiffChange">    offset 14839</span><span class="DiffText">8080</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L212" class="LineNr">212 </span>     align 2^12 (4096)
+<span id="W3L213" class="LineNr">213 </span>    reloff 0
+<span id="W3L214" class="LineNr">214 </span>    nreloc 0
+<span id="W3L215" class="LineNr">215 </span>     flags 0x00000000
+<span id="W3L216" class="LineNr">216 </span> reserved1 0
+<span id="W3L217" class="LineNr">217 </span> reserved2 0
+<span id="W3L218" class="LineNr">218 </span>Section
+<span id="W3L219" class="LineNr">219 </span>  sectname __thread_vars
+<span id="W3L220" class="LineNr">220 </span>   segname __DATA
+<span id="W3L221" class="LineNr">221 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">3</span><span class="DiffChange">9d0                                                                                             </span>
+<span id="W3L222" class="LineNr">222 </span>      size 0x0000000000001a10
+<span id="W3L223" class="LineNr">223 </span><span class="DiffChange">    offset 14858</span><span class="DiffText">4912</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L224" class="LineNr">224 </span>     align 2^3 (8)
+<span id="W3L225" class="LineNr">225 </span>    reloff 0
+<span id="W3L226" class="LineNr">226 </span>    nreloc 0
+<span id="W3L227" class="LineNr">227 </span>     flags 0x00000013
+<span id="W3L228" class="LineNr">228 </span> reserved1 0
+<span id="W3L229" class="LineNr">229 </span> reserved2 0
+<span id="W3L230" class="LineNr">230 </span>Section
+<span id="W3L231" class="LineNr">231 </span>  sectname __thread_data
+<span id="W3L232" class="LineNr">232 </span>   segname __DATA
+<span id="W3L233" class="LineNr">233 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">5</span><span class="DiffChange">3e0                                                                                             </span>
+<span id="W3L234" class="LineNr">234 </span>      size 0x0000000000000119
+<span id="W3L235" class="LineNr">235 </span><span class="DiffChange">    offset 1485</span><span class="DiffText">91584</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L236" class="LineNr">236 </span>     align 2^3 (8)
+<span id="W3L237" class="LineNr">237 </span>    reloff 0
+<span id="W3L238" class="LineNr">238 </span>    nreloc 0
+<span id="W3L239" class="LineNr">239 </span>     flags 0x00000011
+<span id="W3L240" class="LineNr">240 </span> reserved1 0
+<span id="W3L241" class="LineNr">241 </span> reserved2 0
+<span id="W3L242" class="LineNr">242 </span>Section
+<span id="W3L243" class="LineNr">243 </span>  sectname __thread_bss
+<span id="W3L244" class="LineNr">244 </span>   segname __DATA
+<span id="W3L245" class="LineNr">245 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">5</span><span class="DiffChange">500                                                                                             </span>
+<span id="W3L246" class="LineNr">246 </span>      size 0x0000000000000da0
+<span id="W3L247" class="LineNr">247 </span>    offset 0
+<span id="W3L248" class="LineNr">248 </span>     align 2^3 (8)
+<span id="W3L249" class="LineNr">249 </span>    reloff 0
+<span id="W3L250" class="LineNr">250 </span>    nreloc 0
+<span id="W3L251" class="LineNr">251 </span>     flags 0x00000012
+<span id="W3L252" class="LineNr">252 </span> reserved1 0
+<span id="W3L253" class="LineNr">253 </span> reserved2 0
+<span id="W3L254" class="LineNr">254 </span>Section
+<span id="W3L255" class="LineNr">255 </span>  sectname __bss
+<span id="W3L256" class="LineNr">256 </span>   segname __DATA
+<span id="W3L257" class="LineNr">257 </span><span class="DiffChange">      addr 0x0000000108db</span><span class="DiffText">6</span><span class="DiffChange">2c0                                                                                             </span>
+<span id="W3L258" class="LineNr">258 </span>      size 0x000000000002b808
+<span id="W3L259" class="LineNr">259 </span>    offset 0
+<span id="W3L260" class="LineNr">260 </span>     align 2^6 (64)
+<span id="W3L261" class="LineNr">261 </span>    reloff 0
+<span id="W3L262" class="LineNr">262 </span>    nreloc 0
+<span id="W3L263" class="LineNr">263 </span>     flags 0x00000001
+<span id="W3L264" class="LineNr">264 </span> reserved1 0
+<span id="W3L265" class="LineNr">265 </span> reserved2 0
+<span id="W3L266" class="LineNr">266 </span>Section
+<span id="W3L267" class="LineNr">267 </span>  sectname __common
+<span id="W3L268" class="LineNr">268 </span>   segname __DATA
+<span id="W3L269" class="LineNr">269 </span><span class="DiffChange">      addr 0x0000000108de</span><span class="DiffText">1</span><span class="DiffChange">b00                                                                                             </span>
+<span id="W3L270" class="LineNr">270 </span>      size 0x0000000000003498
+<span id="W3L271" class="LineNr">271 </span>    offset 0
+<span id="W3L272" class="LineNr">272 </span>     align 2^7 (128)
+<span id="W3L273" class="LineNr">273 </span>    reloff 0
+<span id="W3L274" class="LineNr">274 </span>    nreloc 0
+<span id="W3L275" class="LineNr">275 </span>     flags 0x00000001
+<span id="W3L276" class="LineNr">276 </span> reserved1 0
+<span id="W3L277" class="LineNr">277 </span> reserved2 0
+<span id="W3L278" class="LineNr">278 </span>Load command 3
+<span id="W3L279" class="LineNr">279 </span>      cmd LC_SEGMENT_64
+<span id="W3L280" class="LineNr">280 </span><span class="DiffChange">  cmdsize 152</span><span class="DiffChange">                                                                                                             </span>
+<span id="W3L281" class="LineNr">281 </span><span class="DiffChange">  segname __SUI</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L282" class="LineNr">282 </span><span class="DiffChange">   vmaddr 0x0000000108de</span><span class="DiffText">5</span><span class="DiffChange">000                                                                                              </span>
+<span id="W3L283" class="LineNr">283 </span><span class="DiffChange">   vmsize 0x000000000000</span><span class="DiffText">1</span><span class="DiffChange">000                                                                                              </span>
+<span id="W3L284" class="LineNr">284 </span><span class="DiffChange">  fileoff 14859</span><span class="DiffText">4688</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L285" class="LineNr">285 </span><span class="DiffChange"> filesize 1</span><span class="DiffText">431</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L286" class="LineNr">286 </span><span class="DiffChange">  maxprot 0x00000001</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L287" class="LineNr">287 </span><span class="DiffChange"> initprot 0x00000001</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L288" class="LineNr">288 </span><span class="DiffChange">   nsects 1</span><span class="DiffChange">                                                                                                               </span>
+<span id="W3L289" class="LineNr">289 </span><span class="DiffChange">    flags 0x0</span><span class="DiffChange">                                                                                                             </span>
+<span id="W3L290" class="LineNr">290 </span><span class="DiffChange">Section</span><span class="DiffChange">                                                                                                                   </span>
+<span id="W3L291" class="LineNr">291 </span><span class="DiffChange">  sectname d3n0l4nd</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L292" class="LineNr">292 </span><span class="DiffChange">   segname __SUI</span><span class="DiffChange">                                                                                                          </span>
+<span id="W3L293" class="LineNr">293 </span><span class="DiffChange">      addr 0x0000000108de</span><span class="DiffText">5</span><span class="DiffChange">000                                                                                             </span>
+<span id="W3L294" class="LineNr">294 </span><span class="DiffChange">      size 0x0000000000000597</span><span class="DiffChange">                                                                                             </span>
+<span id="W3L295" class="LineNr">295 </span><span class="DiffChange">    offset 14859</span><span class="DiffText">4688</span><span class="DiffChange">                                                                                                      </span>
+<span id="W3L296" class="LineNr">296 </span><span class="DiffChange">     align 2^</span><span class="DiffText">0 (1</span><span class="DiffChange">)                                                                                                        </span>
+<span id="W3L297" class="LineNr">297 </span><span class="DiffChange">    reloff 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W3L298" class="LineNr">298 </span><span class="DiffChange">    nreloc 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W3L299" class="LineNr">299 </span><span class="DiffChange">     flags 0x00000000</span><span class="DiffChange">                                                                                                     </span>
+<span id="W3L300" class="LineNr">300 </span><span class="DiffChange"> reserved1 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W3L301" class="LineNr">301 </span><span class="DiffChange"> reserved2 0</span><span class="DiffChange">                                                                                                              </span>
+<span id="W3L302" class="LineNr">302 </span><span class="DiffChange">Load command 4</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L303" class="LineNr">303 </span><span class="DiffChange">      cmd LC_SEGMENT_64</span><span class="DiffChange">                                                                                                   </span>
+<span id="W3L304" class="LineNr">304 </span>  cmdsize 72
+<span id="W3L305" class="LineNr">305 </span>  segname __LINKEDIT
+<span id="W3L306" class="LineNr">306 </span><span class="DiffChange">   vmaddr 0x0000000108de</span><span class="DiffText">6</span><span class="DiffChange">000                                                                                              </span>
+<span id="W3L307" class="LineNr">307 </span>   vmsize 0x000000000397a000
+<span id="W3L308" class="LineNr">308 </span><span class="DiffChange">  fileoff 148</span><span class="DiffText">598784</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L309" class="LineNr">309 </span> filesize 60266040
+<span id="W3L310" class="LineNr">310 </span>  maxprot 0x00000001
+<span id="W3L311" class="LineNr">311 </span> initprot 0x00000001
+<span id="W3L312" class="LineNr">312 </span>   nsects 0
+<span id="W3L313" class="LineNr">313 </span>    flags 0x0
+<span id="W3L314" class="LineNr">314 </span><span class="DiffChange">Load command </span><span class="DiffText">5</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L315" class="LineNr">315 </span>            cmd LC_DYLD_INFO_ONLY
+<span id="W3L316" class="LineNr">316 </span>        cmdsize 48
+<span id="W3L317" class="LineNr">317 </span><span class="DiffChange">     rebase_off 148</span><span class="DiffText">598784</span><span class="DiffChange">                                                                                                 </span>
+<span id="W3L318" class="LineNr">318 </span>    rebase_size 111680
+<span id="W3L319" class="LineNr">319 </span><span class="DiffChange">       bind_off 1487</span><span class="DiffText">10464</span><span class="DiffChange">                                                                                                 </span>
+<span id="W3L320" class="LineNr">320 </span>      bind_size 880
+<span id="W3L321" class="LineNr">321 </span>  weak_bind_off 0
+<span id="W3L322" class="LineNr">322 </span> weak_bind_size 0
+<span id="W3L323" class="LineNr">323 </span><span class="DiffChange">  lazy_bind_off 1487</span><span class="DiffText">11344</span><span class="DiffChange">                                                                                                 </span>
+<span id="W3L324" class="LineNr">324 </span> lazy_bind_size 9160
+<span id="W3L325" class="LineNr">325 </span><span class="DiffChange">     export_off 1487</span><span class="DiffText">20504</span><span class="DiffChange">                                                                                                 </span>
+<span id="W3L326" class="LineNr">326 </span>    export_size 3696
+<span id="W3L327" class="LineNr">327 </span><span class="DiffChange">Load command </span><span class="DiffText">6</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L328" class="LineNr">328 </span>     cmd LC_SYMTAB
+<span id="W3L329" class="LineNr">329 </span> cmdsize 24
+<span id="W3L330" class="LineNr">330 </span><span class="DiffChange">  symoff 149</span><span class="DiffText">300456</span><span class="DiffChange">                                                                                                        </span>
+<span id="W3L331" class="LineNr">331 </span>   nsyms 515061
+<span id="W3L332" class="LineNr">332 </span><span class="DiffChange">  stroff 1575</span><span class="DiffText">45200</span><span class="DiffChange">                                                                                                        </span>
+<span id="W3L333" class="LineNr">333 </span> strsize 51319624
+<span id="W3L334" class="LineNr">334 </span><span class="DiffChange">Load command </span><span class="DiffText">7</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L335" class="LineNr">335 </span>            cmd LC_DYSYMTAB
+<span id="W3L336" class="LineNr">336 </span>        cmdsize 80
+<span id="W3L337" class="LineNr">337 </span>      ilocalsym 0
+<span id="W3L338" class="LineNr">338 </span>      nlocalsym 514429
+<span id="W3L339" class="LineNr">339 </span>     iextdefsym 514429
+<span id="W3L340" class="LineNr">340 </span>     nextdefsym 161
+<span id="W3L341" class="Folded">341 </span><span class="Folded">+--  2 lines: iundefsym 514590------------------------------------------------------------------------------------------------</span>
+<span id="W3L343" class="LineNr">343 </span>         tocoff 0
+<span id="W3L344" class="LineNr">344 </span>           ntoc 0
+<span id="W3L345" class="LineNr">345 </span>      modtaboff 0
+<span id="W3L346" class="LineNr">346 </span>        nmodtab 0
+<span id="W3L347" class="LineNr">347 </span>   extrefsymoff 0
+<span id="W3L348" class="LineNr">348 </span>    nextrefsyms 0
+<span id="W3L349" class="LineNr">349 </span><span class="DiffChange"> indirectsymoff 1575</span><span class="DiffText">41432</span><span class="DiffChange">                                                                                                 </span>
+<span id="W3L350" class="LineNr">350 </span>  nindirectsyms 942
+<span id="W3L351" class="LineNr">351 </span>      extreloff 0
+<span id="W3L352" class="LineNr">352 </span>        nextrel 0
+<span id="W3L353" class="LineNr">353 </span>      locreloff 0
+<span id="W3L354" class="LineNr">354 </span>        nlocrel 0
+<span id="W3L355" class="LineNr">355 </span><span class="DiffChange">Load command </span><span class="DiffText">8</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L356" class="LineNr">356 </span>          cmd LC_LOAD_DYLINKER
+<span id="W3L357" class="LineNr">357 </span>      cmdsize 32
+<span id="W3L358" class="LineNr">358 </span>         name /usr/lib/dyld (offset 12)
+<span id="W3L359" class="LineNr">359 </span><span class="DiffChange">Load command </span><span class="DiffText">9</span><span class="DiffChange">                                                                                                            </span>
+<span id="W3L360" class="LineNr">360 </span>     cmd LC_UUID
+<span id="W3L361" class="LineNr">361 </span> cmdsize 24
+<span id="W3L362" class="LineNr">362 </span>    uuid F252F6AB-D7C8-394B-A01E-D22608C83EFB
+<span id="W3L363" class="LineNr">363 </span><span class="DiffChange">Load command </span><span class="DiffText">10</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L364" class="LineNr">364 </span>      cmd LC_VERSION_MIN_MACOSX
+<span id="W3L365" class="LineNr">365 </span>  cmdsize 16
+<span id="W3L366" class="LineNr">366 </span>  version 10.12
+<span id="W3L367" class="LineNr">367 </span>      sdk 14.2
+<span id="W3L368" class="LineNr">368 </span><span class="DiffChange">Load command 1</span><span class="DiffText">1</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L369" class="LineNr">369 </span>      cmd LC_SOURCE_VERSION
+<span id="W3L370" class="LineNr">370 </span>  cmdsize 16
+<span id="W3L371" class="LineNr">371 </span>  version 0.0
+<span id="W3L372" class="LineNr">372 </span><span class="DiffChange">Load command 1</span><span class="DiffText">2</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L373" class="LineNr">373 </span>       cmd LC_MAIN
+<span id="W3L374" class="LineNr">374 </span>   cmdsize 24
+<span id="W3L375" class="LineNr">375 </span><span class="DiffChange">  entryoff 29</span><span class="DiffText">31536</span><span class="DiffChange">                                                                                                        </span>
+<span id="W3L376" class="LineNr">376 </span> stacksize 0
+<span id="W3L377" class="LineNr">377 </span><span class="DiffChange">Load command 1</span><span class="DiffText">3</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L378" class="LineNr">378 </span>          cmd LC_LOAD_DYLIB
+<span id="W3L379" class="LineNr">379 </span>      cmdsize 104
+<span id="W3L380" class="LineNr">380 </span>         name /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (offset 24)
+<span id="W3L381" class="LineNr">381 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L382" class="LineNr">382 </span>      current version 2202.0.0
+<span id="W3L383" class="LineNr">383 </span>compatibility version 150.0.0
+<span id="W3L384" class="LineNr">384 </span><span class="DiffChange">Load command 1</span><span class="DiffText">4</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L385" class="LineNr">385 </span>          cmd LC_LOAD_DYLIB
+<span id="W3L386" class="LineNr">386 </span>      cmdsize 104
+<span id="W3L387" class="LineNr">387 </span>         name /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (offset 24)
+<span id="W3L388" class="LineNr">388 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L389" class="LineNr">389 </span>      current version 1226.0.0
+<span id="W3L390" class="LineNr">390 </span>compatibility version 1.0.0
+<span id="W3L391" class="LineNr">391 </span><span class="DiffChange">Load command 1</span><span class="DiffText">5</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L392" class="LineNr">392 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W3L393" class="LineNr">393 </span>      cmdsize 96
+<span id="W3L394" class="LineNr">394 </span>         name /System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore (offset 24)
+<span id="W3L395" class="LineNr">395 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L396" class="LineNr">396 </span>      current version 1.11.0
+<span id="W3L397" class="LineNr">397 </span>compatibility version 1.2.0
+<span id="W3L398" class="LineNr">398 </span><span class="DiffChange">Load command 1</span><span class="DiffText">6</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L399" class="LineNr">399 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W3L400" class="LineNr">400 </span>      cmdsize 88
+<span id="W3L401" class="LineNr">401 </span>         name /System/Library/Frameworks/Metal.framework/Versions/A/Metal (offset 24)
+<span id="W3L402" class="LineNr">402 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L403" class="LineNr">403 </span>      current version 341.35.0
+<span id="W3L404" class="LineNr">404 </span>compatibility version 1.0.0
+<span id="W3L405" class="LineNr">405 </span><span class="DiffChange">Load command 1</span><span class="DiffText">7</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L406" class="LineNr">406 </span>          cmd LC_LOAD_DYLIB
+<span id="W3L407" class="LineNr">407 </span>      cmdsize 56
+<span id="W3L408" class="LineNr">408 </span>         name /usr/lib/libSystem.B.dylib (offset 24)
+<span id="W3L409" class="LineNr">409 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L410" class="LineNr">410 </span>      current version 1336.61.1
+<span id="W3L411" class="LineNr">411 </span>compatibility version 1.0.0
+<span id="W3L412" class="LineNr">412 </span><span class="DiffChange">Load command 1</span><span class="DiffText">8</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L413" class="LineNr">413 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W3L414" class="LineNr">414 </span>      cmdsize 104
+<span id="W3L415" class="LineNr">415 </span>         name /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics (offset 24)
+<span id="W3L416" class="LineNr">416 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L417" class="LineNr">417 </span>      current version 1774.2.3
+<span id="W3L418" class="LineNr">418 </span>compatibility version 64.0.0
+<span id="W3L419" class="LineNr">419 </span><span class="DiffChange">Load command 1</span><span class="DiffText">9</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L420" class="LineNr">420 </span>          cmd LC_LOAD_DYLIB
+<span id="W3L421" class="LineNr">421 </span>      cmdsize 56
+<span id="W3L422" class="LineNr">422 </span>         name /usr/lib/libobjc.A.dylib (offset 24)
+<span id="W3L423" class="LineNr">423 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L424" class="LineNr">424 </span>      current version 228.0.0
+<span id="W3L425" class="LineNr">425 </span>compatibility version 1.0.0
+<span id="W3L426" class="LineNr">426 </span><span class="DiffChange">Load command </span><span class="DiffText">20</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L427" class="LineNr">427 </span>          cmd LC_LOAD_DYLIB
+<span id="W3L428" class="LineNr">428 </span>      cmdsize 56
+<span id="W3L429" class="LineNr">429 </span>         name /usr/lib/libiconv.2.dylib (offset 24)
+<span id="W3L430" class="LineNr">430 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L431" class="LineNr">431 </span>      current version 7.0.0
+<span id="W3L432" class="LineNr">432 </span>compatibility version 7.0.0
+<span id="W3L433" class="LineNr">433 </span><span class="DiffChange">Load command 2</span><span class="DiffText">1</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L434" class="LineNr">434 </span>          cmd LC_LOAD_WEAK_DYLIB
+<span id="W3L435" class="LineNr">435 </span>      cmdsize 120
+<span id="W3L436" class="LineNr">436 </span>         name /System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders (offset 24)
+<span id="W3L437" class="LineNr">437 </span>   time stamp 2 Thu Jan  1 05:30:02 1970
+<span id="W3L438" class="LineNr">438 </span>      current version 127.1.3
+<span id="W3L439" class="LineNr">439 </span>compatibility version 1.0.0
+<span id="W3L440" class="LineNr">440 </span><span class="DiffChange">Load command 2</span><span class="DiffText">2</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L441" class="LineNr">441 </span>      cmd LC_FUNCTION_STARTS
+<span id="W3L442" class="LineNr">442 </span>  cmdsize 16
+<span id="W3L443" class="LineNr">443 </span><span class="DiffChange">  dataoff 1487</span><span class="DiffText">24200</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L444" class="LineNr">444 </span> datasize 576256
+<span id="W3L445" class="LineNr">445 </span><span class="DiffChange">Load command 2</span><span class="DiffText">3</span><span class="DiffChange">                                                                                                           </span>
+<span id="W3L446" class="LineNr">446 </span>      cmd LC_DATA_IN_CODE
+<span id="W3L447" class="LineNr">447 </span>  cmdsize 16
+<span id="W3L448" class="LineNr">448 </span><span class="DiffChange">  dataoff 149</span><span class="DiffText">300456</span><span class="DiffChange">                                                                                                       </span>
+<span id="W3L449" class="LineNr">449 </span> datasize 0
+</pre>
+</div></td>
+</tr>
+</table>
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->
+
