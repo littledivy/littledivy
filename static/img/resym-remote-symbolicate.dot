@@ -1,0 +1,50 @@
+digraph Release {
+  rankdir=TB;
+  bgcolor="#fffdf7";
+  node [shape=box, fontname="monospace", fontsize=9, style=filled, fillcolor="#f9f9f9"];
+  edge [fontname="monospace", fontsize=8, color="#657b83"];
+
+  // --- clusters / packages ---
+  subgraph cluster_release_yml {
+    label="release.yml";
+    color="#eee8d5";
+    style="rounded,filled";
+    fillcolor="#fdf6e3";
+
+    Deno [label="deno", shape=box3d, fillcolor="#fdf6e3"];
+    Pdb [label=".pdb"];
+    Dsym [label=".dSYM"];
+    Elf [label=".elf"];
+    Symcache [label="symcache", fillcolor="#eee8d5"];
+  }
+
+  subgraph cluster_gcs {
+    color="#93a1a1";
+    style="rounded,dashed";
+    fillcolor="#f8f8f8";
+    GCS [label="gcs", shape=cloud, fillcolor="#ffffff"];
+  }
+
+  subgraph cluster_panic {
+    label="panic.deno.com";
+    color="#93a1a1";
+    style="rounded,dashed";
+    fillcolor="#f8f8f8";
+    symbolicate [label="symbolicate()", shape=ellipse, fillcolor="#fdf6e3"];
+    addrmap [label="KV address mapping", shape=cylinder, fillcolor="#f9f9f9"];
+
+  }
+
+  // --- relationships ---
+  Pdb -> Symcache [label="", dir=forward];
+  Dsym -> Symcache;
+  Elf -> Symcache;
+  Symcache -> GCS [label="", dir=forward];
+
+  Deno -> symbolicate;
+  symbolicate -> GCS [dir=back];
+
+  symbolicate -> addrmap [style=dashed, color="#b58900"];
+
+}
+

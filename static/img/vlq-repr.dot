@@ -1,0 +1,44 @@
+digraph VLQStringBitsReal {
+  rankdir=TB;
+  graph [bgcolor="#fffdf7", splines=false, nodesep=0.3, ranksep=0.3];
+  node [shape=plaintext, fontname="monospace", fontsize=8];
+
+  buffer [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+      <!-- continuation bits -->
+      <TR>
+        <TD ALIGN="CENTER"><FONT COLOR="#b58900"><B>1</B></FONT></TD>
+        <TD ALIGN="CENTER"><FONT COLOR="#b58900"><B>1</B></FONT></TD>
+        <TD ALIGN="CENTER"><FONT COLOR="#b58900"><B>0</B></FONT></TD>
+        <TD ALIGN="CENTER"><FONT COLOR="#268bd2"><B>1</B></FONT></TD>
+        <TD ALIGN="CENTER"><FONT COLOR="#268bd2"><B>0</B></FONT></TD>
+        <TD ALIGN="CENTER"><FONT COLOR="#859900"><B>0</B></FONT></TD>
+      </TR>
+
+      <!-- frame names -->
+      <TR>
+        <TD ALIGN="CENTER" COLSPAN="3"><FONT COLOR="#b58900"><B>Main()</B></FONT></TD>
+        <TD ALIGN="CENTER" COLSPAN="2"><FONT COLOR="#268bd2"><B>FuncA()</B></FONT></TD>
+        <TD ALIGN="CENTER" COLSPAN="1"><FONT COLOR="#859900"><B>FuncB()</B></FONT></TD>
+      </TR>
+
+      <!-- byte cells -->
+      <TR>
+        <TD BGCOLOR="#b58900" WIDTH="45" ALIGN="CENTER">0xC8</TD>
+        <TD BGCOLOR="#b58900" WIDTH="45" ALIGN="CENTER">0x92</TD>
+        <TD BGCOLOR="#b58900" WIDTH="45" ALIGN="CENTER">0x34</TD>
+        <TD BGCOLOR="#268bd2" WIDTH="45" ALIGN="CENTER">0xF8</TD>
+        <TD BGCOLOR="#268bd2" WIDTH="45" ALIGN="CENTER">0x01</TD>
+        <TD BGCOLOR="#859900" WIDTH="45" ALIGN="CENTER">0x4A</TD>
+      </TR>
+
+      <!-- bottom: offsets -->
+      <TR>
+        <TD COLSPAN="3" ALIGN="CENTER"><FONT COLOR="#b58900">0x001234</FONT></TD>
+        <TD COLSPAN="2" ALIGN="CENTER"><FONT COLOR="#268bd2">0x0000F8</FONT></TD>
+        <TD COLSPAN="1" ALIGN="CENTER"><FONT COLOR="#859900">0x00004A</FONT></TD>
+      </TR>
+    </TABLE>
+  >];
+}
+

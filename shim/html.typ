@@ -57,3 +57,4 @@
 #let html-shim(doc) = context {
   default-html(get-document-info())(doc)
 }
+

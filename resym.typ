@@ -17,7 +17,7 @@
 
 Debug information makes up a significant portion of the size of a binary.
 
-For applications that are distributed to end-users, it is common to strip debug information to reduce the size of the binary. This makes it difficult to debug crashes because the stack trace is not symbolicated. One way to work around this is to collect crash reports from users and symbolicate them manually.
+For applications that are distributed to end-users, it is common to strip debug information to reduce the size of the binary but that makes it difficult to debug crashes. One way to work around this is to collect crash reports from users and symbolicate them remotely.
 
 resym is a tool that collects and seralizes win64 stack traces into URF-safe strings without compromising user privacy. It can be used to symbolicate stack traces on a remote server.
 
@@ -31,11 +31,18 @@ resym is a tool that collects and seralizes win64 stack traces into URF-safe str
 
 On x86_64 Windows, resym uses `RtlLookupFunctionEntry`-based stack unwinding to collect the instruction pointers, starting from the current %rip register.
 
+#figure(
+  image("./static/img/unwind-win64-stack.svg", width: 60%),
+)
+
+// #pad() doesnt work with HTML export
+#html.br()
+
 We first capture the caller's context using `RtlCaptureContext` and then walk the stack using `RtlLookupFunctionEntry` and `RtlVirtualUnwind`. This requires thread to be suspended (except for the current thread) which is the case for panic handlers.
 
 ```rust
 std::panic::set_hook(Box::new(|_| {
-  resym::win64::trace();
+  let trace_str = resym::win64::trace();
 });
 ```
 
@@ -45,12 +52,11 @@ Before encoding, each stack address is calculated by subtracting the base addres
 
 A "trace string" is a sequence of URL-safe Base64 VLQ-encoded strings. This string can be safely shared with the crash reporter and sent to a remote server for symbolication.
 
-```rust
-std::panic::set_hook(Box::new(|info| {
-  // upvCsknB2z8xrB-w7xrB-0qxrBs15xrBonm5zBqsuB2sjC8gMiqiCylyvrB0niCy1uBwltmzBut0L4y_uB.
-  let trace_str = resym::win64::trace();
-}));
-```
+#figure(
+  image("./static/img/vlq-repr.svg", width: 100%),
+)
+
+Here's an example of a trace string: `upvCsknB2z8xrB-w7xrB-0qxrBs15xrBonm5zBqsuB2sjC8gMiqiCylyvrB0niCy1uBwltmzBut0L4y_uB`
 
 == Symbolication
 
@@ -69,7 +75,7 @@ symbolicate(
 )?;
 ```
 
-You can bring your own formatter too.
+You can bring your own `Formatter` too.
 
 ```rust
 const CSS: &str = include_str!("style.css");
@@ -89,7 +95,10 @@ impl Formatter for HtmlFormatter<'_> {
   ) {
     for frame in &frame.frames {
       let source_str =
-        maybe_link_source(frame.file.as_deref().unwrap_or("??"), frame.line);
+        maybe_link_source(
+          frame.file.as_deref().unwrap_or("??"),
+          frame.line
+        );
       let _ = writeln!(
         self.writer,
         "     <li>0x{:x}: <code>{}</code> at {}</li>",
@@ -101,9 +110,23 @@ impl Formatter for HtmlFormatter<'_> {
   }
 }
 ```
+== Infrastructure
+
+resym is used in Deno for Rust panic trace collection.
+
+When a crash occurs, resym encodes the collected instruction pointers into a compact “trace string” and sends it to the remote symbolication service.
+
+Deno's release pipeline uploads debug artifacts (.pdb, .dSYM, .elf) to a storage bucket after generating compact symcache files. These caches are essentially fast symbol lookup tables.
+
+#figure(
+  image("./static/img/resym-remote-symbolicate.svg", width: 100%),
+)
+
+A remote service (panic.deno.com) exposes an endpoint that accepts these encoded traces. When a trace is received:
+- The service looks up the matching symcache in GCS.
+- Resolves instruction addresses into human-readable function frames.
+- Caches the result to a key-value database (KV) which provides fast address-to-module cache for future queries.
 
 = References
 
 https://docs.rs/pdb-addr2line/latest/pdb_addr2line/
-
-

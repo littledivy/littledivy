@@ -9,8 +9,8 @@
 
 #title()
 
-hello; welcome to my small patch of the internet.  
-i spend most of my time working on the #html.elem("a", attrs: (href: "https://deno.com"), [deno runtime]),  
+hello; welcome to my small patch of the internet.
+i spend most of my time working on the #html.elem("a", attrs: (href: "https://deno.com"), [deno runtime]),
 and my main in LoL is Caitlyn.
 
 i like digging into runtimes, compilers, cryptography and my bestie's lore.
@@ -20,7 +20,7 @@ i like digging into runtimes, compilers, cryptography and my bestie's lore.
 
   #html.elem("p", [
     #set list(marker: [--])
-    - #html.elem("a", attrs: (href: "https://youtu.be/qt3-3FkPqQ8?t=450"), [kernel to runtime]) — iit kanpur OOSC 3, 2025.  
+    - #html.elem("a", attrs: (href: "https://youtu.be/qt3-3FkPqQ8?t=450"), [kernel to runtime]) — iit kanpur OOSC 3, 2025.
       how javascript calls become syscalls: event loops, epoll, and async i/o.
     - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=vINOqgn_ik8"), [deno internals: op2 driver]) — about deno_core internals, runtime call overhead, and js\<-\>rust translation layer.
     - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=RKjVcl62J9w"), [building games with deno ffi]) — how to build a cross-platform game using SDL2 in JS.
@@ -32,18 +32,18 @@ i like digging into runtimes, compilers, cryptography and my bestie's lore.
 
 == recent posts
 
-    #set list(marker: [--])
-    - #html.elem("a", attrs: (href: "/resym"), [remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
-    - #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
-    - #html.elem("a", attrs: (href: "/turbocall"), [turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.  
-    - #html.elem("a", attrs: (href: "/sui"), [sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.  
+#set list(marker: [--])
+- #html.elem("a", attrs: (href: "/resym"), [remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
+- #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
+- #html.elem("a", attrs: (href: "/turbocall"), [turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.
+- #html.elem("a", attrs: (href: "/sui"), [sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.
 
 #html.elem("div", attrs: (class: "note"), [
   #html.elem("div", attrs: (class: "adm-title"), [miscellany])
 
   #html.elem("p", [
     #set list(marker: [--])
-    - you may find me rambling on #html.elem("a", attrs: (href: "https://x.com/undefined_void"), [x]).  
+    - you may find me rambling on #html.elem("a", attrs: (href: "https://x.com/undefined_void"), [x]).
     - email: #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
     - github: #html.elem("a", attrs: (href: "https://github.com/littledivy"), [https://github.com/littledivy])
   ])

@@ -15,6 +15,7 @@
         buildInputs = with pkgs; [
 				  typst
 					typstyle
+					graphviz
         ];
       };
     });
