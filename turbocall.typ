@@ -131,7 +131,7 @@ Let's see how this compares against other runtimes.
 Benchmark comparing Deno, Bun and Node.js on Sqlite and DuckDB
 
 #figure(
-  "/static/img/deno.png",
+  image("/static/img/deno.png", width: 100%),
 )
 
 This is running sqlite3 and duckdb benchmarks on Deno, Bun and Node.js. See benchmark source.^3
@@ -141,7 +141,7 @@ This is running sqlite3 and duckdb benchmarks on Deno, Bun and Node.js. See benc
 Slide from the DenoFest talk:
 
 #figure(
-  "/static/img/turbocall-slide.png",
+  image("/static/img/turbocall-slide.png", width: 100%),
 )
 
 = Future
