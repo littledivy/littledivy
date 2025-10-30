@@ -151,5 +151,3 @@ It will be interesting to see how Static Hermes^4 will compare against V8 fast c
 I'm also excited about just-js/lo^5 which is a WIP low-level JS runtime that aims to generate V8 fast calls bindings ahead-of-time (similar to Deno) but also allow for a more engine-agnostic design where you could swap out V8 for other engines like Hermes, Quickjs.
 
 That's it! Feel free to follow me on Twitter: https://twitter.com/undefined_void
-
-This document is available as PDF: https://littledivy.com/turbocall.pdf

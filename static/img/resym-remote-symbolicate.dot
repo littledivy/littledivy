@@ -45,6 +45,5 @@ digraph Release {
   symbolicate -> GCS [dir=back];
 
   symbolicate -> addrmap [style=dashed, color="#b58900"];
-
 }
 
