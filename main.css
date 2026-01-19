@@ -58,13 +58,13 @@ sup {
 }
 
 html {
-  font-size: 18px;
+  font-size: 16.2px;
   height: 100%;
   font-family: gitan, alegreya, palatino, serif;
 }
 @media screen and (min-width: 800px) {
   html {
-    font-size: 19px;
+    font-size: 17.1px;
   }
 }
 
@@ -159,13 +159,13 @@ figure > svg {
 }
 @charset "UTF-8";
 html {
-  font-size: 18px;
+  font-size: 16.2px;
   height: 100%;
   font-family: gitan, alegreya, palatino, serif;
 }
 @media screen and (min-width: 800px) {
   html {
-    font-size: 19px;
+    font-size: 17.1px;
   }
 }
 @media print {
@@ -463,7 +463,7 @@ h1 + ul, h1 + ol, h1 + .links ul:first-child, h2 + ul, h2 + ol, h2 + .links ul:f
 }
 
 ul li::before {
-  content: "–";
+  content: "•";
   margin-right: 1rem;
   float: left;
   width: 0;
@@ -729,5 +729,26 @@ audio {
 :lang(ja) {
   font-family: gitan, "Hiragino Mincho ProN", YuMincho, "Yu Mincho", "Noto Serif CJK JP", "Source Han Serif JP", "MS Mincho", HiraMinProN-W3, serif;
   font-weight: 500;
+}
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #d0d0d0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+footer a {
+  color: #666;
+}
+
+footer a:hover {
+  color: #c44d32;
 }
 
