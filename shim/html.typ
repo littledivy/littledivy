@@ -23,6 +23,7 @@
   html.head(..args.named(), {
     html.meta(charset: "utf-8")
     html.meta(name: "viewport", content: "width=device-width, initial-scale=1")
+    html.elem("script", attrs: (src: "theme.js"))
     html.elem("link", attrs: (rel: "stylesheet", href: "main.css"))
     if info.title != none {
       html.title(info.title)
@@ -52,6 +53,16 @@
   let head = if head == auto { default-head(info) } else { head }
   let body = if args.pos().len() > 0 { args.pos().first() } else { none }
   html.html(head() + html.body(body), lang: info.locale, ..args.named())
+}
+
+#let nav-bar() = {
+  html.elem("nav", [
+    #html.elem("a", attrs: (href: "/"), [Home])
+    #text("   ")
+    #html.elem("a", attrs: (href: "https://github.com/littledivy?tab=repositories"), [Projects])
+    #text("   ")
+    #html.elem("button", attrs: (id: "theme-toggle", onclick: "toggleTheme()", "aria-label": "Toggle dark mode"), [Dark])
+  ])
 }
 
 #let html-shim(doc) = context {

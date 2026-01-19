@@ -8,6 +8,8 @@
 
 #show: html-shim
 
+#nav-bar()
+
 #title()
 
 #show heading.where(level: 1): it => {

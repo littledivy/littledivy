@@ -8,6 +8,8 @@
 
 #show: html-shim
 
+#nav-bar()
+
 #title()
 
 = Description

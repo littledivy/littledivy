@@ -3,11 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="theme.js">
+    </script>
     <link rel="stylesheet" href="main.css">
     <title>Inject RO data into existing executables</title>
     <meta name="description" content="injecting custom section with arbitrary data into prebuilt executables">
   </head>
   <body>
+    <nav>
+      <p><a href="/">Home</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;&#x20;</span><a href="https://github.com/littledivy?tab=repositories">Projects</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;</span></p>
+      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
+    </nav>
     <h1>Inject RO data into existing executables</h1>
     <h2>Description</h2>
     <p>This document describes inner workings of sui, an injection tool for embedding arbitrary data into precompiled executables (ELF, PE and Mach-O).</p>

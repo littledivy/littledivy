@@ -3,12 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="theme.js">
+    </script>
     <link rel="stylesheet" href="main.css">
     <title>resym: Remote stack symbolication</title>
     <meta name="description" content="Remote stack symboication technique">
     <meta name="keywords" content="symbolicate, debuginfo, dwarf">
   </head>
   <body>
+    <nav>
+      <p><a href="/">Home</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;&#x20;</span><a href="https://github.com/littledivy?tab=repositories">Projects</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;</span></p>
+      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
+    </nav>
     <h1>resym: Remote stack symbolication</h1>
     <p>Debug information makes up a significant portion of the size of a binary.</p>
     <p>For applications that are distributed to end-users, it is common to strip debug information to reduce the size of the binary but that makes it difficult to debug crashes. One way to work around this is to collect crash reports from users and symbolicate them remotely.</p>

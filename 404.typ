@@ -7,6 +7,8 @@
 
 #show: html-shim
 
+#nav-bar()
+
 #title()
 
 did you get lost? #html.elem("a", attrs: (href: "/"), [go to root])

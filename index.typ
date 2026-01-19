@@ -1,51 +1,39 @@
 #import "./shim/html.typ": *
 
 #set document(
-  title: "me@littledivy.com",
+  title: "littledivy.com",
   description: "Divy's personal page. Software writeups and more",
 )
 
 #show: html-shim
 
+#nav-bar()
+
 #title()
 
-hello; welcome to my small patch of the internet.
-i spend most of my time working on the #html.elem("a", attrs: (href: "https://deno.com"), [deno runtime]),
-and my main in LoL is Caitlyn.
+Hello; I'm Divy. Welcome to my small patch of the internet. I work at #html.elem("a", attrs: (href: "https://deno.com"), [Deno]). I maintain various FOSS related to runtimes, compilers, cryptography on #html.elem("a", attrs: (href: "https://github.com/littledivy"), [Github]). Reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
 
-i like digging into runtimes, compilers, cryptography and my bestie's lore.
-
-#html.elem("div", attrs: (class: "note"), [
-  #html.elem("div", attrs: (class: "adm-title"), [recent talks])
-
-  #html.elem("p", [
-    #set list(marker: [--])
-    - #html.elem("a", attrs: (href: "https://youtu.be/qt3-3FkPqQ8?t=450"), [kernel to runtime]) — iit kanpur OOSC 3, 2025.
-      how javascript calls become syscalls: event loops, epoll, and async i/o.
-    - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=vINOqgn_ik8"), [deno internals: op2 driver]) — about deno_core internals, runtime call overhead, and js\<-\>rust translation layer.
-    - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=RKjVcl62J9w"), [building games with deno ffi]) — how to build a cross-platform game using SDL2 in JS.
-    - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=gA152Hun8cI"), [webgpu windowing]) — about rendering a gpu-accelarated window using webgpu and window surface APIs.
-    - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=5wlZDw942J8"), [injecting r/o data into binaries]) - cross-platform tool that powers deno's compiler.
-    - #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=ssYN4rFWRIU"), [jit compiler for dynamic FFI]) - _blazing fast_ compiler for generating trampolines for ffi calls for V8.
-  ])
-])
-
-== recent posts
+== Posts
 
 #set list(marker: [--])
-- #html.elem("a", attrs: (href: "/resym"), [remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
+- #html.elem("a", attrs: (href: "/resym"), [Remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
 - #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
-- #html.elem("a", attrs: (href: "/turbocall"), [turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.
-- #html.elem("a", attrs: (href: "/sui"), [sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.
+- #html.elem("a", attrs: (href: "/turbocall"), [Turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.
+- #html.elem("a", attrs: (href: "/sui"), [Sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.
 
-#html.elem("div", attrs: (class: "note"), [
-  #html.elem("div", attrs: (class: "adm-title"), [miscellany])
+== Talks
 
+#set list(marker: [--])
+- #html.elem("a", attrs: (href: "https://youtu.be/qt3-3FkPqQ8?t=450"), [Kernel to runtime]) — IIT Kanpur OOSC 3, 2025. how javascript calls become syscalls: event loops, epoll, and async i/o.
+- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=vINOqgn_ik8"), [Deno internals: op2 driver]) — about deno_core internals, runtime call overhead, and js\<-\>rust translation layer.
+- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=RKjVcl62J9w"), [Building games with deno ffi]) — how to build a cross-platform game using SDL2 in JS.
+- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=gA152Hun8cI"), [WebGPU windowing]) — about rendering a gpu-accelarated window using webgpu and window surface APIs.
+- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=5wlZDw942J8"), [Injecting r/o data into binaries]) — cross-platform tool that powers deno's compiler.
+- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=ssYN4rFWRIU"), [JIT compiler for dynamic FFI]) — _blazing fast_ compiler for generating trampolines for ffi calls for V8.
+
+#html.elem("footer", [
   #html.elem("p", [
-    #set list(marker: [--])
-    - you may find me rambling on #html.elem("a", attrs: (href: "https://x.com/undefined_void"), [x]).
-    - email: #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
-    - github: #html.elem("a", attrs: (href: "https://github.com/littledivy"), [https://github.com/littledivy])
+    #html.elem("a", attrs: (href: "https://x.com/undefined_void"), [x]) · #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [email]) · #html.elem("a", attrs: (href: "https://github.com/littledivy"), [github])
   ])
 ])
 

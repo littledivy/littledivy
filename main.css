@@ -1,3 +1,52 @@
+/* CSS Variables for theming */
+:root {
+  --color-bg: #ffffff;
+  --color-text: #333;
+  --color-text-light: #666;
+  --color-text-quote: #444;
+  --color-link: #c44d32;
+  --color-selection: #fcd6b9;
+  --color-selection-alt: #b9d6fc;
+  --color-hr: #778;
+  --color-code-bg: #fbfaf7;
+  --color-code-bg-in: #f1f1ee;
+  --color-code-bg-out: #fbfbf8;
+  --color-code-selection: #e0e0dc;
+  --color-border: #d0d0d0;
+  --color-shadow: #d9d9df;
+  --color-note-bg: #f3f2ef;
+  --color-note-title: #dad9d6;
+  --color-mgnote-border: #cf7400;
+  --color-prompt-in: #30599f;
+  --color-prompt-out: #d84315;
+  --color-darkzone: #fffdf7;
+  --color-red: #dc2a2a;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;
+  --color-text: #e8e6e3;
+  --color-text-light: #999;
+  --color-text-quote: #b8b6b3;
+  --color-link: #ff8a65;
+  --color-selection: #4a3520;
+  --color-selection-alt: #2a4060;
+  --color-hr: #666;
+  --color-code-bg: #2a2a2a;
+  --color-code-bg-in: #333333;
+  --color-code-bg-out: #2c2c2c;
+  --color-code-selection: #404040;
+  --color-border: #404040;
+  --color-shadow: #000000;
+  --color-note-bg: #252525;
+  --color-note-title: #333;
+  --color-mgnote-border: #ff9f40;
+  --color-prompt-in: #5a9aff;
+  --color-prompt-out: #ff8a40;
+  --color-darkzone: #fffdf7;
+  --color-red: #ff6b6b;
+}
+
 /* minimal selections from sanitize.css */
 * {
   padding: 0;
@@ -69,12 +118,12 @@ html {
 }
 
 ::selection {
-  background-color: #b9d6fc;
+  background-color: var(--color-selection-alt);
 }
 
 body {
-  background-color: #f7fdff;
-  color: #333;
+  color: var(--color-text);
+  background-color: var(--color-bg);
   font-size: 1rem;
   margin: auto;
   padding: 2.5rem 0 5rem 0;
@@ -103,7 +152,7 @@ p em {
 }
 
 hr {
-  border-top: 2px solid #778;
+  border-top: 2px solid var(--color-hr);
   margin: 0.4rem auto;
 }
 hr.interlude {
@@ -112,7 +161,7 @@ hr.interlude {
   margin: 0.5rem auto;
 }
 hr.interlude::before {
-  color: #778;
+  color: var(--color-hr);
   font-family: "k.iosevka", "fira mono", monospace;
   content: "///\\\\\\///";
 }
@@ -175,12 +224,12 @@ html {
 }
 
 ::selection {
-  background-color: #fcd6b9;
+  background-color: var(--color-selection);
 }
 
 body {
-  background-color: #fffdf7;
-  color: #333;
+  color: var(--color-text);
+  background-color: var(--color-bg);
   font-size: 1rem;
   margin: auto;
   padding: 2.5rem 0 5rem 0;
@@ -313,12 +362,12 @@ p em {
 
 a {
   text-decoration: none;
-  color: #c44d32;
+  color: var(--color-link);
 }
 a:focus {
   outline-width: 2px;
   outline-style: dashed;
-  outline-color: #c44d32;
+  outline-color: var(--color-link);
 }
 a:hover {
   text-decoration: underline;
@@ -344,25 +393,35 @@ div > code, li code, p code {
   font-size: 0.86rem;
 }
 
+nav {
+	margin-bottom: 0.8rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+nav > a {
+	text-decoration: underline;
+}
+
 pre {
-  background-color: #fbfaf7;
+  background-color: var(--color-code-bg);
   padding: 0.5rem 1rem;
   -moz-tab-size: 2;
   tab-size: 2;
   overflow-x: auto;
   word-break: keep-all;
   border-radius: 0.2rem;
-  box-shadow: 1px 1px 4px #d9d9df;
   margin-bottom: 0.9rem;
 }
 pre ::selection {
-  background-color: #e0e0dc;
+  background-color: var(--color-code-selection);
 }
 .codein pre {
-  background-color: #f1f1ee;
+  background-color: var(--color-code-bg-in);
 }
 .codeout pre {
-  background-color: #fbfbf8;
+  background-color: var(--color-code-bg-out);
 }
 pre.no-border, pre.ascii, pre.fb {
   background: none;
@@ -410,7 +469,7 @@ q {
   font-family: "alegreya sans";
   font-size: 1.2em;
   font-style: italic;
-  color: #444;
+  color: var(--color-text-quote);
   margin-left: -0.3em;
 }
 
@@ -522,7 +581,7 @@ _::-webkit-full-page-media, _:future, :root ul li {
 }
 
 hr {
-  border-top: 2px solid #778;
+  border-top: 2px solid var(--color-hr);
   margin: 0.4rem auto;
 }
 h1 + hr {
@@ -530,7 +589,7 @@ h1 + hr {
 }
 hr.mid {
   background: none;
-  border-top: 2px dashed #778;
+  border-top: 2px dashed var(--color-hr);
 }
 hr.interlude {
   text-align: center;
@@ -538,7 +597,7 @@ hr.interlude {
   margin: 1rem auto;
 }
 hr.interlude::before {
-  color: #778;
+  color: var(--color-hr);
   font-family: "k.iosevka", "fira mono", monospace;
   content: "///\\\\\\///";
 }
@@ -567,7 +626,7 @@ hr.interlude::before {
     width: 7.7rem;
     font-size: 0.75rem;
     line-height: 1.32;
-    border-left: 2px solid #cf7400;
+    border-left: 2px solid var(--color-mgnote-border);
     padding-left: 0.4rem;
     margin-top: 0.28rem;
   }
@@ -623,11 +682,11 @@ hr.interlude::before {
 }
 
 .prompt-in {
-  color: #30599f;
+  color: var(--color-prompt-in);
 }
 
 .prompt-out {
-  color: #d84315;
+  color: var(--color-prompt-out);
 }
 
 .sourceCode + .sourceCode {
@@ -636,7 +695,7 @@ hr.interlude::before {
 
 .darkzone,
 .darkzone * {
-  color: #fffdf7;
+  color: var(--color-darkzone);
 }
 
 .break-all {
@@ -681,7 +740,7 @@ hr.interlude::before {
 }
 
 img.shadow {
-  box-shadow: 0px 0px 10px #d9d9df;
+  box-shadow: 0px 0px 10px var(--color-shadow);
 }
 
 img.rounded {
@@ -695,7 +754,7 @@ img.rounded {
 }
 
 .red {
-  color: #dc2a2a;
+  color: var(--color-red);
 }
 
 .reverse:hover {
@@ -708,9 +767,9 @@ audio {
 }
 
 .note {
-  background-color: #f3f2ef;
+  background-color: var(--color-note-bg);
   border-radius: 0.3rem;
-  box-shadow: 1px 1px 4px #d9d9df;
+  box-shadow: 1px 1px 4px var(--color-shadow);
   padding: 0 1rem 0.5rem 1rem;
   margin-top: 1.2rem;
   margin-bottom: 1.2rem;
@@ -718,7 +777,7 @@ audio {
 }
 .note .adm-title {
   font-weight: bold;
-  background-color: #dad9d6;
+  background-color: var(--color-note-title);
   margin: 0 -1rem 0.3rem -1rem;
   padding: 0.05rem 0 0.2rem 0.6rem;
 }
@@ -734,10 +793,10 @@ audio {
 footer {
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #d0d0d0;
+  border-top: 1px solid var(--color-border);
   text-align: center;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-light);
 }
 
 footer p {
@@ -745,10 +804,38 @@ footer p {
 }
 
 footer a {
-  color: #666;
+  color: var(--color-text-light);
 }
 
 footer a:hover {
-  color: #c44d32;
+  color: var(--color-link);
+}
+
+/* Theme toggle button */
+nav p {
+  margin-bottom: 0;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: var(--color-link);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+nav button:hover {
+  text-decoration: underline;
+}
+
+nav button:focus {
+  outline: 2px dashed var(--color-link);
+  outline-offset: 2px;
 }
 

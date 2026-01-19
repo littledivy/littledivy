@@ -3,11 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="theme.js">
+    </script>
     <link rel="stylesheet" href="main.css">
     <title>Just-in-time compiler for Deno FFI</title>
     <meta name="description" content="Technical notes on how Deno compiles jit trampolines for FFI bindings">
   </head>
   <body>
+    <nav>
+      <p><a href="/">Home</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;&#x20;</span><a href="https://github.com/littledivy?tab=repositories">Projects</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;</span></p>
+      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
+    </nav>
     <h1>Just-in-time compiler for Deno FFI</h1>
     <p>V8 Isolates are little sandboxes that run JS. JavaScript runtimes give you the ability to call native functions by reaching out of this sandbox. These native functions are often referred to as “bindings”.</p>
     <p>Optimizing these bindings are one of the most important optimizations in a JavaScript runtime. Over the years, V8 has made significant improvements in this area to make bindings faster for embedders.</p>
