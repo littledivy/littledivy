@@ -11,7 +11,9 @@
 
 #title()
 
-Hello; I'm Divy. Welcome to my small patch of the internet. I work at #html.elem("a", attrs: (href: "https://deno.com"), [Deno]). I maintain various FOSS related to runtimes, compilers, cryptography on #html.elem("a", attrs: (href: "https://github.com/littledivy"), [Github]). Reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
+Hello; I'm Divy. I work at the #html.elem("a", attrs: (href: "https://deno.com"), [Deno]) company, building & optimizing the Deno runtime. I maintain various projects related to system tools, compilers, cryptography on #html.elem("a", attrs: (href: "https://github.com/littledivy"), [Github]).
+
+You can reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
 
 == Posts
 
