@@ -12,7 +12,7 @@
   function updateButtonText() {
     const btn = document.getElementById('theme-toggle');
     if (btn) {
-      btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+      btn.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
     }
   }
 })();
@@ -25,6 +25,6 @@ function toggleTheme() {
   localStorage.setItem('theme', next);
   const btn = document.getElementById('theme-toggle');
   if (btn) {
-    btn.textContent = next === 'dark' ? 'Light' : 'Dark';
+    btn.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
   }
 }
