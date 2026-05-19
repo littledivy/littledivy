@@ -811,6 +811,61 @@ footer a:hover {
   color: var(--color-link);
 }
 
+.orchid-lede {
+  max-width: 41rem;
+  margin-top: 1.2rem;
+  margin-bottom: 1.3rem;
+  padding: 1rem 1.2rem 0.1rem;
+  border-top: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.orchid-lede p {
+  font-size: 1.18rem;
+  line-height: 1.35;
+  font-style: italic;
+}
+
+.orchid-flow {
+  max-width: 44rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.3rem;
+  margin-bottom: 1.5rem;
+  padding: 0.65rem 0;
+  border-top: 1px dashed var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
+  font-family: "k.iosevka", "fira mono", monospace;
+  font-size: 0.82rem;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.orchid-chip {
+  display: inline-block;
+  padding: 0.22rem 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.2rem;
+  background: var(--color-code-bg);
+}
+
+.orchid-arrow {
+  color: var(--color-text-light);
+}
+
+.orchid-mantra {
+  max-width: 41rem;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid var(--color-link);
+  background: var(--color-note-bg);
+  font-family: "k.iosevka", "fira mono", monospace;
+  font-size: 0.9rem;
+}
+
 /* Theme toggle button */
 nav p {
   margin-bottom: 0;
@@ -838,4 +893,3 @@ nav button:focus {
   outline: 2px dashed var(--color-link);
   outline-offset: 2px;
 }
-
