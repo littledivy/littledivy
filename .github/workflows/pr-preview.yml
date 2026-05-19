@@ -1,0 +1,54 @@
+name: Deploy PR preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        if: github.event.action != 'closed'
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        if: github.event.action != 'closed'
+        uses: typst-community/setup-typst@v4
+
+      - name: Setup Graphviz
+        if: github.event.action != 'closed'
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+
+      - name: Build
+        if: github.event.action != 'closed'
+        run: make all
+
+      - name: Stage site
+        if: github.event.action != 'closed'
+        run: |
+          mkdir _site
+          cp -R *.html CNAME main.css theme.js fonts static me.gpg _site/
+          touch _site/.nojekyll
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: _site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          pages-base-url: https://littledivy.com
+          wait-for-pages-deployment: true
+          qr-code: false
