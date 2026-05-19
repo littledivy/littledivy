@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="theme.js">
+    </script>
+    <link rel="stylesheet" href="main.css">
+    <title>orchid: github issues as an agent scheduler</title>
+    <meta name="description" content="orchid turns GitHub issues into agent-owned pull requests.">
+  </head>
+  <body>
+    <nav>
+      <p><a href="/">Home</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;&#x20;</span><a href="https://github.com/littledivy?tab=repositories">Projects</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;</span></p>
+      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
+    </nav>
+    <h1>orchid: github issues as an agent scheduler</h1>
+    <p>orchid is a small issue-to-PR scheduler for coding agents.</p>
+    <p>The interface is GitHub issues. Open an issue in an inbox repo, add a label for the target repo, and orchid starts a coding session in a tmux pane. The agent clones the work repo, implements the issue, pushes a branch, opens a PR, then waits. orchid keeps polling GitHub and feeds review comments, CI state, and PR updates back into the same pane until the PR merges or closes.</p>
+    <p>There are no webhooks. It is one Go binary, one HCL file, tmux, ssh, <code>gh</code>, and a JSON state file.</p>
+    <pre><code>issue in denoland/orchid<br>  label: deno<br>      |<br>      v<br>orch polls inbox<br>      |<br>      v<br>select free VM/session slot<br>      |<br>      v<br>tmux new -s claude-143<br>      |<br>      v<br>paste bootstrap prompt<br>      |<br>      v<br>agent opens denoland/deno PR<br>      |<br>      v<br>orch relays CI/reviews/comments</code></pre>
+    <h2 class="!text-foreground">Why GitHub issues</h2>
+    <p>GitHub issues are a good queue format because they are already the unit of work most maintainers use.</p>
+    <p>An issue has a title, body, comments, labels, timestamps, actors, and cross-links. That is enough to describe most coding tasks. More importantly, the resulting PR has the same review and CI machinery humans already trust.</p>
+    <p>The important trick is that the issue is not in the work repo. orchid uses an inbox repo as the scheduler queue:</p>
+    <pre><code data-lang="hcl"><span style="color: #4b69c6">target</span> <span style="color: #198810">"</span><span style="color: #198810">deno</span><span style="color: #198810">"</span> {<br>  label <span style="color: #d73948">= </span><span style="color: #198810">"</span><span style="color: #198810">deno</span><span style="color: #198810">"</span><br>  repo  <span style="color: #d73948">= </span><span style="color: #198810">"</span><span style="color: #198810">denoland/deno</span><span style="color: #198810">"</span><br>}<br><br><span style="color: #4b69c6">target</span> <span style="color: #198810">"</span><span style="color: #198810">clawpatrol</span><span style="color: #198810">"</span> {<br>  label <span style="color: #d73948">= </span><span style="color: #198810">"</span><span style="color: #198810">clawpatrol</span><span style="color: #198810">"</span><br>  repo  <span style="color: #d73948">= </span><span style="color: #198810">"</span><span style="color: #198810">denoland/clawpatrol</span><span style="color: #198810">"</span><br>}</code></pre>
+    <p>An issue labeled <code>deno</code> becomes a branch and PR in <code>denoland/deno</code>. An issue labeled <code>clawpatrol</code> becomes a branch and PR in <code>denoland/clawpatrol</code>.</p>
+    <p>This gives the operator one place to queue work without spreading agent-control state across every repo.</p>
+    <h2 class="!text-foreground">The loop</h2>
+    <p>orchid runs one poll loop. On each tick it does roughly this:</p>
+    <pre><code>for issue in open inbox issues:<br>  if issue already has a job:<br>    continue<br>  target = target_from_labels(issue.labels)<br>  vm = find_vm_with_free_capacity()<br>  spawn_tmux_session(vm, issue, target)<br><br>for job in state.jobs:<br>  if job has no PR yet:<br>    discover_pr(job.branch)<br>  else:<br>    relay_new_reviews(job)<br>    relay_new_issue_comments(job)<br>    relay_check_changes(job)<br>    teardown_if_pr_closed_or_merged(job)</code></pre>
+    <p>The state file is the source of truth for in-flight jobs:</p>
+    <pre><code data-lang="json">{<br>  <span style="color: #4b69c6">"</span><span style="color: #4b69c6">jobs</span><span style="color: #4b69c6">"</span>: {<br>    <span style="color: #4b69c6">"</span><span style="color: #4b69c6">143</span><span style="color: #4b69c6">"</span>: {<br>      <span style="color: #4b69c6">"</span><span style="color: #4b69c6">vm</span><span style="color: #4b69c6">"</span>: <span style="color: #198810">"</span><span style="color: #198810">local</span><span style="color: #198810">"</span>,<br>      <span style="color: #4b69c6">"</span><span style="color: #4b69c6">tmux</span><span style="color: #4b69c6">"</span>: <span style="color: #198810">"</span><span style="color: #198810">claude-143</span><span style="color: #198810">"</span>,<br>      <span style="color: #4b69c6">"</span><span style="color: #4b69c6">target_repo</span><span style="color: #4b69c6">"</span>: <span style="color: #198810">"</span><span style="color: #198810">denoland/deno</span><span style="color: #198810">"</span>,<br>      <span style="color: #4b69c6">"</span><span style="color: #4b69c6">branch</span><span style="color: #4b69c6">"</span>: <span style="color: #198810">"</span><span style="color: #198810">orch/divybot-143</span><span style="color: #198810">"</span>,<br>      <span style="color: #4b69c6">"</span><span style="color: #4b69c6">pr</span><span style="color: #4b69c6">"</span>: <span style="color: #b60157">34231</span>,<br>      <span style="color: #4b69c6">"</span><span style="color: #4b69c6">last_head_oid</span><span style="color: #4b69c6">"</span>: <span style="color: #198810">"</span><span style="color: #198810">...</span><span style="color: #198810">"</span><br>    }<br>  }<br>}</code></pre>
+    <p>That makes restarts boring. If the process dies, restart it. Existing tmux panes keep running, and orchid reloads the state file to reconnect jobs to PRs.</p>
+    <h2 class="!text-foreground">Bootstrap prompt as ABI</h2>
+    <p>The only interface between orchid and the agent is text pasted into a terminal.</p>
+    <p>That sounds crude, but it is useful. The agent does not need an SDK, a daemon, or a custom protocol. The bootstrap prompt is the ABI:</p>
+    <pre><code>You are implementing GitHub issue #{{issue.number}}:<br>"{{issue.title}}"<br><br>Work repo: {{target.repo}}<br>Clone: {{workdir}}<br>Branch: {{branch}}<br><br>--- issue body ---<br>{{issue.body}}<br>--- end issue body ---<br><br>Commit, push, open a PR, then stop and wait.</code></pre>
+    <p>The session is stateful because the terminal is stateful. If CI fails, orchid pastes the failed checks into the same pane. If a human leaves a review comment, orchid pastes that too. The agent can inspect its own worktree, amend commits, push again, and stop.</p>
+    <p>This avoids the common “agent as stateless function call” problem. Coding work is not one request. It is a little process with memory, filesystem state, logs, review feedback, and retries.</p>
+    <h2 class="!text-foreground">tmux is the worker runtime</h2>
+    <p>Each worker is just a tmux session. That gives orchid a cheap process supervisor and an inspection surface:</p>
+    <pre><code data-lang="sh"><span style="color: #4b69c6">tmux</span> capture-pane -p -t claude-143 -S -80<br><span style="color: #4b69c6">tmux</span> send-keys -t claude-143 <span style="color: #198810">"</span><span style="color: #198810">...</span><span style="color: #198810">"</span> Enter</code></pre>
+    <p>The dashboard is mostly a thin view over this. It shows the jobs, linked PRs, last known check conclusions, and a pane view so the operator can look at what an agent is actually doing.</p>
+    <p>This is intentionally low tech. tmux is easier to debug than a custom worker protocol. If something is weird, capture the pane. If a session is wedged, kill that pane. If orchid dies, panes survive.</p>
+    <h2 class="!text-foreground">Polling instead of webhooks</h2>
+    <p>Webhooks are tempting until the first time you need to run the whole system from a laptop, a VM behind a VPN, or a tailnet-only service.</p>
+    <p>orchid polls GitHub every 30 seconds using <code>gh</code>. That is not elegant, but it has nice properties:</p>
+    <ul>
+      <li>no public callback URL</li>
+      <li>no webhook secrets</li>
+      <li>no replay logic</li>
+      <li>no separate delivery queue</li>
+      <li>local development is the same as production</li>
+    </ul>
+    <p>The price is latency. A review comment may take one tick to reach the pane. That is fine for PR work.</p>
+    <h2 class="!text-foreground">Capacity is the scheduler</h2>
+    <p>A VM block declares how many concurrent sessions it can run:</p>
+    <pre><code data-lang="hcl"><span style="color: #4b69c6">vm</span> <span style="color: #198810">"</span><span style="color: #198810">local</span><span style="color: #198810">"</span> {<br>  host        <span style="color: #d73948">= </span><span style="color: #198810">"</span><span style="color: #198810">localhost</span><span style="color: #198810">"</span><br>  capacity    <span style="color: #d73948">= </span><span style="color: #b60157">6</span><br>  session_cmd <span style="color: #d73948">= </span><span style="color: #198810">"</span><span style="color: #198810">clawpatrol run -- claude --dangerously-skip-permissions</span><span style="color: #198810">"</span><br>}</code></pre>
+    <p>When all slots are full, new issues simply stay queued:</p>
+    <pre><code>issue #139: no free VM, skipping</code></pre>
+    <p>This is enough scheduling for the current shape of work. Most tasks are bounded PR-sized chunks: fix a node compat edge case, add a test, address a review, mark a test as expected-failure instead of ignored.</p>
+    <p>The unit of parallelism is the GitHub issue. The unit of completion is the PR.</p>
+    <h2 class="!text-foreground">Failure modes</h2>
+    <p>The nice part of building the scheduler out of boring pieces is that failures are usually legible.</p>
+    <p>If GitHub is flaky, <code>gh</code> fails and orchid retries transient network errors. If a session dies, orchid can respawn it. If the orchestrator dies, systemd restarts it and state reloads from disk. If an agent opens a PR but forgets to reference the inbox issue, orchid can still discover the PR by branch name.</p>
+    <p>There are also less obvious failure modes:</p>
+    <ul>
+      <li>killing the orchestrator process must not kill all tmux panes</li>
+      <li>killing all panes at once can stampede the network relay on restart</li>
+      <li>PR close/merge in the work repo is not the same as closing the inbox issue</li>
+      <li>CI result changes need deduping, otherwise the same failure gets pasted forever</li>
+      <li>a human may already be working on the same code path</li>
+    </ul>
+    <p>The current implementation handles these with small pieces of state:</p>
+    <pre><code>seen_review_ids<br>seen_issue_comment_ids<br>last_head_oid<br>last_check_conclusions</code></pre>
+    <p>It is not a distributed system. It is a single process remembering what it has already told each pane.</p>
+    <h2 class="!text-foreground">Where clawpatrol fits</h2>
+    <p>The worker command can run under <code>clawpatrol</code>.</p>
+    <p>That lets each agent session get network access through a controlled path instead of sharing the host’s ambient network. In practice this matters more than the scheduler. Once agents can run real commands, clone repos, talk to GitHub, and execute tests, the interesting question is not “can they code?” It is “what can they reach?”</p>
+    <p>orchid only decides when to start work and where to send feedback. clawpatrol is the boundary around what the worker can do while it is working.</p>
+    <h2 class="!text-foreground">The shape that works</h2>
+    <p>orchid works best when the operator feeds it issues that are real but narrow.</p>
+    <p>Bad:</p>
+    <pre><code>make node compatibility better</code></pre>
+    <p>Good:</p>
+    <pre><code>node compat: allow --inspect host localhost for inspector port-zero test<br>node compat: implement KeyObject structured clone over MessagePort<br>node compat: emit enough inspector Network events for HTTP/fetch tests</code></pre>
+    <p>Agents are much more useful when they can spend their context on the codebase instead of guessing the task boundary.</p>
+    <p>The human still owns taste, priority, and merge decisions. orchid owns the mechanical loop: allocate a worker, keep the worker fed with review/CI state, and free the slot when the PR is done.</p>
+    <h2 class="!text-foreground">What I like about it</h2>
+    <p>The whole system is deliberately unmagical.</p>
+    <p>GitHub is the queue. Labels are routing. tmux is the worker runtime. The terminal is the agent protocol. A JSON file is durable state. The dashboard is an inspection layer, not the source of truth.</p>
+    <p>That makes it easy to operate while half asleep:</p>
+    <pre><code data-lang="sh"><span style="color: #4b69c6">systemctl</span> is-active orchid<br><span style="color: #4b69c6">tmux</span> ls<br><span style="color: #4b69c6">tail</span> -20 orch.log</code></pre>
+    <p>There is a lot more to do: better overlap detection, better PR review routing, more worker types, cron-style jobs, stronger sandbox defaults. But the useful core is already small:</p>
+    <p>open issue, get PR, review PR, merge, repeat.</p>
+  </body>
+</html>
