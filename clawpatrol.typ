@@ -3,7 +3,7 @@
 #set document(
   title: "Clawpatrol for personal agents",
   date: datetime(day: 21, month: 5, year: 2026),
-  description: "Set up a Clawpatrol gateway for Claude, GitHub, and Slack without putting long-lived tokens on agent machines.",
+  description: "Set up a Clawpatrol gateway that parses agent traffic, applies rules, and keeps credentials at the gateway.",
 )
 
 #show: html-shim
@@ -17,29 +17,51 @@
 }
 
 I have been running coding agents in tmux on small VMs. The useful version of
-that setup needs access to GitHub, Slack, Claude, and sometimes SSH.
+that setup needs access to real services: GitHub, Slack, Postgres, Claude, SSH.
 
-The simple way to do this is to copy `GH_TOKEN`, `SLACK_BOT_TOKEN`, and Claude's
-local auth state onto the worker. That works, but it makes the worker the
-security boundary. Any subprocess the agent starts can read the same environment
-or config files.
+The risky part is not only where tokens live. It is also what the agent can do
+with them. A token hidden behind a proxy is still not enough if the proxy will
+forward `DROP TABLE users`.
 
-Clawpatrol is a gateway for moving those credentials out of the worker process.
+Clawpatrol is a gateway that sits between the agent process and the network. It
+parses protocol traffic, evaluates rules, and keeps upstream credentials on the
+gateway side.
 
 #figure(
   image("/static/img/clawpatrol-agent-gateway.svg", width: 100%),
 )
 
-The agent still runs the normal CLI. Locally it sees placeholder environment
-variables and a proxy CA. The gateway terminates the connection, matches the
-request against an endpoint/profile/rule set, and injects the real credential
-only for that upstream request.
+The screenshot above is the main thing I care about: the agent tried a Postgres
+command, the gateway decoded the SQL, matched a rule, and returned an error
+before the operation reached the database.
+
+= How the path works
+
+`clawpatrol run` wraps one process tree. On Linux it starts the command in a new
+network namespace and hands a TUN fd to a per-host daemon. The daemon sends that
+traffic to the gateway over the transport chosen at `join` time. Other processes
+on the host keep their normal network path.
+
+There are two transport modes:
+
+- `wireguard {}`: the gateway mints a WireGuard config. `clawpatrol run` uses it
+  for per-process routing. `clawpatrol join --whole-machine` can also install a
+  system `wg-quick` interface on Linux.
+- `tailscale {}`: the gateway embeds a tsnet node. `clawpatrol run` uses a
+  per-host daemon with a tsnet node that joins the tailnet with a persisted
+  Tailscale auth key and sets the gateway as the exit node for process traffic.
+  No WireGuard keys are copied around in this mode.
+
+Both transports land in the same gateway dispatcher. The dispatcher chooses an
+endpoint runtime, parses the request into facets like `http.method` or
+`sql.verb`, and either denies, asks for approval, or forwards using the
+gateway-held credential for that endpoint.
 
 = Install the gateway
 
-Start with one small VM that can run a Go binary and stay online. I usually put
-the gateway on Tailscale so the dashboard is not on the public internet. The
-same config works behind a normal HTTPS reverse proxy.
+Start with one small VM that can run a Go binary and stay online. For my setup I
+use the Tailscale transport, because the gateway can expose onboarding routes
+through Funnel while keeping the dashboard on the tailnet.
 
 Install the binary:
 
@@ -67,10 +89,11 @@ gateway {
 }
 ```
 
-The `tailscale` block makes the gateway create its own tsnet node. It is also
-used by `clawpatrol join` so worker machines can be added without copying
-WireGuard keys manually. The OAuth values are read through `{{secret:...}}` from
-the systemd environment, not stored in the HCL file.
+The `tailscale` block makes the gateway create its own tsnet node. `funnel =
+true` exposes the small set of public onboarding/OAuth callback routes; the
+dashboard itself is still reached over the tailnet or an SSH tunnel. The OAuth
+values are read through `{{secret:...}}` from the systemd environment, not stored
+in the HCL file.
 
 For example:
 
@@ -118,13 +141,10 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now clawpatrol-gateway
 ```
 
-= Define what the agent can reach
+= Endpoints and credentials
 
-Endpoints are network destinations. Credentials describe which auth mechanism
-can be attached to traffic for that destination.
-
-For my personal agent setup, the first three endpoints are Claude, GitHub, and
-Slack:
+Endpoints describe network targets. Credentials describe how the gateway should
+authenticate to those targets after a rule allows a request.
 
 ```hcl
 endpoint "https" "anthropic" {
@@ -139,6 +159,10 @@ endpoint "https" "slack-api" {
   hosts = ["slack.com", "api.slack.com", "wss-primary.slack.com"]
 }
 
+endpoint "postgres" "pg-dev" {
+  host = "pg-dev.internal:5432"
+}
+
 credential "anthropic_oauth_subscription" "claude" {
   endpoint = https.anthropic
 }
@@ -150,10 +174,15 @@ credential "github_oauth" "github" {
 credential "slack_tokens" "slack" {
   endpoint = https.slack-api
 }
+
+credential "postgres_credential" "pg-dev" {
+  endpoint = postgres.pg-dev
+  user     = "agent"
+}
 ```
 
-These blocks do not contain the actual OAuth tokens. They define credential
-slots. The dashboard is where the real credentials get connected.
+These blocks do not contain the actual token or password. They define slots. The
+dashboard is where the real credential material gets connected.
 
 I keep one profile per agent identity:
 
@@ -163,27 +192,56 @@ profile "personal" {
     anthropic_oauth_subscription.claude,
     github_oauth.github,
     slack_tokens.slack,
+    postgres_credential.pg-dev,
   ]
 }
 ```
 
 Profiles are what the worker binds to. When a machine joins with
-`--profile personal`, the gateway only pushes the placeholder env vars needed
-for the credentials in that profile. A different `work` or `bot` profile can use
-another GitHub account, another Slack bot, or no Slack credential at all.
+`--profile personal`, requests from that machine can only use credentials in
+that profile. A different `readonly` profile can omit the Postgres writer or
+Slack credential without changing the worker machine.
 
-= Add rules
+= Rules first
 
-Credentials answer "how would this request authenticate?". Rules answer "is
-this request allowed to use that credential?".
+Rules are the important part. A rule targets an endpoint, optionally narrows by
+credential, evaluates a CEL condition over decoded request facets, and returns
+`allow`, `deny`, or an approval flow.
 
-A useful first policy is:
+For Postgres, the gateway reads the wire protocol and exposes `sql.verb`,
+`sql.tables`, `sql.functions`, `sql.statement`, and `sql.database` to rules.
+This is the rule that matches the screenshot:
 
-- allow reads
-- require approval for writes
-- deny everything else by default
+```hcl
+rule "pg-no-destructive-ddl" {
+  endpoint  = postgres.pg-dev
+  priority  = 100
+  condition = <<-CEL
+    sql.verb in ['drop', 'truncate', 'alter']
+  CEL
+  verdict = "deny"
+  reason  = "destructive sql; drop users table not allowed"
+}
+```
 
-For GitHub:
+I usually add a second deny for database-side filesystem/network escape hatches:
+
+```hcl
+rule "pg-banned-functions" {
+  endpoint = postgres.pg-dev
+  priority = 100
+  condition = <<-CEL
+    sets.intersects(sql.functions, [
+      'pg_read_file', 'pg_read_binary_file', 'lo_get',
+    ])
+    || sql.functions.exists(f, f.startsWith('dblink_'))
+  CEL
+  verdict = "deny"
+  reason  = "filesystem-reaching function"
+}
+```
+
+Reads can be allowed explicitly, and mutations can go through a human:
 
 ```hcl
 approver "human_approver" "me" {
@@ -192,6 +250,32 @@ approver "human_approver" "me" {
   interactive = true
 }
 
+rule "pg-mutations" {
+  endpoint  = postgres.pg-dev
+  condition = "sql.verb in ['insert', 'update', 'delete', 'merge', 'notify']"
+  approve   = [human_approver.me]
+  reason    = "Postgres mutations require review"
+}
+
+rule "pg-reads" {
+  endpoint  = postgres.pg-dev
+  condition = "sql.verb in ['select', 'show', 'explain', 'describe']"
+  verdict   = "allow"
+}
+
+rule "pg-default" {
+  endpoint = postgres.pg-dev
+  priority = -100
+  verdict  = "deny"
+  reason   = "unknown SQL verb"
+}
+```
+
+The same rule shape works for HTTP endpoints. GitHub reads can pass, writes can
+require approval:
+
+
+```hcl
 rule "github-read" {
   endpoint  = https.github-api
   condition = "http.method in ['GET', 'HEAD', 'OPTIONS']"
@@ -206,8 +290,8 @@ rule "github-write" {
 }
 ```
 
-For Slack, reads and websocket traffic can pass, but posting messages should be
-reviewed:
+Slack is similar. Reads and websocket traffic can pass, but posting messages
+should be reviewed:
 
 ```hcl
 rule "slack-read" {
@@ -230,7 +314,7 @@ rule "slack-chat-write" {
 }
 ```
 
-And then a default deny:
+Then keep boring default denies for services where you care about surprises:
 
 ```hcl
 rule "github-default" {
@@ -245,9 +329,6 @@ rule "slack-default" {
   verdict  = "deny"
 }
 ```
-
-With those rules, the agent can inspect GitHub and read Slack context. Writes go
-through the Slack approver before the gateway forwards the request.
 
 = Connect the credentials
 
@@ -274,9 +355,12 @@ Connect the credential slots:
 - `anthropic_oauth_subscription.claude`
 - `github_oauth.github`
 - `slack_tokens.slack`
+- `postgres_credential.pg-dev`
 
-The worker still does not get the tokens. It gets placeholder values that make
-the upstream CLIs choose the auth path Clawpatrol expects.
+The worker does not get the real token or password. It gets the local CA and
+placeholder values needed by the wrapped CLI. The gateway uses the real
+credential on its side of the connection, and rules decide which decoded
+operations are forwarded.
 
 = Join an agent machine
 
@@ -299,29 +383,21 @@ clawpatrol run claude
 Only that process tree goes through the gateway. Your normal browser, shell,
 package manager, and random background processes do not.
 
-For an automated worker, wrap the command directly:
-
-```sh
-clawpatrol run claude --dangerously-skip-permissions
-```
-
-The dangerous bit there is Claude's local permission bypass. Clawpatrol only
-controls network access and credential injection.
-
 = Runtime behavior
 
 With the config above, this is what changes at runtime:
 
 - Claude can use its subscription without a Claude OAuth token sitting in
   `~/.claude` on the worker.
-- GitHub API requests are authenticated at the gateway.
-- GitHub writes hit the approval rule.
-- Slack message sends hit the approval rule.
-- Unmatched GitHub and Slack requests are denied by the default rules.
+- Postgres auth happens at the gateway.
+- Postgres `drop`, `truncate`, and `alter` statements are denied before they
+  reach the database.
+- GitHub writes and Slack message sends hit the approval rule.
+- Unmatched requests for configured services are denied by the default rules.
 
 This is not a sandbox for local filesystem access. If the agent can read a file
 on disk, Clawpatrol does not change that. It is specifically the network and
-credential boundary for processes run under `clawpatrol run`.
+policy boundary for processes run under `clawpatrol run`.
 
 = Test the policy
 
@@ -346,17 +422,17 @@ gated.
 The useful model is:
 
 ```text
-profile = who the agent is
 endpoint = what service it is talking to
-credential = how the gateway authenticates
 rule = what the agent is allowed to do
+credential = how the gateway authenticates upstream
+profile = which credentials this device may use
 approver = who can override a risky action
 ```
 
 Once those are separate, the agent machine becomes easier to reason about. You
-can rotate a GitHub credential without touching workers. You can move a worker
-from `personal` to `readonly`. You can add approval to Slack writes without
-changing the agent prompt.
+can tighten a SQL rule without touching the worker. You can rotate a GitHub
+credential without touching workers. You can move a worker from `personal` to
+`readonly` by changing its profile.
 
 The CLI invocation stays boring:
 
