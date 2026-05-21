@@ -1,35 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="430" viewBox="0 0 820 430" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="390" viewBox="0 0 820 390" role="img" aria-labelledby="title desc">
   <title id="title">Clawpatrol blocking a dangerous Claude action</title>
-  <desc id="desc">A terminal-style illustration where Claude tries to run DROP TABLE users and Clawpatrol blocks the request before credentials are forwarded.</desc>
+  <desc id="desc">A quiet terminal-style illustration where Claude attempts DROP TABLE users and Clawpatrol blocks the request before any credential is injected.</desc>
 
-  <rect x="0" y="0" width="820" height="430" fill="#ffffff"/>
-  <rect x="1" y="1" width="818" height="428" rx="2" fill="none" stroke="#d0d0d0"/>
+  <rect x="0" y="0" width="820" height="390" fill="#ffffff"/>
+  <rect x="1" y="1" width="818" height="388" rx="2" fill="none" stroke="#d0d0d0"/>
 
-  <rect x="34" y="34" width="752" height="326" rx="4" fill="#fbfaf7" stroke="#333333" stroke-width="1.2"/>
-  <rect x="34" y="34" width="752" height="34" rx="4" fill="#f1f1ee" stroke="#333333" stroke-width="1.2"/>
-  <line x1="34" y1="68" x2="786" y2="68" stroke="#333333" stroke-width="1.2"/>
-  <circle cx="55" cy="51" r="4.5" fill="#c44d32"/>
-  <circle cx="72" cy="51" r="4.5" fill="#d0d0d0"/>
-  <circle cx="89" cy="51" r="4.5" fill="#d0d0d0"/>
-  <text x="111" y="56" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">personal-agent: clawpatrol run -- claude</text>
+  <rect x="48" y="42" width="724" height="270" rx="5" fill="#fbfaf7" stroke="#333333" stroke-width="1.2"/>
+  <rect x="48" y="42" width="724" height="34" rx="5" fill="#f1f1ee" stroke="#333333" stroke-width="1.2"/>
+  <line x1="48" y1="76" x2="772" y2="76" stroke="#333333" stroke-width="1.2"/>
+  <circle cx="69" cy="59" r="4.5" fill="#c44d32"/>
+  <circle cx="86" cy="59" r="4.5" fill="#d0d0d0"/>
+  <circle cx="103" cy="59" r="4.5" fill="#d0d0d0"/>
+  <text x="129" y="64" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">clawpatrol run -- claude</text>
 
-  <text x="58" y="103" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">$ claude</text>
-  <text x="58" y="129" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">Claude &gt; i can clean up the stale test database.</text>
-  <text x="58" y="155" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">Claude &gt; running:</text>
+  <text x="80" y="116" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">$ claude</text>
+  <text x="80" y="148" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">Claude &gt; cleaning up the stale test database...</text>
 
-  <rect x="58" y="176" width="704" height="42" rx="2" fill="#ffffff" stroke="#d0d0d0"/>
-  <text x="78" y="202" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">SQL: DROP TABLE users;</text>
+  <rect x="80" y="174" width="660" height="54" rx="3" fill="#ffffff" stroke="#d0d0d0"/>
+  <text x="104" y="207" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="15">SQL: DROP TABLE users;</text>
 
-  <text x="58" y="248" fill="#c44d32" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="700">clawpatrol: blocked</text>
-  <text x="58" y="274" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">endpoint: postgres.production.internal:5432</text>
-  <text x="58" y="300" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">profile:  personal</text>
-  <text x="58" y="326" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">rule:     deny sql containing DROP TABLE</text>
+  <rect x="80" y="254" width="660" height="34" rx="3" fill="#ffffff" stroke="#c44d32" stroke-width="1.2"/>
+  <text x="104" y="276" fill="#c44d32" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="700">clawpatrol: blocked</text>
+  <text x="271" y="276" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">deny rule matched: destructive sql</text>
+  <text x="548" y="276" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">no credential injected</text>
 
-  <rect x="463" y="238" width="299" height="90" rx="3" fill="#ffffff" stroke="#c44d32" stroke-width="1.2"/>
-  <text x="483" y="264" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12" font-weight="700">gateway decision</text>
-  <line x1="483" y1="276" x2="742" y2="276" stroke="#d0d0d0"/>
-  <text x="483" y="299" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">credential was not injected</text>
-  <text x="483" y="319" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">request never reached database</text>
-
-  <text x="54" y="389" fill="#666666" font-family="gitan, Alegreya, Palatino, Georgia, serif" font-size="15">The agent keeps its normal tools. Clawpatrol keeps the credential boundary.</text>
+  <text x="74" y="352" fill="#666666" font-family="gitan, Alegreya, Palatino, Georgia, serif" font-size="15" font-style="italic">The agent keeps its normal tools. Clawpatrol keeps the credential boundary.</text>
 </svg>
