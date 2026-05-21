@@ -16,30 +16,30 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-Agents become useful when they can use the same tools you use: GitHub, Slack,
-Claude, maybe SSH. The awkward part is that those tools are made of credentials.
+I have been running coding agents in tmux on small VMs. The useful version of
+that setup needs access to GitHub, Slack, Claude, and sometimes SSH.
 
-The common setup is to put `GH_TOKEN`, `SLACK_BOT_TOKEN`, and whatever Claude
-auth state your CLI needs directly on the machine where the agent runs. That is
-simple, but it is also a bad boundary. The agent, every subprocess it starts,
-every shell snapshot, and every accidental log line can now touch those secrets.
+The simple way to do this is to copy `GH_TOKEN`, `SLACK_BOT_TOKEN`, and Claude's
+local auth state onto the worker. That works, but it makes the worker the
+security boundary. Any subprocess the agent starts can read the same environment
+or config files.
 
-Clawpatrol moves that boundary to a gateway.
+Clawpatrol is a gateway for moving those credentials out of the worker process.
 
 #figure(
   image("/static/img/clawpatrol-agent-gateway.svg", width: 100%),
 )
 
-The agent still runs the normal CLI. The difference is that it gets placeholder
-environment variables locally. The real tokens live at the gateway and are
-injected into requests only when traffic matches a configured endpoint and
-profile.
+The agent still runs the normal CLI. Locally it sees placeholder environment
+variables and a proxy CA. The gateway terminates the connection, matches the
+request against an endpoint/profile/rule set, and injects the real credential
+only for that upstream request.
 
 = Install the gateway
 
-Start with one small VM that can run a Go binary and stay online. I like putting
-the gateway on a private network reachable over Tailscale, but the shape is the
-same if you expose it through a normal HTTPS reverse proxy.
+Start with one small VM that can run a Go binary and stay online. I usually put
+the gateway on Tailscale so the dashboard is not on the public internet. The
+same config works behind a normal HTTPS reverse proxy.
 
 Install the binary:
 
@@ -67,10 +67,10 @@ gateway {
 }
 ```
 
-The `tailscale` block lets the gateway own its tailnet identity in-process. It
-also gives `clawpatrol join` clients a way to onboard without manually copying
-WireGuard keys around. The OAuth secret values come from a systemd environment
-file, not from the config itself.
+The `tailscale` block makes the gateway create its own tsnet node. It is also
+used by `clawpatrol join` so worker machines can be added without copying
+WireGuard keys manually. The OAuth values are read through `{{secret:...}}` from
+the systemd environment, not stored in the HCL file.
 
 For example:
 
@@ -120,10 +120,10 @@ sudo systemctl enable --now clawpatrol-gateway
 
 = Define what the agent can reach
 
-Endpoints are network destinations. Credentials are the identities Clawpatrol
-can inject for those destinations.
+Endpoints are network destinations. Credentials describe which auth mechanism
+can be attached to traffic for that destination.
 
-For a personal coding agent, the useful starter set is Claude, GitHub, and
+For my personal agent setup, the first three endpoints are Claude, GitHub, and
 Slack:
 
 ```hcl
@@ -152,10 +152,10 @@ credential "slack_tokens" "slack" {
 }
 ```
 
-This does not put any actual OAuth token in the HCL file. The blocks define
-slots. You connect the real credentials from the dashboard.
+These blocks do not contain the actual OAuth tokens. They define credential
+slots. The dashboard is where the real credentials get connected.
 
-I usually keep one profile per agent identity:
+I keep one profile per agent identity:
 
 ```hcl
 profile "personal" {
@@ -167,17 +167,17 @@ profile "personal" {
 }
 ```
 
-Profiles are the important part. When a machine joins with
-`--profile personal`, it gets exactly the credentials named by that profile. If
-you later make a `work` profile or a `bot` profile, those can have different
-GitHub accounts, different Slack bots, or no Slack access at all.
+Profiles are what the worker binds to. When a machine joins with
+`--profile personal`, the gateway only pushes the placeholder env vars needed
+for the credentials in that profile. A different `work` or `bot` profile can use
+another GitHub account, another Slack bot, or no Slack credential at all.
 
 = Add rules
 
-Credentials answer "can this agent authenticate?". Rules answer "should this
-request be allowed?".
+Credentials answer "how would this request authenticate?". Rules answer "is
+this request allowed to use that credential?".
 
-A good first rule set is boring:
+A useful first policy is:
 
 - allow reads
 - require approval for writes
@@ -246,8 +246,8 @@ rule "slack-default" {
 }
 ```
 
-Now the agent can inspect GitHub issues and read Slack context, but it cannot
-open a PR, edit an issue, or send a Slack message without you clicking approve.
+With those rules, the agent can inspect GitHub and read Slack context. Writes go
+through the Slack approver before the gateway forwards the request.
 
 = Connect the credentials
 
@@ -275,9 +275,8 @@ Connect the credential slots:
 - `github_oauth.github`
 - `slack_tokens.slack`
 
-The local agent machine still does not get those tokens. It only gets the
-placeholder values Clawpatrol needs to make the upstream CLIs take the right
-auth path.
+The worker still does not get the tokens. It gets placeholder values that make
+the upstream CLIs choose the auth path Clawpatrol expects.
 
 = Join an agent machine
 
@@ -294,39 +293,35 @@ clawpatrol join https://clawpatrol.example.ts.net \
 Approve the join in the browser. After that:
 
 ```sh
-clawpatrol run -- claude
+clawpatrol run claude
 ```
 
 Only that process tree goes through the gateway. Your normal browser, shell,
 package manager, and random background processes do not.
 
-For an automated worker, wrap the command directly. This is the shape I use for
-agent workers:
+For an automated worker, wrap the command directly:
 
 ```sh
-clawpatrol run -- claude --dangerously-skip-permissions
+clawpatrol run claude --dangerously-skip-permissions
 ```
 
-The dangerous bit there is Claude's own local permission bypass. Clawpatrol is
-the network and credential boundary around it.
+The dangerous bit there is Claude's local permission bypass. Clawpatrol only
+controls network access and credential injection.
 
-= What this buys you
+= Runtime behavior
 
-The practical win is not that the agent becomes powerless. It is the opposite:
-you can give it useful access without making the agent box a secret warehouse.
-
-With the config above:
+With the config above, this is what changes at runtime:
 
 - Claude can use its subscription without a Claude OAuth token sitting in
   `~/.claude` on the worker.
 - GitHub API requests are authenticated at the gateway.
-- GitHub writes can require approval.
-- Slack message sends can require approval.
-- The rules are in one HCL file instead of scattered through prompts.
+- GitHub writes hit the approval rule.
+- Slack message sends hit the approval rule.
+- Unmatched GitHub and Slack requests are denied by the default rules.
 
-This is especially nice for long-running personal agents. You can leave a VM
-online, let agents work in tmux, and still keep the real credentials somewhere
-central, auditable, and revocable.
+This is not a sandbox for local filesystem access. If the agent can read a file
+on disk, Clawpatrol does not change that. It is specifically the network and
+credential boundary for processes run under `clawpatrol run`.
 
 = Test the policy
 
@@ -342,16 +337,13 @@ For rules, add fixtures and run:
 clawpatrol test ./personal.hcl ./tests
 ```
 
-That part matters more than it sounds. Once an agent depends on a gateway, the
-config is production code. A bad rule can either block the agent at the worst
-time or accidentally allow a write you meant to gate.
+This matters because the config is code in the path of every agent request. A
+bad rule can block the agent at runtime or allow a write that was supposed to be
+gated.
 
 = The mental model
 
-Do not think of Clawpatrol as "a proxy that hides tokens". That is only the
-mechanism.
-
-The nicer mental model is:
+The useful model is:
 
 ```text
 profile = who the agent is
@@ -361,10 +353,15 @@ rule = what the agent is allowed to do
 approver = who can override a risky action
 ```
 
-Once those are separate, personal agents get much easier to reason about. You
-can rotate a GitHub credential without touching worker machines. You can move a
-machine from `personal` to `readonly`. You can add approval to Slack writes
-without changing your agent prompt.
+Once those are separate, the agent machine becomes easier to reason about. You
+can rotate a GitHub credential without touching workers. You can move a worker
+from `personal` to `readonly`. You can add approval to Slack writes without
+changing the agent prompt.
 
-The agent still feels like a normal CLI. The difference is that the dangerous
-part lives at the gateway, where you can see it.
+The CLI invocation stays boring:
+
+```sh
+clawpatrol run claude
+```
+
+The interesting part is all in the gateway config.
