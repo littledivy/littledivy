@@ -26,21 +26,9 @@ every shell snapshot, and every accidental log line can now touch those secrets.
 
 Clawpatrol moves that boundary to a gateway.
 
-```text
-agent machine
-  clawpatrol run -- claude
-        |
-        | per-process tunnel
-        v
-clawpatrol gateway
-  injects credentials
-  parses requests
-  applies rules
-  asks for approval
-        |
-        v
-api.github.com / api.anthropic.com / slack.com
-```
+#figure(
+  image("/static/img/clawpatrol-agent-gateway.svg", width: 100%),
+)
 
 The agent still runs the normal CLI. The difference is that it gets placeholder
 environment variables locally. The real tokens live at the gateway and are
