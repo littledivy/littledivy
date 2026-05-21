@@ -16,26 +16,27 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-Coding agents become useful once they can touch the same services you do. That
-usually means source control, chat, databases, and model APIs.
+I have been running coding agents on small VMs. They are only useful if they can
+talk to the services around the project.
 
-Putting tokens on the gateway is useful, but it is not the whole problem. A
-hidden Postgres password still does not help if the gateway forwards `DROP TABLE
-users`.
+The first version of this problem is obvious: do not leave long-lived tokens on
+every VM. The second version is more interesting. Even if the Postgres password
+lives on a gateway, the gateway still needs to understand that `DROP TABLE users`
+is not a request it should forward.
 
-Clawpatrol puts rules in that path. It sits between an agent process and the
-network, decodes protocol traffic, and evaluates policy before the request
-reaches the upstream service.
+That is the part Clawpatrol is meant to cover. It sits between an agent process
+and the network, decodes protocol traffic, and evaluates rules before the
+request reaches the upstream service.
 
 #figure(
   image("/static/img/clawpatrol-agent-gateway.svg", width: 100%),
 )
 
-The screenshot above is the whole point: the agent tried a Postgres command,
-the gateway decoded the SQL, matched a rule, and returned an error before the
-operation reached the database.
+In the screenshot, the agent tried a Postgres command. The gateway decoded the
+SQL, matched a rule, and returned an error before the operation reached the
+database.
 
-= The boundary
+= Setup
 
 `clawpatrol run` wraps one process tree. On Linux it starts the command in a new
 network namespace and hands a TUN fd to a per-host daemon. The daemon sends that
