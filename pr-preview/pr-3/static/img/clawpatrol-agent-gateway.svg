@@ -1,28 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="820" height="390" viewBox="0 0 820 390" role="img" aria-labelledby="title desc">
   <title id="title">Clawpatrol blocking a dangerous Claude action</title>
-  <desc id="desc">A quiet terminal-style illustration where Claude attempts DROP TABLE users and Clawpatrol blocks the request before any credential is injected.</desc>
+  <desc id="desc">A terminal window where Claude attempts DROP TABLE users and Clawpatrol blocks the request before any credential is injected.</desc>
 
   <rect x="0" y="0" width="820" height="390" fill="#ffffff"/>
-  <rect x="1" y="1" width="818" height="388" rx="2" fill="none" stroke="#d0d0d0"/>
 
-  <rect x="48" y="42" width="724" height="270" rx="5" fill="#fbfaf7" stroke="#333333" stroke-width="1.2"/>
-  <rect x="48" y="42" width="724" height="34" rx="5" fill="#f1f1ee" stroke="#333333" stroke-width="1.2"/>
-  <line x1="48" y1="76" x2="772" y2="76" stroke="#333333" stroke-width="1.2"/>
-  <circle cx="69" cy="59" r="4.5" fill="#c44d32"/>
-  <circle cx="86" cy="59" r="4.5" fill="#d0d0d0"/>
-  <circle cx="103" cy="59" r="4.5" fill="#d0d0d0"/>
-  <text x="129" y="64" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">clawpatrol run -- claude</text>
+  <rect x="36" y="34" width="748" height="340" rx="10" fill="#000000" opacity="0.10"/>
+  <rect x="28" y="24" width="764" height="342" rx="10" fill="#111111"/>
+  <rect x="28" y="24" width="764" height="34" rx="10" fill="#e8e6df"/>
+  <rect x="28" y="44" width="764" height="14" fill="#e8e6df"/>
+  <line x1="28" y1="58" x2="792" y2="58" stroke="#b8b6af"/>
+  <rect x="28" y="58" width="764" height="308" fill="#111111"/>
+  <rect x="28.5" y="24.5" width="763" height="341" rx="9.5" fill="none" stroke="#c9c7c0"/>
 
-  <text x="80" y="116" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">$ claude</text>
-  <text x="80" y="148" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">Claude &gt; cleaning up the stale test database...</text>
+  <g>
+    <circle cx="49" cy="41" r="5.2" fill="#ff5f57" stroke="#d4473f" stroke-width=".8"/>
+    <circle cx="68" cy="41" r="5.2" fill="#febc2e" stroke="#d49a21" stroke-width=".8"/>
+    <circle cx="87" cy="41" r="5.2" fill="#28c840" stroke="#1f9f32" stroke-width=".8"/>
+    <text x="410" y="45" fill="#4a4945" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="600">clawpatrol run -- claude</text>
 
-  <rect x="80" y="174" width="660" height="54" rx="3" fill="#ffffff" stroke="#d0d0d0"/>
-  <text x="104" y="207" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="15">SQL: DROP TABLE users;</text>
-
-  <rect x="80" y="254" width="660" height="34" rx="3" fill="#ffffff" stroke="#c44d32" stroke-width="1.2"/>
-  <text x="104" y="276" fill="#c44d32" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="700">clawpatrol: blocked</text>
-  <text x="271" y="276" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">deny rule matched: destructive sql</text>
-  <text x="548" y="276" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">no credential injected</text>
-
-  <text x="74" y="352" fill="#666666" font-family="gitan, Alegreya, Palatino, Georgia, serif" font-size="15" font-style="italic">The agent keeps its normal tools. Clawpatrol keeps the credential boundary.</text>
+    <g font-family="Iosevka, SFMono-Regular, Menlo, Consolas, ui-monospace, monospace" font-size="14">
+      <text x="50" y="91" fill="#8bd49c">divy@agent</text>
+      <text x="137" y="91" fill="#777777">:</text>
+      <text x="148" y="91" fill="#8ab4f8">~/work</text>
+      <text x="207" y="91" fill="#777777">$</text>
+      <text x="224" y="91" fill="#e9e6dc">clawpatrol run -- claude</text>
+      <text x="50" y="119" fill="#9aa0a6">connected to gateway: https://clawpatrol.example.ts.net</text>
+      <text x="50" y="143" fill="#9aa0a6">profile: personal-agent  endpoint rules: github, slack, anthropic</text>
+      <text x="50" y="179" fill="#c7c7c7">Claude &gt; cleaning up the stale test database...</text>
+      <text x="50" y="207" fill="#ffb86c">tool: postgres.query</text>
+      <text x="221" y="207" fill="#e9e6dc">SQL: DROP TABLE users;</text>
+      <text x="50" y="251" fill="#ff6b5f" font-weight="700">clawpatrol: blocked</text>
+      <text x="50" y="279" fill="#c7c7c7">deny rule matched: destructive sql</text>
+      <text x="50" y="307" fill="#c7c7c7">credential injection skipped; request never left the sandbox</text>
+      <text x="50" y="335" fill="#777777">divy@agent:~/work$</text>
+      <text x="195" y="335" fill="#e9e6dc">_</text>
+    </g>
+  </g>
 </svg>
