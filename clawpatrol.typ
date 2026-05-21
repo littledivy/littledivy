@@ -37,8 +37,55 @@ and evaluates rules before the request reaches the upstream service.
 
 = Setup
 
-The gateway config usually lives in a file like `gw.hcl`. In Tailscale mode,
-the gateway embeds a tsnet node and publishes its join page at a `*.ts.net` URL.
+The gateway config usually lives in a file like `gw.hcl`, and the gateway
+starts from that file:
+
+```sh
+clawpatrol gateway gw.hcl
+```
+
+In Tailscale mode, the gateway embeds a tsnet node and publishes its join page
+at a `*.ts.net` URL. Before starting it, create a Tailscale OAuth client in the
+#html.elem("a", attrs: (href: "https://login.tailscale.com/admin/settings/oauth"), [admin console]) with the `auth_keys` scope and the tag you want the
+gateway node to use. Tailscale documents this flow in
+#html.elem("a", attrs: (href: "https://tailscale.com/docs/features/oauth-clients"), [OAuth clients]).
+Copy the client ID and client secret from that page into the gateway process
+environment:
+
+```sh
+export TS_OAUTH_CLIENT_ID=...
+export TS_OAUTH_CLIENT_SECRET=...
+```
+
+You also need the tailnet policy in Tailscale Access Controls to allow that
+tag. Define it in `tagOwners`, allow Funnel with `nodeAttrs`, and, if the
+gateway should send agent traffic through a Tailscale exit node, allow
+`autogroup:internet`. Tailscale has docs for
+#html.elem("a", attrs: (href: "https://tailscale.com/docs/features/tags"), [tags]),
+#html.elem("a", attrs: (href: "https://tailscale.com/docs/features/tailscale-funnel"), [Funnel]), and
+#html.elem("a", attrs: (href: "https://tailscale.com/docs/reference/examples/grants#allow-using-exit-nodes"), [exit-node grants]).
+
+```json
+{
+  "tagOwners": {
+    "tag:bot": ["autogroup:admin"]
+  },
+  "nodeAttrs": [
+    {
+      "target": ["tag:bot"],
+      "attr": ["funnel"]
+    }
+  ],
+  "grants": [
+    {
+      "src": ["tag:bot"],
+      "dst": ["autogroup:internet"],
+      "ip": ["*"]
+    }
+  ]
+}
+```
+
 WireGuard mode is the other option, but the rules work the same way once
 traffic reaches the gateway.
 
@@ -122,7 +169,10 @@ endpoint "postgres" "pg-dev" {
 = Credentials
 
 Credentials are gateway-side slots. The real token or password stays off the
-agent machine.
+agent machine. Once the device has joined, connect each credential from the
+dashboard. OAuth-backed services redirect through the gateway's public URL,
+while SSH keys, database passwords, and API tokens are stored against the
+gateway profile instead of copied onto the VM.
 
 ```hcl
 credential "anthropic_oauth_subscription" "claude" {
@@ -167,6 +217,17 @@ profile "readonly" {
   ]
 }
 ```
+
+The dashboard shows the connected credential cards next to the rules that can
+use them:
+
+#html.elem("figure", [
+  #html.elem("img", attrs: (
+    src: "./static/img/clawpatrol-credentials-rules.png",
+    alt: "Clawpatrol dashboard showing connected credential cards and rules for the divy profile",
+    style: "width: 100%",
+  ))
+])
 
 = SQL rules
 
