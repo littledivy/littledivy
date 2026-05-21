@@ -307,10 +307,6 @@ With the config above, this is what changes at runtime:
 - GitHub writes and Slack message sends hit the approval rule.
 - Unmatched requests for configured services are denied by the default rules.
 
-This is not a filesystem sandbox. If the agent can read a file on disk,
-Clawpatrol does not change that. It is a network and policy boundary for
-processes run under `clawpatrol run`.
-
 = Test the policy
 
 Clawpatrol configs are just files, so put them in git and test them.
