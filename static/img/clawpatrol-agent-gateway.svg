@@ -24,32 +24,15 @@
       <text x="148" y="91" fill="#8ab4f8">~/work</text>
       <text x="207" y="91" fill="#777777">$</text>
       <text x="224" y="91" fill="#e9e6dc">clawpatrol run claude</text>
-      <rect x="50" y="106" width="704" height="146" rx="6" fill="none" stroke="#c7c7c7" stroke-width="1"/>
-      <rect x="72" y="99" width="146" height="14" fill="#111111"/>
-      <text x="78" y="111" fill="#c7c7c7" font-size="12">Claude Code v2.1.144</text>
-      <line x1="512" y1="106" x2="512" y2="252" stroke="#c7c7c7" stroke-width="1"/>
-      <text x="548" y="130" fill="#c7c7c7" font-size="13">Tips for getting started</text>
-      <text x="548" y="153" fill="#c7c7c7" font-size="13">Run /init to create CLAUDE.md</text>
-      <line x1="530" y1="171" x2="736" y2="171" stroke="#555555" stroke-width="1"/>
-      <text x="548" y="194" fill="#c7c7c7" font-size="13">What's new</text>
-      <text x="548" y="217" fill="#777777" font-size="13">/release-notes for more</text>
-      <text x="232" y="139" fill="#e9e6dc" font-size="15">Welcome back!</text>
-      <g fill="#d97757">
-        <rect x="235" y="158" width="11" height="21"/>
-        <rect x="251" y="158" width="63" height="21"/>
-        <rect x="321" y="158" width="11" height="21"/>
-        <rect x="210" y="181" width="127" height="21"/>
-        <rect x="252" y="206" width="8" height="8"/>
-        <rect x="271" y="206" width="8" height="8"/>
-        <rect x="300" y="206" width="8" height="8"/>
-        <rect x="319" y="206" width="8" height="8"/>
-      </g>
-      <text x="86" y="226" fill="#777777" font-size="12">Opus 4.7 (1M context) · API Usage Billing</text>
-      <text x="126" y="244" fill="#777777" font-size="12">~/.openclaw/workspace/repos/littledivy</text>
-      <text x="50" y="282" fill="#e9e6dc">&gt; clean up the stale test database</text>
-      <text x="50" y="308" fill="#c7c7c7">⏺ I'll run the cleanup query.</text>
-      <text x="50" y="334" fill="#ffb86c">⏺ Bash(psql $DATABASE_URL -c 'DROP TABLE users;')</text>
-      <text x="415" y="334" fill="#ff6b5f" font-weight="700">⎿ clawpatrol: blocked</text>
+      <text x="50" y="124" fill="#c7c7c7">✻ Welcome to Claude Code</text>
+      <text x="50" y="148" fill="#777777">/help for help, /status for your current setup</text>
+      <text x="50" y="186" fill="#e9e6dc">&gt; clean up the stale test database</text>
+      <text x="50" y="224" fill="#c7c7c7">⏺ I'll remove the stale test data. First I'll run the cleanup query.</text>
+      <text x="50" y="262" fill="#ffb86c">⏺ Bash(psql $DATABASE_URL -c 'DROP TABLE users;')</text>
+      <text x="73" y="290" fill="#ff6b5f" font-weight="700">⎿  clawpatrol: blocked</text>
+      <text x="98" y="318" fill="#c7c7c7">deny rule matched: destructive sql; credential injection skipped</text>
+      <text x="50" y="345" fill="#777777">&gt;</text>
+      <text x="70" y="345" fill="#e9e6dc">_</text>
     </g>
   </g>
 </svg>
