@@ -34,9 +34,16 @@
       <text x="548" y="194" fill="#c7c7c7" font-size="13">What's new</text>
       <text x="548" y="217" fill="#777777" font-size="13">/release-notes for more</text>
       <text x="232" y="139" fill="#e9e6dc" font-size="15">Welcome back!</text>
-      <text x="225" y="173" fill="#d97757" font-size="21" font-weight="700">▐▛███▜▌</text>
-      <text x="198" y="196" fill="#d97757" font-size="21" font-weight="700">▝▜█████▛▘</text>
-      <text x="242" y="218" fill="#d97757" font-size="21" font-weight="700">▘▘ ▝▝</text>
+      <g fill="#d97757">
+        <rect x="235" y="158" width="11" height="21"/>
+        <rect x="251" y="158" width="63" height="21"/>
+        <rect x="321" y="158" width="11" height="21"/>
+        <rect x="210" y="181" width="127" height="21"/>
+        <rect x="252" y="206" width="8" height="8"/>
+        <rect x="271" y="206" width="8" height="8"/>
+        <rect x="300" y="206" width="8" height="8"/>
+        <rect x="319" y="206" width="8" height="8"/>
+      </g>
       <text x="86" y="226" fill="#777777" font-size="12">Opus 4.7 (1M context) · API Usage Billing</text>
       <text x="126" y="244" fill="#777777" font-size="12">~/.openclaw/workspace/repos/littledivy</text>
       <text x="50" y="282" fill="#e9e6dc">&gt; clean up the stale test database</text>
