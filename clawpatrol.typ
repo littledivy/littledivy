@@ -16,11 +16,14 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
+#let a(href, body) = html.elem("a", attrs: (href: href), body)
+
 #html.elem("a", attrs: (href: "https://clawpatrol.dev"), [Clawpatrol]) lets
-devices running agents join a VPN, either through your Tailscale tailnet or its
-built-in WireGuard transport. The gateway injects credentials on the fly, keeps
-tokens off the agent machine, and acts like a firewall with protocol-aware rules
-for the services the agent wants to reach.
+devices running agents join a VPN, either through your
+#a("https://tailscale.com/kb/1136/tailnet", [Tailscale tailnet]) or its built-in
+#a("https://www.wireguard.com/", [WireGuard]) transport. The gateway injects
+credentials on the fly, keeps tokens off the agent machine, and acts like a
+firewall with protocol-aware rules for the services the agent wants to reach.
 
 #figure(
   image("./static/img/clawpatrol-agent-gateway.svg", width: 100%),
@@ -28,15 +31,17 @@ for the services the agent wants to reach.
 
 = Setup
 
-The gateway config usually lives in a file like `gw.hcl`, and the gateway
-starts from that file:
+The #a("https://clawpatrol.dev/docs/configure-gateway/", [gateway config])
+usually lives in an #a("https://github.com/hashicorp/hcl", [HCL]) file like
+`gw.hcl`, and the gateway starts from that file:
 
 ```sh
 clawpatrol gateway gw.hcl
 ```
 
-In Tailscale mode, the gateway embeds a tsnet node and publishes its join page
-at a `*.ts.net` URL.
+In Tailscale mode, the gateway embeds a
+#a("https://tailscale.com/kb/1244/tsnet", [tsnet]) node and publishes its join
+page at a `*.ts.net` URL.
 
 - Create a Tailscale OAuth client in the
   #html.elem("a", attrs: (href: "https://login.tailscale.com/admin/settings/oauth"), [admin console]).
@@ -81,8 +86,9 @@ The tailnet policy also has to allow that tag:
 }
 ```
 
-WireGuard mode is the other option, but the rules work the same way once
-traffic reaches the gateway.
+#a("https://www.wireguard.com/", [WireGuard]) mode is the other option, but the
+#a("https://clawpatrol.dev/docs/rules/", [rules]) work the same way once traffic
+reaches the gateway.
 
 ```hcl
 gateway {
@@ -107,7 +113,9 @@ dashboard can still live on the tailnet. The OAuth values above are loaded from
 the process environment through `{{secret:...}}`; they are not stored in the HCL
 file.
 
-On the agent VM, install the CLI and join the gateway URL from `gw.hcl`:
+On the agent VM, install the
+#a("https://clawpatrol.dev/docs/cli/", [CLI]) and join the gateway URL from
+`gw.hcl`:
 
 ```sh
 curl -fsSL https://clawpatrol.dev/install.sh | sh
@@ -133,15 +141,18 @@ Then run the agent under Clawpatrol:
 clawpatrol run claude
 ```
 
-`clawpatrol run` wraps one process tree. On Linux it starts the command in a new
-network namespace and hands a TUN fd to a per-host daemon. The daemon sends that
-traffic to the gateway over the transport chosen at `join` time. Other processes
-on the host keep their normal network path.
+#a("https://clawpatrol.dev/docs/cli/", [`clawpatrol run`]) wraps one process
+tree. On Linux it starts the command in a new
+#a("https://man7.org/linux/man-pages/man7/network_namespaces.7.html", [network namespace])
+and hands a #a("https://www.kernel.org/doc/html/latest/networking/tuntap.html", [TUN])
+fd to a per-host daemon. The daemon sends that traffic to the gateway over the
+transport chosen at `join` time. Other processes on the host keep their normal
+network path.
 
 = Endpoints
 
-Endpoints describe the services the agent may talk to. Keep them small and name
-them by intent.
+#a("https://clawpatrol.dev/docs/config-reference/", [Endpoints]) describe the
+services the agent may talk to. Keep them small and name them by intent.
 
 ```hcl
 endpoint "https" "anthropic" {
@@ -163,11 +174,12 @@ endpoint "postgres" "pg-dev" {
 
 = Credentials
 
-Credentials are gateway-side slots. The real token or password stays off the
-agent machine. Once the device has joined, connect each credential from the
-dashboard. OAuth-backed services redirect through the gateway's public URL,
-while SSH keys, database passwords, and API tokens are stored against the
-gateway profile instead of copied onto the VM.
+#a("https://clawpatrol.dev/docs/config-reference/", [Credentials]) are
+gateway-side slots. The real token or password stays off the agent machine. Once
+the device has joined, connect each credential from the dashboard. OAuth-backed
+services redirect through the gateway's public URL, while SSH keys, database
+passwords, and API tokens are stored against the gateway profile instead of
+copied onto the VM.
 
 ```hcl
 credential "anthropic_oauth_subscription" "claude" {
@@ -188,7 +200,8 @@ credential "postgres_credential" "pg-dev" {
 }
 ```
 
-A profile binds an agent to a credential set:
+A #a("https://clawpatrol.dev/docs/config-reference/", [profile]) binds an agent
+to a credential set:
 
 ```hcl
 profile "divy" {
@@ -226,13 +239,14 @@ use them:
 
 = SQL rules
 
-Rules target an endpoint, optionally narrow by credential, evaluate a CEL
-condition over decoded request facets, and return `allow`, `deny`, or an
-approval flow.
+#a("https://clawpatrol.dev/docs/rules/", [Rules]) target an endpoint, optionally
+narrow by credential, evaluate a #a("https://cel.dev/", [CEL]) condition over
+decoded request facets, and return `allow`, `deny`, or an approval flow.
 
-For Postgres, the gateway reads the wire protocol and exposes `sql.verb`,
-`sql.tables`, `sql.functions`, `sql.statement`, and `sql.database` to rules.
-This is the rule that matches the screenshot:
+For #a("https://www.postgresql.org/docs/current/protocol.html", [Postgres]), the
+gateway reads the wire protocol and exposes `sql.verb`, `sql.tables`,
+`sql.functions`, `sql.statement`, and `sql.database` to rules. This is the rule
+that matches the screenshot:
 
 ```hcl
 rule "pg-no-destructive-ddl" {
@@ -246,7 +260,10 @@ rule "pg-no-destructive-ddl" {
 }
 ```
 
-Add a second deny for database-side filesystem/network escape hatches:
+Add a second deny for database-side
+#a("https://www.postgresql.org/docs/current/functions-admin.html", [filesystem])
+and #a("https://www.postgresql.org/docs/current/dblink.html", [network]) escape
+hatches:
 
 ```hcl
 rule "pg-banned-functions" {
@@ -312,7 +329,8 @@ unknown verb  -> deny
 
 = HTTP rules
 
-The same rule shape works for HTTP. For GitHub, reads can pass and writes can
+The same rule shape works for HTTP. For
+#a("https://docs.github.com/en/rest", [GitHub]), reads can pass and writes can
 go through review:
 
 ```hcl
@@ -330,8 +348,9 @@ rule "github-write" {
 }
 ```
 
-The Slack rule is slightly narrower. Reads and websocket traffic can pass, but
-posting messages should be reviewed:
+The #a("https://api.slack.com/", [Slack]) rule is slightly narrower. Reads and
+#a("https://api.slack.com/websocket", [websocket]) traffic can pass, but posting
+messages should be reviewed:
 
 ```hcl
 rule "slack-read" {
@@ -368,15 +387,16 @@ With the config above, this is what changes at runtime:
 
 = Test the policy
 
-Clawpatrol configs are just files, so put them in git and test them.
+#a("https://clawpatrol.dev/docs/config-reference/", [Clawpatrol configs]) are
+just files, so put them in git and test them.
 
 ```sh
 clawpatrol validate ./gw.hcl
 ```
 
-Rule fixtures can live next to the config. You can download actions from a live
-gateway and add them as fixtures, so the policy tests use traffic the agent
-actually produced:
+#a("https://clawpatrol.dev/docs/rules/", [Rule fixtures]) can live next to the
+config. You can download actions from a live gateway and add them as fixtures,
+so the policy tests use traffic the agent actually produced:
 
 ```text
 tests/
