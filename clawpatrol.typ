@@ -6,7 +6,7 @@
   description: "Putting a network policy boundary around personal coding agents with Clawpatrol.",
 )
 
-#show: html-shim
+#show: clawpatrol-html
 
 #nav-bar()
 

@@ -38,20 +38,6 @@
     if info.keywords.len() != 0 {
       html.meta(name: "keywords", content: info.keywords.join(", "))
     }
-    if info.title == "clawpatrol for personal agents" {
-      html.elem("meta", attrs: (property: "og:title", content: info.title))
-      html.elem("meta", attrs: (property: "og:description", content: info.description.text))
-      html.elem("meta", attrs: (property: "og:url", content: "https://littledivy.com/clawpatrol"))
-      html.elem("meta", attrs: (property: "og:type", content: "article"))
-      html.elem("meta", attrs: (property: "og:image", content: "https://littledivy.com/static/img/clawpatrol-agent-gateway.png"))
-      html.elem("meta", attrs: (property: "og:image:type", content: "image/png"))
-      html.elem("meta", attrs: (property: "og:image:width", content: "820"))
-      html.elem("meta", attrs: (property: "og:image:height", content: "390"))
-      html.meta(name: "twitter:card", content: "summary_large_image")
-      html.meta(name: "twitter:title", content: info.title)
-      html.meta(name: "twitter:description", content: info.description.text)
-      html.meta(name: "twitter:image", content: "https://littledivy.com/static/img/clawpatrol-agent-gateway.png")
-    }
     head
   })
 }
@@ -82,4 +68,26 @@
 
 #let html-shim(doc) = context {
   default-html(get-document-info())(doc)
+}
+
+#let clawpatrol-html(doc) = context {
+  let info = get-document-info()
+  let og-image = "https://littledivy.com/static/img/clawpatrol-agent-gateway.png"
+  default-html(
+    info,
+    head: (..args) => default-head(info)(
+      html.elem("meta", attrs: (property: "og:title", content: "clawpatrol for personal agents")),
+      html.elem("meta", attrs: (property: "og:description", content: info.description.text)),
+      html.elem("meta", attrs: (property: "og:url", content: "https://littledivy.com/clawpatrol")),
+      html.elem("meta", attrs: (property: "og:type", content: "article")),
+      html.elem("meta", attrs: (property: "og:image", content: og-image)),
+      html.elem("meta", attrs: (property: "og:image:type", content: "image/png")),
+      html.elem("meta", attrs: (property: "og:image:width", content: "820")),
+      html.elem("meta", attrs: (property: "og:image:height", content: "390")),
+      html.meta(name: "twitter:card", content: "summary_large_image"),
+      html.meta(name: "twitter:title", content: "clawpatrol for personal agents"),
+      html.meta(name: "twitter:description", content: info.description.text),
+      html.meta(name: "twitter:image", content: og-image),
+    ),
+  )(doc)
 }
