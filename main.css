@@ -145,7 +145,8 @@ body > * {
 }
 
 body > figure.wide-screenshot {
-  max-width: min(90vw, 58rem);
+  width: min(96vw, 72rem);
+  max-width: none;
 }
 
 p {
