@@ -18,6 +18,7 @@ You can reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [
 == Posts
 
 #set list(marker: [--])
+- #html.elem("a", attrs: (href: "/clawpatrol"), [Clawpatrol for personal agents]) — run claude, github, and slack behind a credential-injecting gateway with rules.
 - #html.elem("a", attrs: (href: "/resym"), [Remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
 - #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
 - #html.elem("a", attrs: (href: "/turbocall"), [Turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.
@@ -38,4 +39,3 @@ You can reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [
     #html.elem("a", attrs: (href: "https://x.com/undefined_void"), [x]) · #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [email]) · #html.elem("a", attrs: (href: "https://github.com/littledivy"), [github])
   ])
 ])
-
