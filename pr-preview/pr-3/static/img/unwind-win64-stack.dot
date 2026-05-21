@@ -1,0 +1,24 @@
+digraph StackWalk64 {
+  rankdir=TB;
+	bgcolor="#fffdf7";
+  node [shape=record, fontname="monospace", fontsize=8, style=filled, fillcolor="#f9f9f9"];
+  edge [fontname="monospace", fontsize=7];
+
+  // stack frames (top = higher address)
+  frame4 [label="{0x0FFF0 | RIP=return to OS | RSP=0x0FFE0 | RBP=0x0FFE8 | Frame: Main()}", fillcolor="#fdf6e3", width=1];
+  frame3 [label="{0x0FFE0 | RIP=return to FuncA() | RSP=0x0FFD0 | RBP=0x0FFD8 | Frame: FuncA()}", fillcolor="#eee8d5", width=1.5];
+  frame2 [label="{0x0FFD0 | RIP=return to StackTrace64() | RSP=0x0FFC0 | RBP=0x0FFC8 | Frame: FuncB()}", fillcolor="#eee8d5", width=2.0];
+  frame1 [label="{0x0FFC0 | RIP=current | RSP=0x0FFB0 | RBP=0x00FFB8 | Frame: StackTrace64()}", fillcolor="#fdf6e3", width=1];
+
+  // loop control nodes
+  cond [shape=diamond, label="RIP == 0?", width=1.2, height=0.6, fillcolor="#ffffff"];
+	start [shape=circle, width=0.2, label="", fillcolor="#222222", style=filled, fixedsize=true];
+
+  // vertical flow
+	start -> frame1 [width=1.8];
+  frame1 -> frame2 [label="     RtlVirtualUnwind()"];
+  frame2 -> frame3 [label="    next frame"];
+  frame3 -> frame4 [label="    next frame"];
+  frame4 -> cond;
+  cond -> frame1 [label="  no", color="#b58900", style=dashed];
+}
