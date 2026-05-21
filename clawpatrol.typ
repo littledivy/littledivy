@@ -16,41 +16,28 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-I have been running coding agents on small VMs. They are only useful if they can
-talk to the services around the project.
+You can run coding agents on small VMs, but they only become useful once they
+can talk to the services around the project.
 
 The first version of this problem is obvious: do not leave long-lived tokens on
 every VM. The second version is more interesting. Even if the Postgres password
 lives on a gateway, the gateway still needs to understand that `DROP TABLE users`
 is not a request it should forward.
 
-That is the part Clawpatrol is meant to cover. It sits between an agent process
-and the network, decodes protocol traffic, and evaluates rules before the
-request reaches the upstream service.
+That is the part Clawpatrol is meant to cover. It's a VPN proxy that sits
+between an agent process and the network, decodes protocol traffic, and
+evaluates rules before the request reaches the upstream service.
 
 #figure(
-  image("/static/img/clawpatrol-agent-gateway.svg", width: 100%),
+  image("./static/img/clawpatrol-agent-gateway.svg", width: 100%),
 )
-
-In the screenshot, the agent tried a Postgres command. The gateway decoded the
-SQL, matched a rule, and returned an error before the operation reached the
-database.
 
 = Setup
 
-`clawpatrol run` wraps one process tree. On Linux it starts the command in a new
-network namespace and hands a TUN fd to a per-host daemon. The daemon sends that
-traffic to the gateway over the transport chosen at `join` time. Other processes
-on the host keep their normal network path.
-
-```sh
-clawpatrol run claude
-```
-
-You can run the gateway in Tailscale mode. The gateway embeds a tsnet node and
-the agent daemon joins the tailnet with a persisted auth key. WireGuard mode is
-the other option, but the rule layer is the same once traffic reaches the
-gateway.
+The gateway config usually lives in a file like `gw.hcl`. You can run it in
+Tailscale mode, where the gateway embeds a tsnet node and publishes its join
+page at a `*.ts.net` URL. WireGuard mode is the other option, but the rule layer
+is the same once traffic reaches the gateway.
 
 ```hcl
 gateway {
@@ -74,6 +61,37 @@ gateway {
 dashboard can still live on the tailnet. The OAuth values above are loaded from
 the process environment through `{{secret:...}}`; they are not stored in the HCL
 file.
+
+On the agent VM, install the CLI and join the gateway URL from `gw.hcl`:
+
+```sh
+curl -fsSL https://clawpatrol.dev/install.sh | sh
+
+clawpatrol join https://clawpatrol.example.ts.net \
+  --hostname divybot \
+  --profile divy
+```
+
+Approve the join in the browser:
+
+#html.elem("figure", [
+  #html.elem("img", attrs: (
+    src: "./static/img/clawpatrol-device-joined.png",
+    alt: "Clawpatrol dashboard showing a joined device with agent sessions and live requests",
+    style: "width: 100%",
+  ))
+])
+
+Then run the agent under Clawpatrol:
+
+```sh
+clawpatrol run claude
+```
+
+`clawpatrol run` wraps one process tree. On Linux it starts the command in a new
+network namespace and hands a TUN fd to a per-host daemon. The daemon sends that
+traffic to the gateway over the transport chosen at `join` time. Other processes
+on the host keep their normal network path.
 
 = Endpoints
 
@@ -125,7 +143,7 @@ credential "postgres_credential" "pg-dev" {
 A profile binds an agent to a credential set:
 
 ```hcl
-profile "personal" {
+profile "divy" {
   credentials = [
     anthropic_oauth_subscription.claude,
     github_oauth.github,
@@ -224,7 +242,7 @@ rule "pg-default" {
 }
 ```
 
-That gives me a simple posture:
+That gives you a simple posture:
 
 ```text
 SELECT        -> allow
@@ -277,51 +295,6 @@ rule "slack-chat-write" {
 }
 ```
 
-Keep boring default denies for services where surprises matter:
-
-```hcl
-rule "github-default" {
-  endpoint = https.github-api
-  priority = -100
-  verdict  = "deny"
-}
-
-rule "slack-default" {
-  endpoint = https.slack-api
-  priority = -100
-  verdict  = "deny"
-}
-```
-
-= Join
-
-On the agent VM:
-
-```sh
-curl -fsSL https://clawpatrol.dev/install.sh | sh
-
-clawpatrol join https://clawpatrol.example.ts.net \
-  --hostname personal-agent \
-  --profile personal
-```
-
-Approve the join in the browser. Then run the agent:
-
-#html.elem("figure", [
-  #html.elem("img", attrs: (
-    src: "/static/img/clawpatrol-device-joined.png",
-    alt: "Clawpatrol dashboard showing a joined device with agent sessions and live requests",
-    style: "width: 100%",
-  ))
-])
-
-```sh
-clawpatrol run claude
-```
-
-Only that process tree goes through the gateway. Your normal browser, shell,
-package manager, and random background processes do not.
-
 = What changes
 
 With the config above, this is what changes at runtime:
@@ -343,10 +316,12 @@ processes run under `clawpatrol run`.
 Clawpatrol configs are just files, so put them in git and test them.
 
 ```sh
-clawpatrol validate ./personal.hcl
+clawpatrol validate ./gw.hcl
 ```
 
-Rule fixtures can live next to the config:
+Rule fixtures can live next to the config. You can download actions from a live
+gateway and add them as fixtures, so the policy tests use traffic the agent
+actually produced:
 
 ```text
 tests/
@@ -358,17 +333,9 @@ tests/
 Then run:
 
 ```sh
-clawpatrol test ./personal.hcl ./tests
+clawpatrol test ./gw.hcl ./tests
 ```
 
 This matters because the config is code in the path of every agent request. A
 bad rule can block the agent at runtime or allow a write that was supposed to be
 gated.
-
-The CLI invocation stays boring:
-
-```sh
-clawpatrol run claude
-```
-
-The interesting part is all in the gateway config.
