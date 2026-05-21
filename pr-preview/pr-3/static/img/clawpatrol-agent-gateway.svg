@@ -1,72 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="820" height="430" viewBox="0 0 820 430" role="img" aria-labelledby="title desc">
-  <title id="title">Clawpatrol gateway path for a personal agent</title>
-  <desc id="desc">A line diagram showing a Claude process routed through a per-process namespace, then through a Clawpatrol WireGuard tunnel carried by Tailscale to a gateway that applies rules, injects credentials, and sends approved requests to Anthropic, GitHub, and Slack.</desc>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333333"/>
-    </marker>
-  </defs>
+  <title id="title">Clawpatrol blocking a dangerous Claude action</title>
+  <desc id="desc">A terminal-style illustration where Claude tries to run DROP TABLE users and Clawpatrol blocks the request before credentials are forwarded.</desc>
 
   <rect x="0" y="0" width="820" height="430" fill="#ffffff"/>
   <rect x="1" y="1" width="818" height="428" rx="2" fill="none" stroke="#d0d0d0"/>
-  <line x1="31" y1="62" x2="789" y2="62" stroke="#d0d0d0"/>
 
-  <text x="31" y="39" fill="#333333" font-family="gitan, Alegreya, Palatino, Georgia, serif" font-size="18" font-weight="600">personal agent network path</text>
-  <text x="590" y="39" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">not a proxy config; a credential boundary</text>
+  <rect x="34" y="34" width="752" height="326" rx="4" fill="#fbfaf7" stroke="#333333" stroke-width="1.2"/>
+  <rect x="34" y="34" width="752" height="34" rx="4" fill="#f1f1ee" stroke="#333333" stroke-width="1.2"/>
+  <line x1="34" y1="68" x2="786" y2="68" stroke="#333333" stroke-width="1.2"/>
+  <circle cx="55" cy="51" r="4.5" fill="#c44d32"/>
+  <circle cx="72" cy="51" r="4.5" fill="#d0d0d0"/>
+  <circle cx="89" cy="51" r="4.5" fill="#d0d0d0"/>
+  <text x="111" y="56" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12">personal-agent: clawpatrol run -- claude</text>
 
-  <text x="31" y="73" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">agent machine</text>
-  <rect x="31" y="91" width="172" height="250" rx="2" fill="none" stroke="#333333" stroke-width="1.25"/>
-  <rect x="49" y="117" width="136" height="48" rx="2" fill="none" stroke="#d0d0d0" stroke-width="1.25"/>
-  <text x="67" y="139" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">claude</text>
-  <text x="67" y="156" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">normal cli process</text>
-  <rect x="49" y="197" width="136" height="58" rx="2" fill="none" stroke="#d0d0d0" stroke-width="1.25"/>
-  <text x="67" y="221" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">netns</text>
-  <text x="67" y="238" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">process tree only</text>
-  <rect x="49" y="289" width="136" height="32" rx="2" fill="none" stroke="#c44d32" stroke-width="1.25"/>
-  <text x="67" y="310" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">wg0</text>
-  <path d="M 117 165 L 117 197" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <path d="M 117 255 L 117 289" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="133" y="187" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">env = placeholders</text>
-  <text x="133" y="277" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">default route</text>
+  <text x="58" y="103" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">$ claude</text>
+  <text x="58" y="129" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">Claude &gt; i can clean up the stale test database.</text>
+  <text x="58" y="155" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">Claude &gt; running:</text>
 
-  <text x="258" y="73" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">transport</text>
-  <rect x="258" y="91" width="218" height="250" rx="2" fill="none" stroke="#333333" stroke-width="1.25"/>
-  <path d="M 288 215 C 330 143 404 143 446 215 C 404 287 330 287 288 215 Z" fill="none" stroke="#d0d0d0" stroke-width="1.1"/>
-  <path d="M 316 215 C 348 175 386 175 418 215 C 386 255 348 255 316 215 Z" fill="none" stroke="#c44d32" stroke-width="1.25"/>
-  <text x="314" y="207" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">tailscale</text>
-  <text x="321" y="227" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">private reachability</text>
-  <rect x="306" y="121" width="122" height="28" rx="14" fill="none" stroke="#c44d32" stroke-width="1.25"/>
-  <text x="324" y="140" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">inner: clawpatrol wg</text>
-  <text x="298" y="311" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">outer: tailnet / funnel / DERP</text>
+  <rect x="58" y="176" width="704" height="42" rx="2" fill="#ffffff" stroke="#d0d0d0"/>
+  <text x="78" y="202" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">SQL: DROP TABLE users;</text>
 
-  <text x="531" y="73" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">gateway</text>
-  <rect x="531" y="91" width="205" height="250" rx="2" fill="none" stroke="#333333" stroke-width="1.25"/>
-  <line x1="555" y1="135" x2="714" y2="135" stroke="#d0d0d0"/>
-  <line x1="555" y1="209" x2="714" y2="209" stroke="#d0d0d0"/>
-  <line x1="555" y1="281" x2="714" y2="281" stroke="#d0d0d0"/>
-  <text x="555" y="121" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">1. terminate wg</text>
-  <text x="555" y="167" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">2. parse request</text>
-  <text x="579" y="187" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">host, method, profile</text>
-  <text x="555" y="241" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">3. apply rules</text>
-  <text x="579" y="261" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">allow / deny / approve</text>
-  <text x="555" y="313" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">4. inject token</text>
-  <text x="579" y="331" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">secret stays here</text>
+  <text x="58" y="248" fill="#c44d32" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="700">clawpatrol: blocked</text>
+  <text x="58" y="274" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">endpoint: postgres.production.internal:5432</text>
+  <text x="58" y="300" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">profile:  personal</text>
+  <text x="58" y="326" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13">rule:     deny sql containing DROP TABLE</text>
 
-  <path d="M 185 305 C 216 305 220 215 258 215" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <path d="M 476 215 C 505 215 504 215 531 215" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="202" y="290" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">encrypted tunnel</text>
-  <text x="476" y="197" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">identity + profile</text>
+  <rect x="463" y="238" width="299" height="90" rx="3" fill="#ffffff" stroke="#c44d32" stroke-width="1.2"/>
+  <text x="483" y="264" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="12" font-weight="700">gateway decision</text>
+  <line x1="483" y1="276" x2="742" y2="276" stroke="#d0d0d0"/>
+  <text x="483" y="299" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">credential was not injected</text>
+  <text x="483" y="319" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">request never reached database</text>
 
-  <text x="755" y="109" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">egress</text>
-  <path d="M 736 128 L 751 128" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <path d="M 736 207 L 751 207" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <path d="M 736 286 L 751 286" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="755" y="132" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">claude</text>
-  <text x="755" y="211" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">github</text>
-  <text x="755" y="290" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">slack</text>
-
-  <rect x="95" y="371" width="628" height="28" rx="2" fill="#fbfaf7" stroke="#d0d0d0"/>
-  <text x="109" y="389" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">example: POST api.github.com/repos/... -&gt; rule requires approval -&gt; gateway injects github oauth token</text>
-  <path d="M 116 341 C 116 363 116 363 116 371" fill="none" stroke="#666666" stroke-width="1.1" stroke-dasharray="4 4"/>
-  <path d="M 634 341 C 634 363 634 363 634 371" fill="none" stroke="#666666" stroke-width="1.1" stroke-dasharray="4 4"/>
+  <text x="54" y="389" fill="#666666" font-family="gitan, Alegreya, Palatino, Georgia, serif" font-size="15">The agent keeps its normal tools. Clawpatrol keeps the credential boundary.</text>
 </svg>
