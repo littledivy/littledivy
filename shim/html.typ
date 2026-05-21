@@ -25,6 +25,7 @@
     html.meta(name: "viewport", content: "width=device-width, initial-scale=1")
     html.elem("script", attrs: (src: "theme.js"))
     html.elem("link", attrs: (rel: "stylesheet", href: "main.css"))
+    html.elem("link", attrs: (rel: "icon", type: "image/png", href: "/static/img/favicon.png"))
     if info.title != none {
       html.title(info.title)
     }
@@ -36,6 +37,20 @@
     }
     if info.keywords.len() != 0 {
       html.meta(name: "keywords", content: info.keywords.join(", "))
+    }
+    if info.title == "clawpatrol for personal agents" {
+      html.elem("meta", attrs: (property: "og:title", content: info.title))
+      html.elem("meta", attrs: (property: "og:description", content: info.description.text))
+      html.elem("meta", attrs: (property: "og:url", content: "https://littledivy.com/clawpatrol"))
+      html.elem("meta", attrs: (property: "og:type", content: "article"))
+      html.elem("meta", attrs: (property: "og:image", content: "https://littledivy.com/static/img/clawpatrol-agent-gateway.png"))
+      html.elem("meta", attrs: (property: "og:image:type", content: "image/png"))
+      html.elem("meta", attrs: (property: "og:image:width", content: "820"))
+      html.elem("meta", attrs: (property: "og:image:height", content: "390"))
+      html.meta(name: "twitter:card", content: "summary_large_image")
+      html.meta(name: "twitter:title", content: info.title)
+      html.meta(name: "twitter:description", content: info.description.text)
+      html.meta(name: "twitter:image", content: "https://littledivy.com/static/img/clawpatrol-agent-gateway.png")
     }
     head
   })
@@ -68,4 +83,3 @@
 #let html-shim(doc) = context {
   default-html(get-document-info())(doc)
 }
-
