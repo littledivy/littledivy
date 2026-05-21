@@ -4,9 +4,9 @@
 
   <rect x="0" y="0" width="820" height="390" fill="#ffffff"/>
 
-  <rect x="36" y="34" width="748" height="340" rx="10" fill="#000000" opacity="0.10"/>
-  <rect x="28" y="24" width="764" height="342" rx="10" fill="#c9c7c0"/>
-  <rect x="29" y="25" width="762" height="340" rx="9" fill="#111111"/>
+  <path d="M46 34 H774 V374 H36 V44 Q36 34 46 34 Z" fill="#000000" opacity="0.10"/>
+  <path d="M38 24 H782 Q792 24 792 34 V366 H28 V34 Q28 24 38 24 Z" fill="#c9c7c0"/>
+  <path d="M38 25 H782 Q791 25 791 34 V365 H29 V34 Q29 25 38 25 Z" fill="#111111"/>
   <rect x="29" y="25" width="762" height="33" rx="9" fill="#e8e6df"/>
   <rect x="29" y="44" width="762" height="14" fill="#e8e6df"/>
   <line x1="29" y1="58" x2="791" y2="58" stroke="#b8b6af"/>
