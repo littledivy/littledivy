@@ -16,16 +16,22 @@
     <circle cx="49" cy="41" r="5.2" fill="#ff5f57" stroke="#d4473f" stroke-width=".8"/>
     <circle cx="68" cy="41" r="5.2" fill="#febc2e" stroke="#d49a21" stroke-width=".8"/>
     <circle cx="87" cy="41" r="5.2" fill="#28c840" stroke="#1f9f32" stroke-width=".8"/>
-    <text x="410" y="45" fill="#4a4945" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="600">clawpatrol run -- claude</text>
+    <text x="410" y="45" fill="#4a4945" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="600">clawpatrol run claude</text>
 
     <g font-family="Iosevka, SFMono-Regular, Menlo, Consolas, ui-monospace, monospace" font-size="14">
       <text x="50" y="91" fill="#8bd49c">divy@agent</text>
       <text x="137" y="91" fill="#777777">:</text>
       <text x="148" y="91" fill="#8ab4f8">~/work</text>
       <text x="207" y="91" fill="#777777">$</text>
-      <text x="224" y="91" fill="#e9e6dc">clawpatrol run -- claude</text>
-      <text x="50" y="124" fill="#c7c7c7">✻ Welcome to Claude Code</text>
-      <text x="50" y="148" fill="#777777">/help for help, /status for your current setup</text>
+      <text x="224" y="91" fill="#e9e6dc">clawpatrol run claude</text>
+      <g stroke="#d97757" stroke-width="2.4" stroke-linecap="round">
+        <line x1="56" y1="109" x2="56" y2="128"/>
+        <line x1="46.5" y1="118.5" x2="65.5" y2="118.5"/>
+        <line x1="49.5" y1="112" x2="62.5" y2="125"/>
+        <line x1="62.5" y1="112" x2="49.5" y2="125"/>
+      </g>
+      <text x="78" y="128" fill="#d97757" font-size="25" font-weight="700">Claude Code</text>
+      <text x="50" y="154" fill="#777777">Welcome back. /help for help, /status for your current setup</text>
       <text x="50" y="186" fill="#e9e6dc">&gt; clean up the stale test database</text>
       <text x="50" y="224" fill="#c7c7c7">⏺ I'll remove the stale test data. First I'll run the cleanup query.</text>
       <text x="50" y="262" fill="#ffb86c">⏺ Bash(psql $DATABASE_URL -c 'DROP TABLE users;')</text>
