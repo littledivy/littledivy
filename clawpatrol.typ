@@ -307,6 +307,14 @@ clawpatrol join https://clawpatrol.example.ts.net \
 
 Approve the join in the browser. Then run the agent:
 
+#html.elem("figure", [
+  #html.elem("img", attrs: (
+    src: "/static/img/clawpatrol-device-joined.png",
+    alt: "Clawpatrol dashboard showing a joined device with agent sessions and live requests",
+    style: "width: 100%",
+  ))
+])
+
 ```sh
 clawpatrol run claude
 ```
