@@ -45,25 +45,29 @@ clawpatrol gateway gw.hcl
 ```
 
 In Tailscale mode, the gateway embeds a tsnet node and publishes its join page
-at a `*.ts.net` URL. Before starting it, create a Tailscale OAuth client in the
-#html.elem("a", attrs: (href: "https://login.tailscale.com/admin/settings/oauth"), [admin console]) with the `auth_keys` scope and the tag you want the
-gateway node to use. Tailscale documents this flow in
-#html.elem("a", attrs: (href: "https://tailscale.com/docs/features/oauth-clients"), [OAuth clients]).
-Copy the client ID and client secret from that page into the gateway process
-environment:
+at a `*.ts.net` URL.
+
+- Create a Tailscale OAuth client in the
+  #html.elem("a", attrs: (href: "https://login.tailscale.com/admin/settings/oauth"), [admin console]).
+- Give it the `auth_keys` scope and the tag the gateway node should use.
+- Tailscale documents the flow in
+  #html.elem("a", attrs: (href: "https://tailscale.com/docs/features/oauth-clients"), [OAuth clients]).
+- Copy the client ID and client secret into the gateway process environment:
 
 ```sh
 export TS_OAUTH_CLIENT_ID=...
 export TS_OAUTH_CLIENT_SECRET=...
 ```
 
-You also need the tailnet policy in Tailscale Access Controls to allow that
-tag. Define it in `tagOwners`, allow Funnel with `nodeAttrs`, and, if the
-gateway should send agent traffic through a Tailscale exit node, allow
-`autogroup:internet`. Tailscale has docs for
-#html.elem("a", attrs: (href: "https://tailscale.com/docs/features/tags"), [tags]),
-#html.elem("a", attrs: (href: "https://tailscale.com/docs/features/tailscale-funnel"), [Funnel]), and
-#html.elem("a", attrs: (href: "https://tailscale.com/docs/reference/examples/grants#allow-using-exit-nodes"), [exit-node grants]).
+The tailnet policy also has to allow that tag:
+
+- Define the gateway tag in `tagOwners`. See Tailscale
+  #html.elem("a", attrs: (href: "https://tailscale.com/docs/features/tags"), [tags]).
+- Allow Funnel for that tag with `nodeAttrs`. See
+  #html.elem("a", attrs: (href: "https://tailscale.com/docs/features/tailscale-funnel"), [Funnel]).
+- If the gateway should send agent traffic through a Tailscale exit node, allow
+  `autogroup:internet`. See
+  #html.elem("a", attrs: (href: "https://tailscale.com/docs/reference/examples/grants#allow-using-exit-nodes"), [exit-node grants]).
 
 ```json
 {
