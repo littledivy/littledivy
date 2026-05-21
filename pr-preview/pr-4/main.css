@@ -144,6 +144,10 @@ body > * {
   margin-right: auto;
 }
 
+body > figure.wide-screenshot {
+  max-width: min(90vw, 58rem);
+}
+
 p {
   line-height: 1.48;
 }
