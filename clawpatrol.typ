@@ -16,20 +16,11 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-The first time you try a coding agent on a real project, the boundary shows up
-fast. It can edit files and run tests, but the useful work is usually somewhere
-past localhost: checking GitHub, posting status, reading app state, or calling a
-model API.
-
-The obvious answer is to give the agent network access. The obvious problem is
-that you do not want long-lived tokens sitting on every VM. Moving those tokens
-to a gateway helps, but it is not enough. Even if the Postgres password lives
-there, the gateway still needs to know that `DROP TABLE users` is not a request
-it should forward.
-
-That is the part #html.elem("a", attrs: (href: "https://clawpatrol.dev"), [Clawpatrol]) is meant to cover. It's a VPN proxy
-that sits between an agent process and the network, decodes protocol traffic,
-and evaluates rules before the request reaches the upstream service.
+#html.elem("a", attrs: (href: "https://clawpatrol.dev"), [Clawpatrol]) lets
+devices running agents join a VPN, either through your Tailscale tailnet or its
+built-in WireGuard transport. The gateway injects credentials on the fly, keeps
+tokens off the agent machine, and acts like a firewall with protocol-aware rules
+for the services the agent wants to reach.
 
 #figure(
   image("./static/img/clawpatrol-agent-gateway.svg", width: 100%),
