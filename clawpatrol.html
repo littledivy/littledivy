@@ -54,7 +54,7 @@
     <p>On the agent VM, install the CLI and join the gateway URL from <code>gw.hcl</code>:</p>
     <pre><code data-lang="sh"><span style="color: #4b69c6">curl</span> -fsSL https://clawpatrol.dev/install.sh <span style="color: #d73948">|</span> <span style="color: #4b69c6">sh</span><br><br><span style="color: #4b69c6">clawpatrol</span> join https://clawpatrol.example.ts.net \<br>  --hostname divybot \<br>  --profile divy</code></pre>
     <p>Approve the join in the browser:</p>
-    <figure><img src="./static/img/clawpatrol-device-joined.png" alt="Clawpatrol dashboard showing a joined device with agent sessions and live requests" style="width: 100%"></figure>
+    <figure class="wide-screenshot"><img src="./static/img/clawpatrol-device-joined.png" alt="Clawpatrol dashboard showing a joined device with agent sessions and live requests" style="width: 100%"></figure>
     <p>Then run the agent under Clawpatrol:</p>
     <pre><code data-lang="sh"><span style="color: #4b69c6">clawpatrol</span> run claude</code></pre>
     <p><code>clawpatrol run</code> wraps one process tree. On Linux it starts the command in a new network namespace and hands a TUN fd to a per-host daemon. The daemon sends that traffic to the gateway over the transport chosen at <code>join</code> time. Other processes on the host keep their normal network path.</p>
@@ -69,7 +69,7 @@
     <p>A <code>readonly</code> profile can omit the Postgres writer or Slack credential without changing the agent VM:</p>
     <pre><code data-lang="hcl"><span style="color: #4b69c6">profile</span> <span style="color: #198810">"</span><span style="color: #198810">readonly</span><span style="color: #198810">"</span> {<br>  credentials <span style="color: #d73948">= </span>[<br>    anthropic_oauth_subscription<span style="color: #d73948">.</span>claude,<br>    github_oauth<span style="color: #d73948">.</span>github,<br>  ]<br>}</code></pre>
     <p>The dashboard shows the connected credential cards next to the rules that can use them:</p>
-    <figure><img src="./static/img/clawpatrol-credentials-rules.png" alt="Clawpatrol dashboard showing connected credential cards and rules for the divy profile" style="width: 100%"></figure>
+    <figure class="wide-screenshot"><img src="./static/img/clawpatrol-credentials-rules.png" alt="Clawpatrol dashboard showing connected credential cards and rules for the divy profile" style="width: 100%"></figure>
     <h2 class="!text-foreground">SQL rules</h2>
     <p>Rules target an endpoint, optionally narrow by credential, evaluate a CEL condition over decoded request facets, and return <code>allow</code>, <code>deny</code>, or an approval flow.</p>
     <p>For Postgres, the gateway reads the wire protocol and exposes <code>sql.verb</code>, <code>sql.tables</code>, <code>sql.functions</code>, <code>sql.statement</code>, and <code>sql.database</code> to rules. This is the rule that matches the screenshot:</p>

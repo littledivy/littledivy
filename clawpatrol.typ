@@ -119,7 +119,7 @@ clawpatrol join https://clawpatrol.example.ts.net \
 
 Approve the join in the browser:
 
-#html.elem("figure", [
+#html.elem("figure", attrs: (class: "wide-screenshot"), [
   #html.elem("img", attrs: (
     src: "./static/img/clawpatrol-device-joined.png",
     alt: "Clawpatrol dashboard showing a joined device with agent sessions and live requests",
@@ -216,7 +216,7 @@ profile "readonly" {
 The dashboard shows the connected credential cards next to the rules that can
 use them:
 
-#html.elem("figure", [
+#html.elem("figure", attrs: (class: "wide-screenshot"), [
   #html.elem("img", attrs: (
     src: "./static/img/clawpatrol-credentials-rules.png",
     alt: "Clawpatrol dashboard showing connected credential cards and rules for the divy profile",
