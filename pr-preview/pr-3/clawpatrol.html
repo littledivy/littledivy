@@ -61,6 +61,7 @@
     <p>On the agent VM:</p>
     <pre><code data-lang="sh"><span style="color: #4b69c6">curl</span> -fsSL https://clawpatrol.dev/install.sh <span style="color: #d73948">|</span> <span style="color: #4b69c6">sh</span><br><br><span style="color: #4b69c6">clawpatrol</span> join https://clawpatrol.example.ts.net \<br>  --hostname personal-agent \<br>  --profile personal</code></pre>
     <p>Approve the join in the browser. Then run the agent:</p>
+    <figure><img src="/static/img/clawpatrol-device-joined.png" alt="Clawpatrol dashboard showing a joined device with agent sessions and live requests" style="width: 100%"></figure>
     <pre><code data-lang="sh"><span style="color: #4b69c6">clawpatrol</span> run claude</code></pre>
     <p>Only that process tree goes through the gateway. Your normal browser, shell, package manager, and random background processes do not.</p>
     <h2 class="!text-foreground">What changes</h2>
