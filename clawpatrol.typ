@@ -1,9 +1,9 @@
 #import "./shim/html.typ": *
 
 #set document(
-  title: "Clawpatrol rules for personal agents",
+  title: "clawpatrol for personal agents",
   date: datetime(day: 21, month: 5, year: 2026),
-  description: "Using Clawpatrol rules to put a network policy boundary around personal coding agents.",
+  description: "Putting a network policy boundary around personal coding agents with Clawpatrol.",
 )
 
 #show: html-shim
@@ -17,16 +17,17 @@
 }
 
 You can run coding agents on small VMs, but they only become useful once they
-can talk to the services around the project.
+can touch the services around the project: source control, chat, databases, and
+model APIs.
 
 The first version of this problem is obvious: do not leave long-lived tokens on
 every VM. The second version is more interesting. Even if the Postgres password
 lives on a gateway, the gateway still needs to understand that `DROP TABLE users`
 is not a request it should forward.
 
-That is the part Clawpatrol is meant to cover. It's a VPN proxy that sits
-between an agent process and the network, decodes protocol traffic, and
-evaluates rules before the request reaches the upstream service.
+That is the part #html.elem("a", attrs: (href: "https://clawpatrol.dev"), [Clawpatrol]) is meant to cover. It's a VPN proxy
+that sits between an agent process and the network, decodes protocol traffic,
+and evaluates rules before the request reaches the upstream service.
 
 #figure(
   image("./static/img/clawpatrol-agent-gateway.svg", width: 100%),
@@ -34,10 +35,10 @@ evaluates rules before the request reaches the upstream service.
 
 = Setup
 
-The gateway config usually lives in a file like `gw.hcl`. You can run it in
-Tailscale mode, where the gateway embeds a tsnet node and publishes its join
-page at a `*.ts.net` URL. WireGuard mode is the other option, but the rule layer
-is the same once traffic reaches the gateway.
+The gateway config usually lives in a file like `gw.hcl`. In Tailscale mode,
+the gateway embeds a tsnet node and publishes its join page at a `*.ts.net` URL.
+WireGuard mode is the other option, but the rules work the same way once
+traffic reaches the gateway.
 
 ```hcl
 gateway {
@@ -95,8 +96,8 @@ on the host keep their normal network path.
 
 = Endpoints
 
-Endpoints describe the services the agent may talk to. They are easier to reason
-about when they stay small and named by intent.
+Endpoints describe the services the agent may talk to. Keep them small and name
+them by intent.
 
 ```hcl
 endpoint "https" "anthropic" {
@@ -118,8 +119,8 @@ endpoint "postgres" "pg-dev" {
 
 = Credentials
 
-Credentials are slots on the gateway side. They do not put the real token or
-password on the agent machine.
+Credentials are gateway-side slots. The real token or password stays off the
+agent machine.
 
 ```hcl
 credential "anthropic_oauth_subscription" "claude" {
@@ -167,9 +168,9 @@ profile "readonly" {
 
 = SQL rules
 
-Rules are the important part. A rule targets an endpoint, optionally narrows by
-credential, evaluates a CEL condition over decoded request facets, and returns
-`allow`, `deny`, or an approval flow.
+Rules target an endpoint, optionally narrow by credential, evaluate a CEL
+condition over decoded request facets, and return `allow`, `deny`, or an
+approval flow.
 
 For Postgres, the gateway reads the wire protocol and exposes `sql.verb`,
 `sql.tables`, `sql.functions`, `sql.statement`, and `sql.database` to rules.
@@ -253,8 +254,8 @@ unknown verb  -> deny
 
 = HTTP rules
 
-The same rule shape works for HTTP. For GitHub, reads are cheap and writes are
-visible:
+The same rule shape works for HTTP. For GitHub, reads can pass and writes can
+go through review:
 
 ```hcl
 rule "github-read" {
