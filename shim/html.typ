@@ -75,7 +75,7 @@
   let og-image = "https://littledivy.com/static/img/clawpatrol-agent-gateway.png"
   default-html(
     info,
-    head: (..args) => default-head(info)(
+    head: (..args) => default-head(info)({
       html.elem("meta", attrs: (property: "og:title", content: "clawpatrol for personal agents")),
       html.elem("meta", attrs: (property: "og:description", content: info.description.text)),
       html.elem("meta", attrs: (property: "og:url", content: "https://littledivy.com/clawpatrol")),
@@ -88,6 +88,6 @@
       html.meta(name: "twitter:title", content: "clawpatrol for personal agents"),
       html.meta(name: "twitter:description", content: info.description.text),
       html.meta(name: "twitter:image", content: og-image),
-    ),
+    }),
   )(doc)
 }
