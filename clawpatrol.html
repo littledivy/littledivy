@@ -6,84 +6,64 @@
     <script src="theme.js">
     </script>
     <link rel="stylesheet" href="main.css">
-    <title>Clawpatrol for personal agents</title>
-    <meta name="description" content="Set up a Clawpatrol gateway that parses agent traffic, applies rules, and keeps credentials at the gateway.">
+    <title>Clawpatrol rules for personal agents</title>
+    <meta name="description" content="Using Clawpatrol rules to put a network policy boundary around personal coding agents.">
   </head>
   <body>
     <nav>
       <p><a href="/">Home</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;&#x20;</span><a href="https://github.com/littledivy?tab=repositories">Projects</a><span style="white-space: pre-wrap">&#x20;&#x20;&#x20;&#x20;</span></p>
       <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
     </nav>
-    <h1>Clawpatrol for personal agents</h1>
-    <p>I have been running coding agents in tmux on small VMs. The useful version of that setup needs access to real services: GitHub, Slack, Postgres, Claude, SSH.</p>
-    <p>The risky part is not only where tokens live. It is also what the agent can do with them. A token hidden behind a proxy is still not enough if the proxy will forward <code>DROP TABLE users</code>.</p>
-    <p>Clawpatrol is a gateway that sits between the agent process and the network. It parses protocol traffic, evaluates rules, and keeps upstream credentials on the gateway side.</p>
+    <h1>Clawpatrol rules for personal agents</h1>
+    <p>I run coding agents in tmux on small VMs. They need real network access: GitHub for PRs, Slack for notifications, Postgres for application state, Claude for model calls.</p>
+    <p>Putting tokens on the gateway is useful, but it is not the whole problem. A hidden Postgres password still does not help if the gateway forwards <code>DROP TABLE users</code>.</p>
+    <p>The part of Clawpatrol I care about most is rules. It sits between an agent process and the network, decodes protocol traffic, and evaluates policy before the request reaches the upstream service.</p>
     <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MjAiIGhlaWdodD0iMzkwIiB2aWV3Qm94PSIwIDAgODIwIDM5MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkNsYXdwYXRyb2wgYmxvY2tpbmcgYSBkYW5nZXJvdXMgQ2xhdWRlIGFjdGlvbjwvdGl0bGU+CiAgPGRlc2MgaWQ9ImRlc2MiPkEgQ2xhdWRlIENvZGUgdGVybWluYWwgd2luZG93IHdoZXJlIGEgZGF0YWJhc2UgY29tbWFuZCBpcyBibG9ja2VkIGJlZm9yZSBhbnkgY3JlZGVudGlhbCBpcyBpbmplY3RlZC48L2Rlc2M+CgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4MjAiIGhlaWdodD0iMzkwIiBmaWxsPSIjZmZmZmZmIi8+CgogIDxyZWN0IHg9IjM2IiB5PSIzNCIgd2lkdGg9Ijc0OCIgaGVpZ2h0PSIzNDAiIHJ4PSIxMCIgZmlsbD0iIzAwMDAwMCIgb3BhY2l0eT0iMC4xMCIvPgogIDxyZWN0IHg9IjI4IiB5PSIyNCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSIzNDIiIHJ4PSIxMCIgZmlsbD0iIzExMTExMSIvPgogIDxyZWN0IHg9IjI4IiB5PSIyNCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSIzNCIgcng9IjEwIiBmaWxsPSIjZThlNmRmIi8+CiAgPHJlY3QgeD0iMjgiIHk9IjQ0IiB3aWR0aD0iNzY0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjZThlNmRmIi8+CiAgPGxpbmUgeDE9IjI4IiB5MT0iNTgiIHgyPSI3OTIiIHkyPSI1OCIgc3Ryb2tlPSIjYjhiNmFmIi8+CiAgPHJlY3QgeD0iMjgiIHk9IjU4IiB3aWR0aD0iNzY0IiBoZWlnaHQ9IjMwOCIgZmlsbD0iIzExMTExMSIvPgogIDxyZWN0IHg9IjI4LjUiIHk9IjI0LjUiIHdpZHRoPSI3NjMiIGhlaWdodD0iMzQxIiByeD0iOS41IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWM3YzAiLz4KCiAgPGc+CiAgICA8Y2lyY2xlIGN4PSI0OSIgY3k9IjQxIiByPSI1LjIiIGZpbGw9IiNmZjVmNTciIHN0cm9rZT0iI2Q0NDczZiIgc3Ryb2tlLXdpZHRoPSIuOCIvPgogICAgPGNpcmNsZSBjeD0iNjgiIGN5PSI0MSIgcj0iNS4yIiBmaWxsPSIjZmViYzJlIiBzdHJva2U9IiNkNDlhMjEiIHN0cm9rZS13aWR0aD0iLjgiLz4KICAgIDxjaXJjbGUgY3g9Ijg3IiBjeT0iNDEiIHI9IjUuMiIgZmlsbD0iIzI4Yzg0MCIgc3Ryb2tlPSIjMWY5ZjMyIiBzdHJva2Utd2lkdGg9Ii44Ii8+CiAgICA8dGV4dCB4PSI0MTAiIHk9IjQ1IiBmaWxsPSIjNGE0OTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iLWFwcGxlLXN5c3RlbSwgQmxpbmtNYWNTeXN0ZW1Gb250LCBTZWdvZSBVSSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9IjYwMCI+Y2xhd3BhdHJvbCBydW4gY2xhdWRlPC90ZXh0PgoKICAgIDxnIGZvbnQtZmFtaWx5PSJJb3NldmthLCBTRk1vbm8tUmVndWxhciwgTWVubG8sIENvbnNvbGFzLCB1aS1tb25vc3BhY2UsIG1vbm9zcGFjZSIgZm9udC1zaXplPSIxNCI+CiAgICAgIDx0ZXh0IHg9IjUwIiB5PSI5MSIgZmlsbD0iIzhiZDQ5YyI+ZGl2eUBhZ2VudDwvdGV4dD4KICAgICAgPHRleHQgeD0iMTM3IiB5PSI5MSIgZmlsbD0iIzc3Nzc3NyI+OjwvdGV4dD4KICAgICAgPHRleHQgeD0iMTQ4IiB5PSI5MSIgZmlsbD0iIzhhYjRmOCI+fi93b3JrPC90ZXh0PgogICAgICA8dGV4dCB4PSIyMDciIHk9IjkxIiBmaWxsPSIjNzc3Nzc3Ij4kPC90ZXh0PgogICAgICA8dGV4dCB4PSIyMjQiIHk9IjkxIiBmaWxsPSIjZTllNmRjIj5jbGF3cGF0cm9sIHJ1biBjbGF1ZGU8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjUwIiB5PSIxMjQiIGZpbGw9IiNjN2M3YzciPuKcuyBXZWxjb21lIHRvIENsYXVkZSBDb2RlPC90ZXh0PgogICAgICA8dGV4dCB4PSI1MCIgeT0iMTQ4IiBmaWxsPSIjNzc3Nzc3Ij4vaGVscCBmb3IgaGVscCwgL3N0YXR1cyBmb3IgeW91ciBjdXJyZW50IHNldHVwPC90ZXh0PgogICAgICA8dGV4dCB4PSI1MCIgeT0iMTg2IiBmaWxsPSIjZTllNmRjIj4mZ3Q7IGNsZWFuIHVwIHRoZSBzdGFsZSB0ZXN0IGRhdGFiYXNlPC90ZXh0PgogICAgICA8dGV4dCB4PSI1MCIgeT0iMjI0IiBmaWxsPSIjYzdjN2M3Ij7ij7ogSSdsbCByZW1vdmUgdGhlIHN0YWxlIHRlc3QgZGF0YS4gRmlyc3QgSSdsbCBydW4gdGhlIGNsZWFudXAgcXVlcnkuPC90ZXh0PgogICAgICA8dGV4dCB4PSI1MCIgeT0iMjYyIiBmaWxsPSIjZmZiODZjIj7ij7ogQmFzaChwc3FsICREQVRBQkFTRV9VUkwgLWMgJ0RST1AgVEFCTEUgdXNlcnM7Jyk8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjczIiB5PSIyOTAiIGZpbGw9IiNmZjZiNWYiIGZvbnQtd2VpZ2h0PSI3MDAiPuKOvyAgY2xhd3BhdHJvbDogYmxvY2tlZDwvdGV4dD4KICAgICAgPHRleHQgeD0iOTgiIHk9IjMxOCIgZmlsbD0iI2M3YzdjNyI+ZGVueSBydWxlIG1hdGNoZWQ6IGRlc3RydWN0aXZlIHNxbDsgZHJvcCB1c2VycyB0YWJsZSBub3QgYWxsb3dlZDwvdGV4dD4KICAgICAgPHRleHQgeD0iNTAiIHk9IjM0NSIgZmlsbD0iIzc3Nzc3NyI+Jmd0OzwvdGV4dD4KICAgICAgPHRleHQgeD0iNzAiIHk9IjM0NSIgZmlsbD0iI2U5ZTZkYyI+XzwvdGV4dD4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=" style="width: 100%"></figure>
-    <p>The screenshot above is the main thing I care about: the agent tried a Postgres command, the gateway decoded the SQL, matched a rule, and returned an error before the operation reached the database.</p>
-    <h2 class="!text-foreground">How the path works</h2>
+    <p>The screenshot above is the whole point: the agent tried a Postgres command, the gateway decoded the SQL, matched a rule, and returned an error before the operation reached the database.</p>
+    <h2 class="!text-foreground">The boundary</h2>
     <p><code>clawpatrol run</code> wraps one process tree. On Linux it starts the command in a new network namespace and hands a TUN fd to a per-host daemon. The daemon sends that traffic to the gateway over the transport chosen at <code>join</code> time. Other processes on the host keep their normal network path.</p>
-    <p>There are two transport modes:</p>
-    <ul>
-      <li><code>wireguard {}</code>: the gateway mints a WireGuard config. <code>clawpatrol run</code> uses it for per-process routing. <code>clawpatrol join --whole-machine</code> can also install a system <code>wg-quick</code> interface on Linux.</li>
-      <li><code>tailscale {}</code>: the gateway embeds a tsnet node. <code>clawpatrol run</code> uses a per-host daemon with a tsnet node that joins the tailnet with a persisted Tailscale auth key and sets the gateway as the exit node for process traffic. No WireGuard keys are copied around in this mode.</li>
-    </ul>
-    <p>Both transports land in the same gateway dispatcher. The dispatcher chooses an endpoint runtime, parses the request into facets like <code>http.method</code> or <code>sql.verb</code>, and either denies, asks for approval, or forwards using the gateway-held credential for that endpoint.</p>
-    <h2 class="!text-foreground">Install the gateway</h2>
-    <p>Start with one small VM that can run a Go binary and stay online. For my setup I use the Tailscale transport, because the gateway can expose onboarding routes through Funnel while keeping the dashboard on the tailnet.</p>
-    <p>Install the binary:</p>
-    <pre><code data-lang="sh">curl -fsSL https://clawpatrol.dev/install.sh | sh</code></pre>
-    <p>Create a config at <code>/etc/clawpatrol/personal.hcl</code>:</p>
+    <pre><code data-lang="sh">clawpatrol run claude</code></pre>
+    <p>My personal setup uses Tailscale mode. The gateway embeds a tsnet node and the worker daemon joins the tailnet with a persisted auth key. WireGuard mode is the other option, but the rule layer is the same once traffic reaches the gateway.</p>
     <pre><code data-lang="hcl">gateway {<br>  dashboard_listen = &quot;127.0.0.1:8080&quot;<br>  public_url       = &quot;https://clawpatrol.example.ts.net&quot;<br>  state_dir        = &quot;/var/lib/clawpatrol&quot;<br><br>  tailscale {<br>    funnel = true<br><br>    oauth_client_id     = &quot;{{secret:TS_OAUTH_CLIENT_ID}}&quot;<br>    oauth_client_secret = &quot;{{secret:TS_OAUTH_CLIENT_SECRET}}&quot;<br>    tags                = [&quot;tag:bot&quot;]<br><br>    operators = [&quot;you@example.com&quot;]<br>  }<br>}</code></pre>
-    <p>The <code>tailscale</code> block makes the gateway create its own tsnet node. <code>funnel = true</code> exposes the small set of public onboarding/OAuth callback routes; the dashboard itself is still reached over the tailnet or an SSH tunnel. The OAuth values are read through <code>{{secret:...}}</code> from the systemd environment, not stored in the HCL file.</p>
-    <p>For example:</p>
-    <pre><code data-lang="sh">sudo install -d -m 0700 -o clawpatrol -g clawpatrol /var/lib/clawpatrol<br>sudo tee /var/lib/clawpatrol/secrets.env &gt;/dev/null &lt;&lt;&#x27;EOF&#x27;<br>TS_OAUTH_CLIENT_ID=...<br>TS_OAUTH_CLIENT_SECRET=...<br>EOF<br>sudo chmod 0600 /var/lib/clawpatrol/secrets.env</code></pre>
-    <p>A minimal systemd unit is enough:</p>
-    <pre><code data-lang="ini">[Unit]<br>Description=clawpatrol gateway<br>After=network-online.target<br>Wants=network-online.target<br><br>[Service]<br>User=clawpatrol<br>Group=clawpatrol<br>StateDirectory=clawpatrol<br>StateDirectoryMode=0700<br>EnvironmentFile=-/var/lib/clawpatrol/secrets.env<br>ExecStart=/usr/local/bin/clawpatrol gateway /etc/clawpatrol/personal.hcl<br>Restart=on-failure<br>RestartSec=2<br>LimitNOFILE=65536<br><br>NoNewPrivileges=true<br>ProtectSystem=strict<br>ProtectHome=true<br>PrivateTmp=true<br><br>[Install]<br>WantedBy=multi-user.target</code></pre>
-    <p>Then:</p>
-    <pre><code data-lang="sh">sudo systemctl daemon-reload<br>sudo systemctl enable --now clawpatrol-gateway</code></pre>
-    <h2 class="!text-foreground">Endpoints and credentials</h2>
-    <p>Endpoints describe network targets. Credentials describe how the gateway should authenticate to those targets after a rule allows a request.</p>
-    <pre><code data-lang="hcl">endpoint &quot;https&quot; &quot;anthropic&quot; {<br>  hosts = [&quot;api.anthropic.com&quot;]<br>}<br><br>endpoint &quot;https&quot; &quot;github-api&quot; {<br>  hosts = [&quot;api.github.com&quot;, &quot;raw.githubusercontent.com&quot;, &quot;github.com&quot;]<br>}<br><br>endpoint &quot;https&quot; &quot;slack-api&quot; {<br>  hosts = [&quot;slack.com&quot;, &quot;api.slack.com&quot;, &quot;wss-primary.slack.com&quot;]<br>}<br><br>endpoint &quot;postgres&quot; &quot;pg-dev&quot; {<br>  host = &quot;pg-dev.internal:5432&quot;<br>}<br><br>credential &quot;anthropic_oauth_subscription&quot; &quot;claude&quot; {<br>  endpoint = https.anthropic<br>}<br><br>credential &quot;github_oauth&quot; &quot;github&quot; {<br>  endpoint = https.github-api<br>}<br><br>credential &quot;slack_tokens&quot; &quot;slack&quot; {<br>  endpoint = https.slack-api<br>}<br><br>credential &quot;postgres_credential&quot; &quot;pg-dev&quot; {<br>  endpoint = postgres.pg-dev<br>  user     = &quot;agent&quot;<br>}</code></pre>
-    <p>These blocks do not contain the actual token or password. They define slots. The dashboard is where the real credential material gets connected.</p>
-    <p>I keep one profile per agent identity:</p>
+    <p><code>funnel = true</code> exposes the public onboarding and OAuth callback routes. The dashboard can still live on the tailnet. The OAuth values above are loaded from the process environment through <code>{{secret:...}}</code>; they are not stored in the HCL file.</p>
+    <h2 class="!text-foreground">Endpoints</h2>
+    <p>Endpoints describe the services the agent may talk to. I keep them small and named by intent.</p>
+    <pre><code data-lang="hcl">endpoint &quot;https&quot; &quot;anthropic&quot; {<br>  hosts = [&quot;api.anthropic.com&quot;]<br>}<br><br>endpoint &quot;https&quot; &quot;github-api&quot; {<br>  hosts = [&quot;api.github.com&quot;, &quot;raw.githubusercontent.com&quot;, &quot;github.com&quot;]<br>}<br><br>endpoint &quot;https&quot; &quot;slack-api&quot; {<br>  hosts = [&quot;slack.com&quot;, &quot;api.slack.com&quot;, &quot;wss-primary.slack.com&quot;]<br>}<br><br>endpoint &quot;postgres&quot; &quot;pg-dev&quot; {<br>  host = &quot;pg-dev.internal:5432&quot;<br>}</code></pre>
+    <h2 class="!text-foreground">Credentials</h2>
+    <p>Credentials are slots on the gateway side. They do not put the real token or password on the worker.</p>
+    <pre><code data-lang="hcl">credential &quot;anthropic_oauth_subscription&quot; &quot;claude&quot; {<br>  endpoint = https.anthropic<br>}<br><br>credential &quot;github_oauth&quot; &quot;github&quot; {<br>  endpoint = https.github-api<br>}<br><br>credential &quot;slack_tokens&quot; &quot;slack&quot; {<br>  endpoint = https.slack-api<br>}<br><br>credential &quot;postgres_credential&quot; &quot;pg-dev&quot; {<br>  endpoint = postgres.pg-dev<br>  user     = &quot;agent&quot;<br>}</code></pre>
+    <p>A profile binds a worker to a credential set:</p>
     <pre><code data-lang="hcl">profile &quot;personal&quot; {<br>  credentials = [<br>    anthropic_oauth_subscription.claude,<br>    github_oauth.github,<br>    slack_tokens.slack,<br>    postgres_credential.pg-dev,<br>  ]<br>}</code></pre>
-    <p>Profiles are what the worker binds to. When a machine joins with <code>--profile personal</code>, requests from that machine can only use credentials in that profile. A different <code>readonly</code> profile can omit the Postgres writer or Slack credential without changing the worker machine.</p>
-    <h2 class="!text-foreground">Rules first</h2>
+    <p>A <code>readonly</code> profile can omit the Postgres writer or Slack credential without changing the worker VM:</p>
+    <pre><code data-lang="hcl">profile &quot;readonly&quot; {<br>  credentials = [<br>    anthropic_oauth_subscription.claude,<br>    github_oauth.github,<br>  ]<br>}</code></pre>
+    <h2 class="!text-foreground">SQL rules</h2>
     <p>Rules are the important part. A rule targets an endpoint, optionally narrows by credential, evaluates a CEL condition over decoded request facets, and returns <code>allow</code>, <code>deny</code>, or an approval flow.</p>
     <p>For Postgres, the gateway reads the wire protocol and exposes <code>sql.verb</code>, <code>sql.tables</code>, <code>sql.functions</code>, <code>sql.statement</code>, and <code>sql.database</code> to rules. This is the rule that matches the screenshot:</p>
     <pre><code data-lang="hcl">rule &quot;pg-no-destructive-ddl&quot; {<br>  endpoint  = postgres.pg-dev<br>  priority  = 100<br>  condition = &lt;&lt;-CEL<br>    sql.verb in [&#x27;drop&#x27;, &#x27;truncate&#x27;, &#x27;alter&#x27;]<br>  CEL<br>  verdict = &quot;deny&quot;<br>  reason  = &quot;destructive sql; drop users table not allowed&quot;<br>}</code></pre>
-    <p>I usually add a second deny for database-side filesystem/network escape hatches:</p>
+    <p>Add a second deny for database-side filesystem/network escape hatches:</p>
     <pre><code data-lang="hcl">rule &quot;pg-banned-functions&quot; {<br>  endpoint = postgres.pg-dev<br>  priority = 100<br>  condition = &lt;&lt;-CEL<br>    sets.intersects(sql.functions, [<br>      &#x27;pg_read_file&#x27;, &#x27;pg_read_binary_file&#x27;, &#x27;lo_get&#x27;,<br>    ])<br>    || sql.functions.exists(f, f.startsWith(&#x27;dblink_&#x27;))<br>  CEL<br>  verdict = &quot;deny&quot;<br>  reason  = &quot;filesystem-reaching function&quot;<br>}</code></pre>
-    <p>Reads can be allowed explicitly, and mutations can go through a human:</p>
-    <pre><code data-lang="hcl">approver &quot;human_approver&quot; &quot;me&quot; {<br>  channel     = &quot;#agent-approvals&quot;<br>  credential  = slack_tokens.slack<br>  interactive = true<br>}<br><br>rule &quot;pg-mutations&quot; {<br>  endpoint  = postgres.pg-dev<br>  condition = &quot;sql.verb in [&#x27;insert&#x27;, &#x27;update&#x27;, &#x27;delete&#x27;, &#x27;merge&#x27;, &#x27;notify&#x27;]&quot;<br>  approve   = [human_approver.me]<br>  reason    = &quot;Postgres mutations require review&quot;<br>}<br><br>rule &quot;pg-reads&quot; {<br>  endpoint  = postgres.pg-dev<br>  condition = &quot;sql.verb in [&#x27;select&#x27;, &#x27;show&#x27;, &#x27;explain&#x27;, &#x27;describe&#x27;]&quot;<br>  verdict   = &quot;allow&quot;<br>}<br><br>rule &quot;pg-default&quot; {<br>  endpoint = postgres.pg-dev<br>  priority = -100<br>  verdict  = &quot;deny&quot;<br>  reason   = &quot;unknown SQL verb&quot;<br>}</code></pre>
-    <p>The same rule shape works for HTTP endpoints. GitHub reads can pass, writes can require approval:</p>
+    <p>Reads can be allowed explicitly:</p>
+    <pre><code data-lang="hcl">rule &quot;pg-reads&quot; {<br>  endpoint  = postgres.pg-dev<br>  condition = &quot;sql.verb in [&#x27;select&#x27;, &#x27;show&#x27;, &#x27;explain&#x27;, &#x27;describe&#x27;]&quot;<br>  verdict   = &quot;allow&quot;<br>}</code></pre>
+    <p>Mutations can go through a human:</p>
+    <pre><code data-lang="hcl">approver &quot;human_approver&quot; &quot;me&quot; {<br>  channel     = &quot;#agent-approvals&quot;<br>  credential  = slack_tokens.slack<br>  interactive = true<br>}<br><br>rule &quot;pg-mutations&quot; {<br>  endpoint  = postgres.pg-dev<br>  condition = &quot;sql.verb in [&#x27;insert&#x27;, &#x27;update&#x27;, &#x27;delete&#x27;, &#x27;merge&#x27;, &#x27;notify&#x27;]&quot;<br>  approve   = [human_approver.me]<br>  reason    = &quot;Postgres mutations require review&quot;<br>}</code></pre>
+    <p>Then make unknown SQL fail closed:</p>
+    <pre><code data-lang="hcl">rule &quot;pg-default&quot; {<br>  endpoint = postgres.pg-dev<br>  priority = -100<br>  verdict  = &quot;deny&quot;<br>  reason   = &quot;unknown SQL verb&quot;<br>}</code></pre>
+    <p>That gives me a simple posture:</p>
+    <pre><code data-lang="text">SELECT        -&gt; allow<br>INSERT        -&gt; ask<br>DROP          -&gt; deny<br>unknown verb  -&gt; deny</code></pre>
+    <h2 class="!text-foreground">HTTP rules</h2>
+    <p>The same rule shape works for HTTP. For GitHub, reads are cheap and writes are visible:</p>
     <pre><code data-lang="hcl">rule &quot;github-read&quot; {<br>  endpoint  = https.github-api<br>  condition = &quot;http.method in [&#x27;GET&#x27;, &#x27;HEAD&#x27;, &#x27;OPTIONS&#x27;]&quot;<br>  verdict   = &quot;allow&quot;<br>}<br><br>rule &quot;github-write&quot; {<br>  endpoint  = https.github-api<br>  condition = &quot;http.method in [&#x27;POST&#x27;, &#x27;PUT&#x27;, &#x27;PATCH&#x27;, &#x27;DELETE&#x27;]&quot;<br>  approve   = [human_approver.me]<br>  reason    = &quot;GitHub writes need human approval&quot;<br>}</code></pre>
-    <p>Slack is similar. Reads and websocket traffic can pass, but posting messages should be reviewed:</p>
+    <p>The Slack rule is slightly narrower. Reads and websocket traffic can pass, but posting messages should be reviewed:</p>
     <pre><code data-lang="hcl">rule &quot;slack-read&quot; {<br>  endpoint = https.slack-api<br>  condition = &lt;&lt;-CEL<br>    http.method in [&#x27;GET&#x27;, &#x27;HEAD&#x27;, &#x27;OPTIONS&#x27;]<br>    || http.host == &#x27;wss-primary.slack.com&#x27;<br>  CEL<br>  verdict = &quot;allow&quot;<br>}<br><br>rule &quot;slack-chat-write&quot; {<br>  endpoint = https.slack-api<br>  condition = &lt;&lt;-CEL<br>    http.method == &#x27;POST&#x27;<br>    &amp;&amp; http.path.startsWith(&#x27;/api/chat.&#x27;)<br>  CEL<br>  approve = [human_approver.me]<br>  reason  = &quot;Slack messages should be reviewed before sending&quot;<br>}</code></pre>
-    <p>Then keep boring default denies for services where you care about surprises:</p>
+    <p>Keep boring default denies for services where surprises matter:</p>
     <pre><code data-lang="hcl">rule &quot;github-default&quot; {<br>  endpoint = https.github-api<br>  priority = -100<br>  verdict  = &quot;deny&quot;<br>}<br><br>rule &quot;slack-default&quot; {<br>  endpoint = https.slack-api<br>  priority = -100<br>  verdict  = &quot;deny&quot;<br>}</code></pre>
-    <h2 class="!text-foreground">Connect the credentials</h2>
-    <p>Restart or wait for the gateway to reload the config:</p>
-    <pre><code data-lang="sh">sudo systemctl restart clawpatrol-gateway</code></pre>
-    <p>Open the dashboard:</p>
-    <pre><code data-lang="text">http://127.0.0.1:8080/</code></pre>
-    <p>or, if you run the dashboard through Tailscale:</p>
-    <pre><code data-lang="text">http://clawpatrol.example.ts.net:8080/</code></pre>
-    <p>Connect the credential slots:</p>
-    <ul>
-      <li><code>anthropic_oauth_subscription.claude</code></li>
-      <li><code>github_oauth.github</code></li>
-      <li><code>slack_tokens.slack</code></li>
-      <li><code>postgres_credential.pg-dev</code></li>
-    </ul>
-    <p>The worker does not get the real token or password. It gets the local CA and placeholder values needed by the wrapped CLI. The gateway uses the real credential on its side of the connection, and rules decide which decoded operations are forwarded.</p>
-    <h2 class="!text-foreground">Join an agent machine</h2>
-    <p>On the machine where you run Claude:</p>
-    <pre><code data-lang="sh">curl -fsSL https://clawpatrol.dev/install.sh | sh<br><br>clawpatrol join https://clawpatrol.example.ts.net   --hostname personal-agent   --profile personal</code></pre>
-    <p>Approve the join in the browser. After that:</p>
+    <h2 class="!text-foreground">Join</h2>
+    <p>On the worker VM:</p>
+    <pre><code data-lang="sh">curl -fsSL https://clawpatrol.dev/install.sh | sh<br><br>clawpatrol join https://clawpatrol.example.ts.net \<br>  --hostname personal-agent \<br>  --profile personal</code></pre>
+    <p>Approve the join in the browser. Then run the agent:</p>
     <pre><code data-lang="sh">clawpatrol run claude</code></pre>
     <p>Only that process tree goes through the gateway. Your normal browser, shell, package manager, and random background processes do not.</p>
-    <h2 class="!text-foreground">Runtime behavior</h2>
+    <h2 class="!text-foreground">What changes</h2>
     <p>With the config above, this is what changes at runtime:</p>
     <ul>
       <li>Claude can use its subscription without a Claude OAuth token sitting in <code>~/.claude</code> on the worker.</li>
@@ -92,14 +72,16 @@
       <li>GitHub writes and Slack message sends hit the approval rule.</li>
       <li>Unmatched requests for configured services are denied by the default rules.</li>
     </ul>
-    <p>This is not a sandbox for local filesystem access. If the agent can read a file on disk, Clawpatrol does not change that. It is specifically the network and policy boundary for processes run under <code>clawpatrol run</code>.</p>
+    <p>This is not a filesystem sandbox. If the agent can read a file on disk, Clawpatrol does not change that. It is a network and policy boundary for processes run under <code>clawpatrol run</code>.</p>
     <h2 class="!text-foreground">Test the policy</h2>
-    <p>Clawpatrol configs are just files, so put them in git.</p>
+    <p>Clawpatrol configs are just files, so put them in git and test them.</p>
     <pre><code data-lang="sh">clawpatrol validate ./personal.hcl</code></pre>
-    <p>For rules, add fixtures and run:</p>
+    <p>I keep rule fixtures next to the config:</p>
+    <pre><code data-lang="text">tests/<br>  pg_drop_users.json<br>  pg_select_users.json<br>  github_post_issue.json</code></pre>
+    <p>Then run:</p>
     <pre><code data-lang="sh">clawpatrol test ./personal.hcl ./tests</code></pre>
     <p>This matters because the config is code in the path of every agent request. A bad rule can block the agent at runtime or allow a write that was supposed to be gated.</p>
-    <h2 class="!text-foreground">The mental model</h2>
+    <h2 class="!text-foreground">Mental model</h2>
     <p>The useful model is:</p>
     <pre><code data-lang="text">endpoint = what service it is talking to<br>rule = what the agent is allowed to do<br>credential = how the gateway authenticates upstream<br>profile = which credentials this device may use<br>approver = who can override a risky action</code></pre>
     <p>Once those are separate, the agent machine becomes easier to reason about. You can tighten a SQL rule without touching the worker. You can rotate a GitHub credential without touching workers. You can move a worker from <code>personal</code> to <code>readonly</code> by changing its profile.</p>
