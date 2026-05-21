@@ -5,12 +5,12 @@
   <rect x="0" y="0" width="820" height="390" fill="#ffffff"/>
 
   <rect x="36" y="34" width="748" height="340" rx="10" fill="#000000" opacity="0.10"/>
-  <rect x="28" y="24" width="764" height="342" rx="10" fill="#111111"/>
-  <rect x="28" y="24" width="764" height="34" rx="10" fill="#e8e6df"/>
-  <rect x="28" y="44" width="764" height="14" fill="#e8e6df"/>
-  <line x1="28" y1="58" x2="792" y2="58" stroke="#b8b6af"/>
-  <rect x="28" y="58" width="764" height="308" fill="#111111"/>
-  <rect x="28.5" y="24.5" width="763" height="341" rx="9.5" fill="none" stroke="#c9c7c0"/>
+  <rect x="28" y="24" width="764" height="342" rx="10" fill="#c9c7c0"/>
+  <rect x="29" y="25" width="762" height="340" rx="9" fill="#111111"/>
+  <rect x="29" y="25" width="762" height="33" rx="9" fill="#e8e6df"/>
+  <rect x="29" y="44" width="762" height="14" fill="#e8e6df"/>
+  <line x1="29" y1="58" x2="791" y2="58" stroke="#b8b6af"/>
+  <rect x="29" y="59" width="762" height="305" fill="#111111"/>
 
   <g>
     <circle cx="49" cy="41" r="5.2" fill="#ff5f57" stroke="#d4473f" stroke-width=".8"/>
