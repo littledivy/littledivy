@@ -16,17 +16,16 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-I run coding agents in tmux on small VMs. They need real network access:
-GitHub for PRs, Slack for notifications, Postgres for application state, Claude
-for model calls.
+Coding agents become useful once they can touch the same services you do. That
+usually means source control, chat, databases, and model APIs.
 
 Putting tokens on the gateway is useful, but it is not the whole problem. A
 hidden Postgres password still does not help if the gateway forwards `DROP TABLE
 users`.
 
-The part of Clawpatrol I care about most is rules. It sits between an agent
-process and the network, decodes protocol traffic, and evaluates policy before
-the request reaches the upstream service.
+Clawpatrol puts rules in that path. It sits between an agent process and the
+network, decodes protocol traffic, and evaluates policy before the request
+reaches the upstream service.
 
 #figure(
   image("/static/img/clawpatrol-agent-gateway.svg", width: 100%),
@@ -47,9 +46,10 @@ on the host keep their normal network path.
 clawpatrol run claude
 ```
 
-My personal setup uses Tailscale mode. The gateway embeds a tsnet node and the
-worker daemon joins the tailnet with a persisted auth key. WireGuard mode is the
-other option, but the rule layer is the same once traffic reaches the gateway.
+You can run the gateway in Tailscale mode. The gateway embeds a tsnet node and
+the agent daemon joins the tailnet with a persisted auth key. WireGuard mode is
+the other option, but the rule layer is the same once traffic reaches the
+gateway.
 
 ```hcl
 gateway {
@@ -76,8 +76,8 @@ file.
 
 = Endpoints
 
-Endpoints describe the services the agent may talk to. I keep them small and
-named by intent.
+Endpoints describe the services the agent may talk to. They are easier to reason
+about when they stay small and named by intent.
 
 ```hcl
 endpoint "https" "anthropic" {
@@ -100,7 +100,7 @@ endpoint "postgres" "pg-dev" {
 = Credentials
 
 Credentials are slots on the gateway side. They do not put the real token or
-password on the worker.
+password on the agent machine.
 
 ```hcl
 credential "anthropic_oauth_subscription" "claude" {
@@ -121,7 +121,7 @@ credential "postgres_credential" "pg-dev" {
 }
 ```
 
-A profile binds a worker to a credential set:
+A profile binds an agent to a credential set:
 
 ```hcl
 profile "personal" {
@@ -135,7 +135,7 @@ profile "personal" {
 ```
 
 A `readonly` profile can omit the Postgres writer or Slack credential without
-changing the worker VM:
+changing the agent VM:
 
 ```hcl
 profile "readonly" {
@@ -294,7 +294,7 @@ rule "slack-default" {
 
 = Join
 
-On the worker VM:
+On the agent VM:
 
 ```sh
 curl -fsSL https://clawpatrol.dev/install.sh | sh
@@ -318,7 +318,7 @@ package manager, and random background processes do not.
 With the config above, this is what changes at runtime:
 
 - Claude can use its subscription without a Claude OAuth token sitting in
-  `~/.claude` on the worker.
+  `~/.claude` on the agent VM.
 - Postgres auth happens at the gateway.
 - Postgres `drop`, `truncate`, and `alter` statements are denied before they
   reach the database.
@@ -337,7 +337,7 @@ Clawpatrol configs are just files, so put them in git and test them.
 clawpatrol validate ./personal.hcl
 ```
 
-I keep rule fixtures next to the config:
+Rule fixtures can live next to the config:
 
 ```text
 tests/
@@ -355,23 +355,6 @@ clawpatrol test ./personal.hcl ./tests
 This matters because the config is code in the path of every agent request. A
 bad rule can block the agent at runtime or allow a write that was supposed to be
 gated.
-
-= Mental model
-
-The useful model is:
-
-```text
-endpoint = what service it is talking to
-rule = what the agent is allowed to do
-credential = how the gateway authenticates upstream
-profile = which credentials this device may use
-approver = who can override a risky action
-```
-
-Once those are separate, the agent machine becomes easier to reason about. You
-can tighten a SQL rule without touching the worker. You can rotate a GitHub
-credential without touching workers. You can move a worker from `personal` to
-`readonly` by changing its profile.
 
 The CLI invocation stays boring:
 
