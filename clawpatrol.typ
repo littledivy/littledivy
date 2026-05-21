@@ -16,14 +16,16 @@
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-You can run coding agents on small VMs, but they only become useful once they
-can touch the services around the project: source control, chat, databases, and
-model APIs.
+The first time you try a coding agent on a real project, the boundary shows up
+fast. It can edit files and run tests, but the useful work is usually somewhere
+past localhost: checking GitHub, posting status, reading app state, or calling a
+model API.
 
-The first version of this problem is obvious: do not leave long-lived tokens on
-every VM. The second version is more interesting. Even if the Postgres password
-lives on a gateway, the gateway still needs to understand that `DROP TABLE users`
-is not a request it should forward.
+The obvious answer is to give the agent network access. The obvious problem is
+that you do not want long-lived tokens sitting on every VM. Moving those tokens
+to a gateway helps, but it is not enough. Even if the Postgres password lives
+there, the gateway still needs to know that `DROP TABLE users` is not a request
+it should forward.
 
 That is the part #html.elem("a", attrs: (href: "https://clawpatrol.dev"), [Clawpatrol]) is meant to cover. It's a VPN proxy
 that sits between an agent process and the network, decodes protocol traffic,
