@@ -1,99 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
-  <title id="title">Clawpatrol personal agent network path</title>
-  <desc id="desc">A personal agent runs under clawpatrol, enters a per-process namespace, uses Clawpatrol WireGuard over Tailscale to reach a gateway, then the gateway injects credentials, applies policy rules, and forwards approved requests to Claude, GitHub, and Slack.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="430" viewBox="0 0 820 430" role="img" aria-labelledby="title desc">
+  <title id="title">Clawpatrol gateway path for a personal agent</title>
+  <desc id="desc">A line diagram showing a Claude process routed through a per-process namespace, then through a Clawpatrol WireGuard tunnel carried by Tailscale to a gateway that applies rules, injects credentials, and sends approved requests to Anthropic, GitHub, and Slack.</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333333"/>
     </marker>
-    <style>
-      .label { font: 600 18px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
-      .small { font: 500 14px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
-      .tiny { font: 500 12px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7280; }
-      .code { font: 500 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #374151; }
-      .zone-title { font: 700 14px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; letter-spacing: 0.04em; }
-      .box { stroke-width: 1.5; rx: 14; }
-      .connector { fill: none; stroke: #4b5563; stroke-width: 2.5; marker-end: url(#arrow); }
-      .connector-soft { fill: none; stroke: #9ca3af; stroke-width: 2; marker-end: url(#arrow); stroke-dasharray: 7 7; }
-    </style>
   </defs>
 
-  <rect x="20" y="24" width="1080" height="592" rx="28" fill="#f8fafc" stroke="#e5e7eb"/>
+  <rect x="0" y="0" width="820" height="430" fill="#ffffff"/>
+  <rect x="1" y="1" width="818" height="428" rx="2" fill="none" stroke="#d0d0d0"/>
+  <line x1="31" y1="62" x2="789" y2="62" stroke="#d0d0d0"/>
 
-  <rect x="52" y="68" width="308" height="504" rx="22" fill="#eef2ff" stroke="#c7d2fe"/>
-  <text x="76" y="104" class="zone-title">AGENT MACHINE</text>
+  <text x="31" y="39" fill="#333333" font-family="gitan, Alegreya, Palatino, Georgia, serif" font-size="18" font-weight="600">personal agent network path</text>
+  <text x="590" y="39" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">not a proxy config; a credential boundary</text>
 
-  <rect x="76" y="136" width="260" height="96" class="box" fill="#ffffff" stroke="#818cf8"/>
-  <text x="104" y="172" class="label">Claude CLI</text>
-  <text x="104" y="200" class="code">clawpatrol run -- claude</text>
+  <text x="31" y="73" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">agent machine</text>
+  <rect x="31" y="91" width="172" height="250" rx="2" fill="none" stroke="#333333" stroke-width="1.25"/>
+  <rect x="49" y="117" width="136" height="48" rx="2" fill="none" stroke="#d0d0d0" stroke-width="1.25"/>
+  <text x="67" y="139" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">claude</text>
+  <text x="67" y="156" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">normal cli process</text>
+  <rect x="49" y="197" width="136" height="58" rx="2" fill="none" stroke="#d0d0d0" stroke-width="1.25"/>
+  <text x="67" y="221" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">netns</text>
+  <text x="67" y="238" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">process tree only</text>
+  <rect x="49" y="289" width="136" height="32" rx="2" fill="none" stroke="#c44d32" stroke-width="1.25"/>
+  <text x="67" y="310" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">wg0</text>
+  <path d="M 117 165 L 117 197" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 117 255 L 117 289" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="133" y="187" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">env = placeholders</text>
+  <text x="133" y="277" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">default route</text>
 
-  <rect x="76" y="280" width="260" height="116" class="box" fill="#ffffff" stroke="#818cf8"/>
-  <text x="104" y="318" class="label">Per-process netns</text>
-  <text x="104" y="346" class="small">only the agent process</text>
-  <text x="104" y="370" class="small">tree is routed</text>
+  <text x="258" y="73" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">transport</text>
+  <rect x="258" y="91" width="218" height="250" rx="2" fill="none" stroke="#333333" stroke-width="1.25"/>
+  <path d="M 288 215 C 330 143 404 143 446 215 C 404 287 330 287 288 215 Z" fill="none" stroke="#d0d0d0" stroke-width="1.1"/>
+  <path d="M 316 215 C 348 175 386 175 418 215 C 386 255 348 255 316 215 Z" fill="none" stroke="#c44d32" stroke-width="1.25"/>
+  <text x="314" y="207" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">tailscale</text>
+  <text x="321" y="227" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">private reachability</text>
+  <rect x="306" y="121" width="122" height="28" rx="14" fill="none" stroke="#c44d32" stroke-width="1.25"/>
+  <text x="324" y="140" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">inner: clawpatrol wg</text>
+  <text x="298" y="311" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">outer: tailnet / funnel / DERP</text>
 
-  <rect x="92" y="428" width="228" height="92" class="box" fill="#f5f3ff" stroke="#a78bfa"/>
-  <text x="122" y="464" class="label">Local join state</text>
-  <text x="122" y="492" class="small">CA + placeholder env</text>
+  <text x="531" y="73" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">gateway</text>
+  <rect x="531" y="91" width="205" height="250" rx="2" fill="none" stroke="#333333" stroke-width="1.25"/>
+  <line x1="555" y1="135" x2="714" y2="135" stroke="#d0d0d0"/>
+  <line x1="555" y1="209" x2="714" y2="209" stroke="#d0d0d0"/>
+  <line x1="555" y1="281" x2="714" y2="281" stroke="#d0d0d0"/>
+  <text x="555" y="121" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">1. terminate wg</text>
+  <text x="555" y="167" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">2. parse request</text>
+  <text x="579" y="187" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">host, method, profile</text>
+  <text x="555" y="241" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">3. apply rules</text>
+  <text x="579" y="261" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">allow / deny / approve</text>
+  <text x="555" y="313" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">4. inject token</text>
+  <text x="579" y="331" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">secret stays here</text>
 
-  <rect x="408" y="68" width="286" height="504" rx="22" fill="#ecfeff" stroke="#a5f3fc"/>
-  <text x="432" y="104" class="zone-title">TRANSPORT</text>
+  <path d="M 185 305 C 216 305 220 215 258 215" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 476 215 C 505 215 504 215 531 215" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="202" y="290" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">encrypted tunnel</text>
+  <text x="476" y="197" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">identity + profile</text>
 
-  <rect x="444" y="150" width="214" height="98" class="box" fill="#ffffff" stroke="#22d3ee"/>
-  <text x="478" y="188" class="label">Clawpatrol WG</text>
-  <text x="478" y="216" class="small">policy tunnel</text>
+  <text x="755" y="109" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="11">egress</text>
+  <path d="M 736 128 L 751 128" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 736 207 L 751 207" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 736 286 L 751 286" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="755" y="132" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">claude</text>
+  <text x="755" y="211" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">github</text>
+  <text x="755" y="290" fill="#333333" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="13" font-weight="600">slack</text>
 
-  <rect x="444" y="330" width="214" height="98" class="box" fill="#ffffff" stroke="#22d3ee"/>
-  <text x="506" y="368" class="label">Tailscale</text>
-  <text x="481" y="396" class="small">private transport mesh</text>
-
-  <path class="connector" d="M 206 232 C 206 252 206 260 206 280"/>
-  <path class="connector" d="M 336 338 C 376 338 398 206 444 206"/>
-  <path class="connector-soft" d="M 552 248 C 552 286 552 296 552 330"/>
-
-  <rect x="742" y="68" width="318" height="504" rx="22" fill="#f0fdf4" stroke="#bbf7d0"/>
-  <text x="766" y="104" class="zone-title">CLAWPATROL GATEWAY</text>
-
-  <rect x="770" y="136" width="262" height="98" class="box" fill="#ffffff" stroke="#34d399"/>
-  <text x="812" y="174" class="label">Credential injection</text>
-  <text x="812" y="202" class="small">tokens live here</text>
-
-  <rect x="770" y="270" width="262" height="112" class="box" fill="#ffffff" stroke="#34d399"/>
-  <text x="812" y="310" class="label">Rules engine</text>
-  <text x="812" y="338" class="small">allow, deny, approve</text>
-  <text x="812" y="362" class="small">based on parsed traffic</text>
-
-  <rect x="770" y="420" width="262" height="96" class="box" fill="#ffffff" stroke="#34d399"/>
-  <text x="812" y="458" class="label">Human approval</text>
-  <text x="812" y="486" class="small">Slack buttons for writes</text>
-
-  <path class="connector" d="M 658 206 C 704 206 724 185 770 185"/>
-  <path class="connector" d="M 901 234 C 901 252 901 258 901 270"/>
-  <path class="connector-soft" d="M 901 382 C 901 402 901 408 901 420"/>
-
-  <rect x="770" y="548" width="262" height="44" rx="12" fill="#dcfce7" stroke="#86efac"/>
-  <text x="806" y="576" class="small">audit log + connected profiles</text>
-
-  <path class="connector" d="M 1032 184 C 1070 184 1080 146 1094 124"/>
-  <path class="connector" d="M 1032 326 C 1076 326 1088 326 1100 326"/>
-  <path class="connector" d="M 1032 468 C 1070 468 1080 508 1094 532"/>
-
-  <g transform="translate(888 34)">
-    <rect x="0" y="0" width="188" height="44" rx="12" fill="#fff7ed" stroke="#fed7aa"/>
-    <text x="18" y="28" class="small">external services</text>
-  </g>
-  <g transform="translate(934 108)">
-    <rect x="0" y="0" width="138" height="48" rx="14" fill="#ffffff" stroke="#fed7aa"/>
-    <text x="34" y="30" class="small">Claude</text>
-  </g>
-  <g transform="translate(944 302)">
-    <rect x="0" y="0" width="138" height="48" rx="14" fill="#ffffff" stroke="#fed7aa"/>
-    <text x="34" y="30" class="small">GitHub</text>
-  </g>
-  <g transform="translate(944 508)">
-    <rect x="0" y="0" width="138" height="48" rx="14" fill="#ffffff" stroke="#fed7aa"/>
-    <text x="42" y="30" class="small">Slack</text>
-  </g>
-
-  <rect x="412" y="520" width="280" height="52" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
-  <text x="436" y="552" class="tiny">Tailscale carries the packet. Clawpatrol WG gives it policy identity.</text>
+  <rect x="95" y="371" width="628" height="28" rx="2" fill="#fbfaf7" stroke="#d0d0d0"/>
+  <text x="109" y="389" fill="#666666" font-family="Iosevka, Fira Mono, ui-monospace, monospace" font-size="10">example: POST api.github.com/repos/... -&gt; rule requires approval -&gt; gateway injects github oauth token</text>
+  <path d="M 116 341 C 116 363 116 363 116 371" fill="none" stroke="#666666" stroke-width="1.1" stroke-dasharray="4 4"/>
+  <path d="M 634 341 C 634 363 634 363 634 371" fill="none" stroke="#666666" stroke-width="1.1" stroke-dasharray="4 4"/>
 </svg>
