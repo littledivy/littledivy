@@ -1,9 +1,9 @@
 #import "./shim/html.typ": *
 
 #set document(
-  title: "orchid: issue driven coding agents",
+  title: "orchid: github issues as an agent scheduler",
   date: datetime(day: 19, month: 5, year: 2026),
-  description: "orchid turns GitHub issues into agent-owned pull requests.",
+  description: "Orchid turns GitHub issues into isolated coding-agent sessions that produce pull requests.",
 )
 
 #show: html-shim
@@ -18,47 +18,59 @@
 
 #let chip(body) = html.elem("span", attrs: (class: "orchid-chip"), body)
 #let arrow() = html.elem("span", attrs: (class: "orchid-arrow"), [→])
+#let a(href, body) = html.elem("a", attrs: (href: href), body)
 
 #html.elem("section", attrs: (class: "orchid-lede"), [
   #html.elem("p", [
-    Orchid is what happens when the unit of work is not a prompt, but a pull
-    request.
+    Orchid is a small scheduler for coding agents. The input is a GitHub issue.
+    The runtime is a tmux session. The output is a pull request.
   ])
 ])
 
-I wanted a bot farm that felt less like operating Kubernetes and more like
-filing chores.
+I wanted a way to run a lot of coding agents without building a new product for
+them to live in.
 
-The interface is GitHub issues. Open an issue in an inbox repo, label it with the
-target repo, and orchid starts a terminal session for an agent. The agent clones
-the repo, implements the issue, pushes a branch, opens a PR, and then stops.
-orchid keeps watching GitHub and feeds CI, review comments, and new thread
-replies back into the same terminal until the PR merges or closes.
+A coding agent needs more than a prompt. It needs a repository checkout, a
+branch, credentials, a terminal, CI feedback, review comments, and some way to
+remember which process is working on which task.
+
+That can turn into a whole orchestration platform very quickly: a job queue, a
+database, a worker protocol, a web UI, a log viewer, a webhook receiver, retry
+logic, and an admin surface to debug all of it.
+
+Orchid is the version that tries very hard to not become that.
 
 #html.elem("div", attrs: (class: "orchid-flow"), [
   #chip([issue])
   #arrow()
   #chip([label])
   #arrow()
-  #chip([tmux pane])
+  #chip([tmux])
   #arrow()
   #chip([branch])
   #arrow()
   #chip([pull request])
 ])
 
-There are no webhooks. It is one Go binary, one HCL file, `gh`, ssh, tmux, and a
-JSON state file. That sounds almost disappointingly boring, which is the point.
+Open an issue. Add a label. Orchid creates a worktree, starts an agent, lets it
+push a branch, finds the PR, relays CI and review feedback back into the same
+terminal, and frees the slot when the PR is closed.
 
-= The queue is GitHub
+It is a Go binary wrapped around `gh`, `git`, `ssh`, and `tmux`. The durable
+state is a JSON file. The config is HCL. There are no webhooks.
 
-Most agent systems start by inventing a queue.
+= GitHub issues are the queue
 
-GitHub already has one. Issues have titles, bodies, comments, labels, authors,
-timestamps, cross-links, notifications, and a permission model. PRs already have
-review, CI, checks, comments, and merge buttons.
+If you are building a scheduler, the obvious first step is to add a queue.
 
-orchid uses an inbox repo as the scheduler. Labels route work to real repos:
+For Orchid, GitHub issues already are the queue.
+
+An issue has a title, body, author, labels, comments, timestamps, notification
+rules, permissions, and links to pull requests. That is the shape of a coding
+task. A separate queue would mostly duplicate that state and then need to stay
+in sync with GitHub anyway.
+
+So Orchid uses one repository as an inbox. Labels decide where work should run:
 
 ```hcl
 target "deno" {
@@ -72,24 +84,47 @@ target "clawpatrol" {
 }
 ```
 
-An issue labeled `deno` becomes a branch in `denoland/deno`. An issue labeled
-`clawpatrol` becomes a branch in `denoland/clawpatrol`. The inbox is just the
-dispatch board.
+An issue in the inbox with the `deno` label becomes a branch in
+`denoland/deno`. An issue with the `clawpatrol` label becomes a branch in
+`denoland/clawpatrol`.
 
-That separation matters. The work repo stays normal. Humans review PRs in the
-place they already review PRs. The weird machinery lives off to the side.
+The important part is that the target repo stays normal. Humans still review
+PRs in the repo they already use. CI still runs in GitHub Actions. Review
+comments are still GitHub review comments. Orchid only connects the inbox issue
+to a worker session.
 
-= The terminal is the protocol
+The work item is not hidden in a scheduler database. It is a URL you can paste
+to another person.
 
-The only thing orchid sends to a worker is text pasted into a terminal.
+= A worker is a terminal
+
+The smallest useful worker interface for a coding agent is a terminal.
+
+That sounds too simple, but it is the right abstraction. Real coding work is not
+a single request/response. The agent runs tests, reads files, edits patches,
+waits for commands, hits rate limits, watches CI fail, amends commits, and
+pushes again.
+
+A terminal keeps all of that context in one place.
+
+When Orchid assigns an issue, it creates a worktree and starts a tmux session:
+
+```sh
+tmux new-session -d \
+  -s claude-151 \
+  -c /home/orchid/orch-work/issue-151 \
+  clawpatrol run -- claude --dangerously-skip-permissions
+```
+
+Then it pastes the bootstrap prompt:
 
 ```text
-You are implementing GitHub issue #143:
-"node compat: implement inspector Network domain enough for HTTP/fetch tests"
+You are implementing GitHub issue #151:
+"node compat: fix async_hooks promise lifecycle for absent tests"
 
 Work repo: denoland/deno
-Clone: /home/orchid/orch-work/143
-Branch: orch/divybot-143
+Worktree: /home/orchid/orch-work/issue-151
+Branch: orch/divybot-151
 
 --- issue body ---
 ...
@@ -98,167 +133,209 @@ Branch: orch/divybot-143
 Commit, push, open a PR, then stop and wait.
 ```
 
-That is the whole ABI.
+That prompt is the worker protocol.
 
-No SDK. No sidecar daemon. No custom websocket protocol. If the agent can read
-the terminal and type commands, it can be a worker.
+There is no SDK. No custom RPC channel. No special agent plugin. If a model can
+read a terminal and type commands, Orchid can run it.
 
-The useful bit is that the terminal is stateful. Coding is not one model call.
-It is a tiny process with a checkout, shell history, failed tests, half-written
-patches, and review feedback. When CI fails, orchid pastes the failed check into
-the same pane. When a human leaves a PR comment, orchid pastes that too. The
-agent can inspect the repo, amend the patch, push again, and go idle.
-
-= tmux is the worker runtime
-
-Each worker is a tmux session.
-
-That makes orchid feel more like a switchboard than a scheduler. The operator can
-look through the glass:
+This also makes debugging boring in a good way:
 
 ```sh
-tmux capture-pane -p -t claude-143 -S -80
-tmux send-keys -t claude-143 "please address the latest review" Enter
+tmux capture-pane -p -t claude-151 -S -80
+tmux send-keys -t claude-151 "retry the push; github ssh is fixed" Enter
+tmux respawn-pane -k -t claude-151 -c /home/orchid/orch-work/issue-151 \
+  "clawpatrol run -- claude --resume"
 ```
 
-The dashboard is intentionally thin: issue number, target repo, branch, PR,
-latest checks, and a pane view. If the dashboard lies, tmux is still there. If
-the orchestrator dies, tmux is still there. If the agent is doing something
-strange, capture the pane.
+The dashboard is convenient, but tmux is the truth. If Orchid restarts, the
+agent process keeps running. If the dashboard looks wrong, capture the pane. If
+the agent is stuck at an interactive prompt, type into the pane.
 
-I like systems where the emergency debugger is also the normal debugger.
+= The scheduler loop
 
-= One poll loop
+Orchid does not need to receive GitHub webhooks. It polls.
 
-orchid polls GitHub every 30 seconds.
+The loop is roughly:
 
 ```text
 for issue in open inbox issues:
-  if issue has no job:
-    spawn a pane on a VM with capacity
+  if issue has a target label and no job:
+    reserve a slot
+    create a worktree
+    start a tmux session
+    paste the bootstrap prompt
+    write state.json
 
 for job in state.jobs:
-  discover PR by branch
+  find the PR for its branch
+  relay new issue comments
   relay new review comments
   relay new CI transitions
-  teardown when PR closes
+  tear down the job when the PR closes
 ```
 
-Polling is not elegant, but it removes a lot of ceremony:
+Polling is usually treated like the less serious version of webhooks. For this
+system it is better.
 
-- no public webhook endpoint
-- no webhook secret
-- no delivery retry queue
-- no local tunnel in development
-- no special production topology
+Webhooks require a public endpoint, a secret, delivery retries, local
+development setup, and another path to debug. Orchid is not trying to react in
+milliseconds. A coding agent waiting thirty seconds for a CI update is fine.
 
-The tradeoff is latency. A review comment may take one tick to reach the pane.
-For PR work, thirty seconds is fine.
+The system is easier to reason about when one process asks GitHub what changed
+and then decides what to paste into each pane.
 
-= Capacity is enough scheduling
+= Capacity is explicit
 
-A VM has a capacity.
+The machine has a fixed number of slots.
 
 ```hcl
 vm "local" {
   host        = "localhost"
-  capacity    = 6
+  capacity    = 30
   session_cmd = "clawpatrol run -- claude --dangerously-skip-permissions"
 }
 ```
 
-When all slots are full:
+If all slots are full, Orchid does not invent more capacity:
 
 ```text
 issue #139: no free VM, skipping
 ```
 
-That line is the entire queue backpressure story.
+That is the backpressure story.
 
-This works because the tasks are PR-sized. Not "make Node compatibility better",
-but:
+This only works because the tasks are supposed to be small. An issue like
+"make node compat good" is not a good swarm task. It has no obvious stop point,
+and every failed test can turn into another project.
+
+Good Orchid issues look more like this:
 
 ```text
-node compat: allow --inspect host localhost for inspector port-zero test
-node compat: implement KeyObject structured clone over MessagePort
-node compat: emit enough inspector Network events for HTTP/fetch tests
+node compat: implement inspector Network domain enough for HTTP/fetch tests
+node compat: don't queue Promise destroys in FinalizationRegistry
+clawpatrol: bound response bodies read during OAuth device flow
 ```
 
-The smaller the issue boundary, the more context the agent can spend on the
-actual code.
+The title should already imply the files, the behavior, and the acceptance
+condition. Small issues make the agent useful. Large issues make it wander.
 
-= The state file is the memory
+= The state file is not the source of truth
 
-orchid keeps a small JSON state file:
+Orchid writes a JSON state file, but it is intentionally boring.
+
+It remembers enough to keep talking to the right terminal and avoid repeating
+itself:
 
 ```json
 {
   "jobs": {
-    "143": {
-      "tmux": "claude-143",
+    "151": {
+      "tmux": "claude-151",
       "target_repo": "denoland/deno",
-      "branch": "orch/divybot-143",
-      "pr": 34231,
-      "last_head_oid": "...",
+      "branch": "orch/divybot-151",
+      "pr": 34247,
+      "last_head_oid": "f65ee970...",
       "last_check_conclusions": {
         "lint title": "SUCCESS",
-        "test node_compat": "FAILURE"
+        "test node_compat (3/3) release linux-x86_64": "FAILURE"
       }
     }
   }
 }
 ```
 
-It remembers what pane belongs to what issue, what branch became what PR, and
-which reviews/checks have already been relayed.
+GitHub is still the source of truth for issues, comments, PRs, branches, and CI.
+tmux is the source of truth for the live process. The state file just answers:
 
-This is not a distributed system. It is one process remembering what it has
-already said out loud.
+- which issue owns this pane?
+- which branch did it push?
+- which PR did that branch become?
+- which comments have already been relayed?
+- which CI transitions have already been pasted?
 
-= The failure modes are refreshingly physical
+That last bit matters. If a test fails once, the agent should hear about it. If
+Orchid restarts, the agent should not get the same failure pasted forever.
 
-The nice thing about boring machinery is that failures have shape.
+= Clawpatrol is the boundary
 
-If GitHub flakes, retry `gh`. If the agent wedges, look at the pane. If the pane
-dies, respawn it. If orchid dies, systemd restarts it and the state file points
-back to the existing panes.
+Orchid decides what should run. It should not decide what the process is allowed
+to reach.
 
-The annoying bugs were the physical ones:
+Workers run under #a("/clawpatrol", [Clawpatrol]), which puts a network policy
+boundary around the agent process.
 
-- do not kill tmux when restarting orchid
-- do not respawn every dead pane in one tick and stampede the network relay
-- do not paste the same failing CI result forever
-- do not close the inbox issue just because the work PR moved
-- do not let two agents and a human unknowingly edit the same area
+That split is important. Once an agent can clone repos, run tests, push
+branches, open PRs, and read comments, the interesting question is no longer
+"can it code?". The question is "what can this process touch while it is
+coding?"
 
-Those are not model problems. They are operator problems.
+Orchid handles scheduling:
 
-= Where clawpatrol fits
+```text
+issue #165 -> denoland/clawpatrol -> orch/divybot-165 -> PR #568
+```
 
-The worker command can run under `clawpatrol`.
+Clawpatrol handles reachability:
 
-That matters because once agents can clone real repos, run tests, and talk to
-GitHub, the question stops being "can it code?" and becomes "what can it reach?"
+```text
+api.anthropic.com     allow with credential injection
+github.com           allow with GitHub credential
+postgres.internal    deny destructive SQL, approve mutations
+slack.com            only if the profile has that credential
+```
 
-orchid schedules the work. clawpatrol narrows the network and approval boundary
-around the worker while it is doing that work.
+The credentials live at the gateway, not in the worker VM. The agent sees the
+network path it needs for the job, but it does not get a pile of long-lived
+tokens copied into its home directory.
 
-The two pieces are deliberately separate. orchid should not know how packets are
-approved. clawpatrol should not know what a good PR looks like.
+That is the difference between "run a lot of agents" and "give a lot of agents
+all of my credentials".
 
-= The operator still matters
+= The bugs were mostly process bugs
 
-orchid is not a replacement for review. It is a way to keep many small agents
-busy without inventing a new workplace for them.
+The first version of Orchid had the bugs you would expect from making a real
+machine behave like a scheduler.
 
-The human still decides what is worth doing, how narrow the issue should be,
-whether the patch is tasteful, and when to merge. orchid owns the boring loop:
-allocate a worker, keep it fed with feedback, free the slot when the PR is done.
+Do not kill tmux when restarting Orchid.
 
-The part I like is how little new language it adds.
+Do not close the inbox issue just because the work PR moved.
+
+Do not paste the same failing CI result forever.
+
+Do not respawn every stuck pane in one tick and stampede the network.
+
+Do not let a worker sit at Claude's resume picker and call it "running".
+
+Do not assume GitHub inside the agent sandbox resolves the same way as GitHub on
+the host.
+
+That last one was especially annoying. The workers were alive. Orchid was
+alive. The model was not confused. But `github.com` inside the Clawpatrol
+sandbox resolved to a synthetic address, so pushes timed out during SSH banner
+exchange.
+
+From the dashboard, it looked like a stuck agent. From tmux, it was just `ssh`
+waiting on the wrong network path.
+
+The fix was not prompt engineering. It was fixing the transport: pin GitHub to a
+real address inside the sandbox, clean `known_hosts`, and retry the pushes.
+
+Most "agent reliability" problems I have hit look like this. The model is the
+weird new part, so it gets blamed first. Usually the bug is a stale process, a
+missing credential, a bad remote, a flaky test, or a command still running in
+the background.
+
+= What Orchid actually buys
+
+Orchid does not remove review. It removes babysitting.
+
+The human still chooses which issues exist, how narrow they are, what good taste
+looks like, and when a PR should merge.
+
+Orchid owns the loop that is boring to do by hand:
 
 #html.elem("div", attrs: (class: "orchid-mantra"), [
-  open issue → get PR → review PR → merge → repeat
+  open issue → spawn pane → get PR → relay feedback → free slot
 ])
 
-That is enough.
+That is enough machinery for a swarm.
