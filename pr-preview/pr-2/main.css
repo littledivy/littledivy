@@ -144,6 +144,11 @@ body > * {
   margin-right: auto;
 }
 
+body > figure.wide-screenshot {
+  width: min(82vw, 54rem);
+  max-width: none;
+}
+
 p {
   line-height: 1.48;
 }
@@ -496,7 +501,7 @@ p + .center {
 
 li {
   font-size: 0.96rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 ol li {
@@ -504,8 +509,8 @@ ol li {
 }
 
 ul, ol {
-  margin-top: -0.5rem;
-  margin-bottom: 0.4rem;
+  margin-top: -0.25rem;
+  margin-bottom: 0.75rem;
 }
 ul ul li, ul ol li, ol ul li, ol ol li {
   margin-bottom: 0;
@@ -523,15 +528,15 @@ h1 + ul, h1 + ol, h1 + .links ul:first-child, h2 + ul, h2 + ol, h2 + .links ul:f
 
 ul li::before {
   content: "•";
-  margin-right: 1rem;
-  float: left;
-  width: 0;
+  display: inline-block;
+  width: 1rem;
+  margin-left: -1.25rem;
+  margin-right: 0.25rem;
 }
 
 ul {
   list-style: none;
-  padding-left: 1rem;
-  text-indent: -0.95rem;
+  padding-left: 1.35rem;
 }
 ul p:not(:first-child), ul pre:not(:first-child) {
   text-indent: 0;
