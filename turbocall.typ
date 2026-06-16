@@ -11,12 +11,13 @@
 #nav-bar()
 
 #title()
+#byline()
 
 #show heading.where(level: 1): it => {
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
 }
 
-V8 Isolates are little sandboxes that run JS. JavaScript runtimes give you the ability to call native functions by reaching out of this sandbox. These native functions are often referred to as "bindings".
+V8 Isolates are little sandboxes that run JS. JavaScript runtimes give you the ability to call native functions by reaching out of this sandbox. These native functions are often referred to as "bindings".#sidenote[Crossing the sandbox boundary is the costly part: V8 must reconcile its internal value representation with the platform C ABI.]
 
 Optimizing these bindings are one of the most important optimizations in a JavaScript runtime. Over the years, V8 has made significant improvements in this area to make bindings faster for embedders.
 
@@ -45,7 +46,7 @@ void Add(const FunctionCallbackInfo<Value>& args) {
 }
 ```
 
-This does a bunch of stuff, like checking the number of arguments, type checking, converting arguments and setting the return value. Moreover, V8 has to jump through (quite literally) a lot of hoops to make this work. It sets up guards and jumps out of the optimized JIT code to the runtime.
+This does a bunch of stuff, like checking the number of arguments, type checking, converting arguments and setting the return value. Moreover, V8 has to jump through (quite literally) a lot of hoops to make this work. It sets up guards and jumps out of the optimized JIT code to the runtime.#sidenote[A trampoline is a small stub that bridges two calling conventions; here, from JIT-emitted code into the C++ runtime.]
 
 What if there was a way to call bindings without moving out of the optimized JIT code and without all the type checks?
 
@@ -54,6 +55,8 @@ What if there was a way to call bindings without moving out of the optimized JIT
 V8 Fast calls are a relatively new optimization in V8.
 
 V8 can call our native binding directly from the optimized JIT code if we provide it with the necessary type information. The necessary typechecks happen in the compiler itself including fallback to the slow path.
+
+#note[The Fast API contract requires a matching slow-path callback: if a type guard fails or V8 deoptimizes, it falls back to the regular `FunctionCallbackInfo` binding, so correctness never depends on the fast path being taken.]
 
 ```cpp
 int FastAdd(int a, int b);
@@ -121,6 +124,8 @@ int func_trampoline(
 ```
 
 Most notably, it generates code to properly pass JS typed arrays and arguments to the native FFI symbol.
+
+#note[V8 hands a typed array as a `FastApiTypedArray` struct, not a raw pointer, so the trampoline must load `buffer->data` before handing it to the C function that expects a plain `void*`.]
 
 I gave a talk on this topic at the DenoFest Meetup in Tokyo^2 which goes into more detail about the implementation.
 

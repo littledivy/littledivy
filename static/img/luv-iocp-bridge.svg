@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="420" height="280" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#586e75"/>
+    </marker>
+    <marker id="arr-r" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cb4b16"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: ui-monospace, monospace; font-size: 10px; fill: #586e75; }
+    .small { font-size: 9px; fill: #93a1a1; }
+    .box { fill: none; stroke: #586e75; stroke-width: 1.5; rx: 4; }
+    .edge { fill: none; stroke: #586e75; stroke-width: 1.2; marker-end: url(#arr); }
+  </style>
+
+  <!-- watcher thread -->
+  <rect class="box" x="15" y="15" width="160" height="250" stroke="#cb4b16" stroke-dasharray="5,3" rx="6"/>
+  <text x="95" y="35" text-anchor="middle" fill="#cb4b16" font-size="9">watcher thread</text>
+
+  <!-- main thread -->
+  <rect class="box" x="230" y="15" width="175" height="250" stroke="#268bd2" stroke-dasharray="5,3" rx="6"/>
+  <text x="317" y="35" text-anchor="middle" fill="#268bd2" font-size="9">main thread (tokio)</text>
+
+  <!-- watcher steps -->
+  <rect class="box" x="30" y="50" width="130" height="28"/>
+  <text x="95" y="69" text-anchor="middle" font-size="9">GQCS(iocp)</text>
+
+  <path class="edge" d="M 95,78 L 95,95"/>
+  <text x="107" y="92" class="small">packet!</text>
+
+  <rect class="box" x="30" y="100" width="130" height="28"/>
+  <text x="95" y="119" text-anchor="middle" font-size="9">re-post packet</text>
+
+  <path class="edge" d="M 95,128 L 95,145"/>
+
+  <rect class="box" x="30" y="150" width="130" height="28"/>
+  <text x="95" y="169" text-anchor="middle" font-size="9">waker.wake()</text>
+
+  <path class="edge" d="M 95,178 L 95,195"/>
+
+  <rect class="box" x="30" y="200" width="130" height="28"/>
+  <text x="95" y="219" text-anchor="middle" font-size="9">WaitForSingleObject</text>
+  <text x="95" y="236" class="small" text-anchor="middle">paused</text>
+
+  <!-- main thread steps -->
+  <rect class="box" x="245" y="55" width="145" height="28" stroke="#268bd2"/>
+  <text x="317" y="74" text-anchor="middle" font-size="9" fill="#268bd2">sleeping in tokio</text>
+
+  <!-- wake arrow across -->
+  <path style="fill: none; stroke: #cb4b16; stroke-width: 1.2; marker-end: url(#arr-r);" d="M 160,164 L 245,100"/>
+  <text x="185" y="118" class="small" fill="#cb4b16">wake!</text>
+
+  <path class="edge" d="M 317,83 L 317,105"/>
+
+  <rect class="box" x="245" y="110" width="145" height="28"/>
+  <text x="317" y="129" text-anchor="middle" font-size="9">uv_run(NoWait)</text>
+
+  <path class="edge" d="M 317,138 L 317,160"/>
+
+  <rect class="box" x="245" y="165" width="145" height="28"/>
+  <text x="317" y="184" text-anchor="middle" font-size="9">SetEvent(resume)</text>
+
+  <!-- resume arrow back -->
+  <path style="fill: none; stroke: #268bd2; stroke-width: 1.2; stroke-dasharray: 4,3; marker-end: url(#arr);" d="M 245,185 L 160,218"/>
+  <text x="182" y="212" class="small" fill="#268bd2">resume</text>
+</svg>

@@ -11,6 +11,7 @@
 #nav-bar()
 
 #title()
+#byline()
 
 = Description
 
@@ -113,7 +114,9 @@ It is similar to linker's -sectcreate,\_\_FOO,\_\_foo,hello.txt option.
 
 Note that Macho::build will invalidate existing code signature. on Apple sillicon, kernel refuses to run executables with bad signatures.
 
-Use Macho::build_and_sign to re-sign the binary with ad-hoc signature. See apple_codesign.rs for details. This is similar to `codesign -s - ./out` command.
+#note[Mutating the binary changes the bytes the original CodeDirectory hashed, so any prior signature no longer matches. This is why the binary must be re-signed rather than left untouched.]
+
+Use Macho::build_and_sign to re-sign the binary with ad-hoc signature#sidenote[An ad-hoc signature hashes the binary without a developer identity or certificate, satisfying the loader but proving no authorship.]. See apple_codesign.rs for details. This is similar to `codesign -s - ./out` command.
 
 ```rust
 Macho::from(exe)?
@@ -147,11 +150,11 @@ Internal requirements=none
 
 Data is simply appended to the end of the file with a tag and magic descriptor. Extracted from current_exe() at run-time.
 
-This is subject to change and may use ELF linker notes (PT_NOTE) in the future.
+This is subject to change and may use ELF linker notes (PT_NOTE) in the future#sidenote[A PT_NOTE segment is the ELF-blessed slot for vendor metadata, unlike the current trailing-append which lies outside any program header.].
 
 == PE
 
-Resource is added into a new PE resource directory as RT_RCDATA type and extracted using FindResource and LoadResource at run-time.
+Resource is added into a new PE resource directory as RT_RCDATA type#sidenote[RT_RCDATA is the Windows resource type for raw application-defined bytes, retrieved via FindResource/LoadResource rather than a named section.] and extracted using FindResource and LoadResource at run-time.
 
 = Comparison with postject
 

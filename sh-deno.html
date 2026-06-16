@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="theme.js">
     </script>
-    <link rel="stylesheet" href="main.css?v=20260521b">
+    <link rel="stylesheet" href="main.css">
     <link rel="icon" type="image/png" href="/static/img/favicon.png">
     <title>seatbelt deno for macOS</title>
     <meta name="description" content="security hardened Deno using macOS seatbelt">
@@ -16,10 +16,11 @@
       <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
     </nav>
     <h1>seatbelt deno for macOS</h1>
+    <p class="byline">7 Feb 2025</p>
     <p><a href="https://github.com/littledivy/sh-deno">https://github.com/littledivy/sh-deno</a></p>
     <p>Overcome the technical limitations of Deno permission system by wrapping it with macOS’s native sanboxing primitives.</p>
     <h2 class="!text-foreground">Design</h2>
-    <p>On macOS versions 10.5 (Leopard) and later, Apple introduced a sandboxing mechanism called Seatbelt. Individual applications can restrict the resources they can access by specifying a set of rules in a configuration file. This is similar to Deno’s permission system, but with more fine-grained control.</p>
+    <p>On macOS versions 10.5 (Leopard) and later, Apple introduced a sandboxing mechanism called Seatbelt<sup class="sn-ref"></sup><span class="sidenote">Internally <code>sandbox_init(3)</code>, which compiles the policy and applies it to the calling process.</span>. Individual applications can restrict the resources they can access by specifying a set of rules in a configuration file. This is similar to Deno’s permission system, but with more fine-grained control.</p>
     <p>Example seatbelt configuration:</p>
     <pre><code data-lang="lisp"><span style="color: #74747c">;</span><span style="color: #74747c"> Run as `sandbox-exec -f script.sb &lt;exe>`</span><br>(<span style="color: #4b69c6">version</span> <span style="color: #b60157">1</span>)<br><span style="color: #74747c">;</span><span style="color: #74747c"> deny everything by default</span><br>(<span style="color: #4b69c6">deny</span> default)<br><br>(<span style="color: #4b69c6">debug</span> deny)<br><br>(<span style="color: #4b69c6">import</span> <span style="color: #198810">"</span><span style="color: #198810">bsd.sb</span><span style="color: #198810">"</span>)<br><br>(<span style="color: #4b69c6">allow</span> file-read*<br>  <span style="color: #74747c">;</span><span style="color: #74747c"> allow reading files in Downloads folder</span><br>  (<span style="color: #4b69c6">subpath</span> <span style="color: #198810">"</span><span style="color: #198810">/Users/divy/Downloads</span><span style="color: #198810">"</span>)<br>)</code></pre>
     <p>sh-deno works by mapping Deno’s permission configuration to Apple’s seatbelt sandboxing mechanism. This allows you to run Deno scripts with fine-grained control over the resources they can access.</p>
@@ -28,7 +29,8 @@
     <p>sh-deno automatically generates the seatbelt configuration from permission flags passed to it, essentially wrapping the Deno invocation with seatbelt.</p>
     <pre><code>sh-deno --allow-read=/Users/divy/Downloads script.ts</code></pre>
     <h2 class="!text-foreground">Enhanced security</h2>
-    <p>Deno’s permission system by default doesn’t protect against unauthorized access in native code like FFI libraries, child processes, etc. This is where seatbelt shines as it can restrict access to system calls and other low-level resources that Deno can’t.</p>
+    <p>Deno’s permission system by default doesn’t protect against unauthorized access in native code like FFI libraries, child processes, etc. This is where seatbelt shines as it can restrict access to system calls and other low-level resources<sup class="sn-ref"></sup><span class="sidenote">The kernel enforces the policy below libc, so it catches the raw syscall regardless of which language issued it.</span> that Deno can’t.</p>
+    <aside class="note-card">Deno enforces permissions at its own API boundary, so anything that bypasses it — dlopen’d FFI, a spawned child, native addons — runs unchecked. Seatbelt closes the gap because the policy is applied to the whole process tree at the kernel level.</aside>
     <p>Here’s an example with FFI:</p>
     <pre><code data-lang="c"><span style="color: #74747c">//</span><span style="color: #74747c"> sample FFI dylib</span><br><br><span style="color: #d73948">static</span> <span style="color: #d73948">void</span> <span style="color: #d73948">__attribute__</span>((constructor))<br><span style="color: #4b69c6">initialize</span>(<span style="color: #d73948">void</span>)<br>{<br>  <span style="color: #4b69c6">fopen</span>(<span style="color: #198810">"</span><span style="color: #198810">/etc/passwd</span><span style="color: #198810">"</span>, <span style="color: #198810">"</span><span style="color: #198810">r</span><span style="color: #198810">"</span>); <span style="color: #74747c">//</span><span style="color: #74747c"> blocked by sh-deno</span><br>}</code></pre>
     <pre><code>sh-deno --allow-read=. --allow-ffi main.ts</code></pre>

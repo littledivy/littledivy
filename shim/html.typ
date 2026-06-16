@@ -24,7 +24,7 @@
     html.meta(charset: "utf-8")
     html.meta(name: "viewport", content: "width=device-width, initial-scale=1")
     html.elem("script", attrs: (src: "theme.js"))
-    html.elem("link", attrs: (rel: "stylesheet", href: "main.css?v=20260521b"))
+    html.elem("link", attrs: (rel: "stylesheet", href: "main.css"))
     html.elem("link", attrs: (rel: "icon", type: "image/png", href: "/static/img/favicon.png"))
     if info.title != none {
       html.title(info.title)
@@ -66,6 +66,34 @@
   ])
 }
 
+/// Renders a byline (publication date) under the title, when the document has
+/// an explicit `date` set. Matches the LessWrong meta line.
+#let byline() = context {
+  let d = document.date
+  if type(d) == datetime {
+    html.elem(
+      "p",
+      attrs: (class: "byline"),
+      d.display("[day padding:none] [month repr:short] [year]"),
+    )
+  }
+}
+
+/// A margin sidenote. Author writes `text#sidenote[the note]`; it floats into
+/// the left margin aligned to the reference, with a numbered marker.
+#let sidenote(body) = [#html.elem("sup", attrs: (class: "sn-ref"))#html.elem("span", attrs: (class: "sidenote"), body)]
+
+/// An authored note — renders as an inline Apple-Notes-style card and is
+/// indexed in the sidebar. Usage: `#note[Some aside worth flagging.]`
+#let note(body) = html.elem("aside", attrs: (class: "note-card"), body)
+
+/// Live KaTeX math. Pass the LaTeX source as raw text so backslashes survive:
+///   inline:   #m(`\frac{a}{b}`)
+///   display:  #M(`F(u,v) = \sum_{x=0}^{7} \cdots`)
+/// theme.js renders `.math-tex` with KaTeX on load.
+#let m(src) = html.elem("span", attrs: (class: "math-tex"), src.text)
+#let M(src) = html.elem("div", attrs: (class: "math-tex math-display"), src.text)
+
 #let html-shim(doc) = context {
   default-html(get-document-info())(doc)
 }
@@ -91,3 +119,4 @@
     }),
   )(doc)
 }
+

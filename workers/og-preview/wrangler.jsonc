@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "og-preview",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "observability": { "enabled": true }
+  // To serve it on your own domain instead of *.workers.dev, add a route:
+  // "routes": [{ "pattern": "littledivy.com/og", "zone_name": "littledivy.com" }]
+}

@@ -11,6 +11,7 @@
 #nav-bar()
 
 #title()
+#byline()
 
 #show heading.where(level: 1): it => {
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
@@ -22,7 +23,7 @@ Overcome the technical limitations of Deno permission system by wrapping it with
 
 = Design
 
-On macOS versions 10.5 (Leopard) and later, Apple introduced a sandboxing mechanism called Seatbelt. Individual applications can restrict the resources they can access by specifying a set of rules in a configuration file. This is similar to Deno's permission system, but with more fine-grained control.
+On macOS versions 10.5 (Leopard) and later, Apple introduced a sandboxing mechanism called Seatbelt#sidenote[Internally `sandbox_init(3)`, which compiles the policy and applies it to the calling process.]. Individual applications can restrict the resources they can access by specifying a set of rules in a configuration file. This is similar to Deno's permission system, but with more fine-grained control.
 
 Example seatbelt configuration:
 
@@ -58,7 +59,9 @@ sh-deno --allow-read=/Users/divy/Downloads script.ts
 
 = Enhanced security
 
-Deno's permission system by default doesn't protect against unauthorized access in native code like FFI libraries, child processes, etc. This is where seatbelt shines as it can restrict access to system calls and other low-level resources that Deno can't.
+Deno's permission system by default doesn't protect against unauthorized access in native code like FFI libraries, child processes, etc. This is where seatbelt shines as it can restrict access to system calls and other low-level resources#sidenote[The kernel enforces the policy below libc, so it catches the raw syscall regardless of which language issued it.] that Deno can't.
+
+#note[Deno enforces permissions at its own API boundary, so anything that bypasses it — dlopen'd FFI, a spawned child, native addons — runs unchecked. Seatbelt closes the gap because the policy is applied to the whole process tree at the kernel level.]
 
 Here's an example with FFI:
 

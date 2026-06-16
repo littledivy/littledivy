@@ -22,7 +22,7 @@
 devices running agents join a VPN, either through your
 #a("https://tailscale.com/kb/1136/tailnet", [Tailscale tailnet]) or its built-in
 #a("https://www.wireguard.com/", [WireGuard]) transport. The gateway injects
-credentials on the fly, keeps tokens off the agent machine, and acts like a
+credentials on the fly, keeps tokens off the agent machine#sidenote[A compromised agent process never sees the real credential — only the proxied request leaves the gateway with it attached.], and acts like a
 firewall with protocol-aware rules for the services the agent wants to reach.
 
 #figure(

@@ -12,6 +12,7 @@
 #nav-bar()
 
 #title()
+#byline()
 
 #show heading.where(level: 1): it => {
   html.elem("h2", attrs: (class: "!text-foreground"), it.body)
@@ -31,7 +32,7 @@ resym is a tool that collects and seralizes win64 stack traces into URF-safe str
 
 == Stack walking
 
-On x86_64 Windows, resym uses `RtlLookupFunctionEntry`-based stack unwinding to collect the instruction pointers, starting from the current %rip register.
+On x86_64 Windows, resym uses `RtlLookupFunctionEntry`-based stack unwinding to collect the instruction pointers, starting from the current %rip register#sidenote[%rip is the x86_64 instruction pointer: the address of the currently executing instruction.].
 
 #figure(
   image("./static/img/unwind-win64-stack.svg", width: 60%),
@@ -50,9 +51,11 @@ std::panic::set_hook(Box::new(|_| {
 
 Before encoding, each stack address is calculated by subtracting the base address of the module that contains the address.
 
+#note[Subtracting the module base yields a relative offset, making addresses independent of where ASLR loaded the module. The remote symbolicator can then match offsets against the debug info regardless of the runtime load address.]
+
 == Representation
 
-A "trace string" is a sequence of URL-safe Base64 VLQ-encoded strings. This string can be safely shared with the crash reporter and sent to a remote server for symbolication.
+A "trace string" is a sequence of URL-safe Base64 VLQ-encoded strings#sidenote[VLQ packs each address into a variable number of bytes, keeping small deltas compact.]. This string can be safely shared with the crash reporter and sent to a remote server for symbolication.
 
 #figure(
   image("./static/img/vlq-repr.svg", width: 100%),
@@ -119,6 +122,8 @@ resym is used in Deno for Rust panic trace collection.
 When a crash occurs, resym encodes the collected instruction pointers into a compact “trace string” and sends it to the remote symbolication service.
 
 Deno's release pipeline uploads debug artifacts (.pdb, .dSYM, .elf) to a storage bucket after generating compact symcache files. These caches are essentially fast symbol lookup tables.
+
+#note[The symcache is a preprocessed form of the debug info (.pdb on Windows, .dSYM on macOS, DWARF on Linux), avoiding the cost of parsing it on every query.]
 
 #figure(
   image("./static/img/resym-remote-symbolicate.svg", width: 100%),
