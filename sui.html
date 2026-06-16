@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="theme.js">
     </script>
-    <link rel="stylesheet" href="main.css?v=20260521b">
+    <link rel="stylesheet" href="main.css">
     <link rel="icon" type="image/png" href="/static/img/favicon.png">
     <title>Inject RO data into existing executables</title>
     <meta name="description" content="injecting custom section with arbitrary data into prebuilt executables">
@@ -16,6 +16,7 @@
       <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Dark</button>
     </nav>
     <h1>Inject RO data into existing executables</h1>
+    <p class="byline">17 Aug 2024</p>
     <h2>Description</h2>
     <p>This document describes inner workings of sui, an injection tool for embedding arbitrary data into precompiled executables (ELF, PE and Mach-O).</p>
     <p>It is cross-platform and supports cross-“patching” for all formats. Under the hood sui uses format-specific features described in Supported formats.</p>
@@ -45,14 +46,15 @@
     <p>Resource is added as section in a new segment, load commands are updated and offsets are adjusted. __LINKEDIT is kept at the end of the file.</p>
     <p>It is similar to linker’s -sectcreate,__FOO,__foo,hello.txt option.</p>
     <p>Note that Macho::build will invalidate existing code signature. on Apple sillicon, kernel refuses to run executables with bad signatures.</p>
-    <p>Use Macho::build_and_sign to re-sign the binary with ad-hoc signature. See apple_codesign.rs for details. This is similar to <code>codesign -s - ./out</code> command.</p>
+    <aside class="note-card">Mutating the binary changes the bytes the original CodeDirectory hashed, so any prior signature no longer matches. This is why the binary must be re-signed rather than left untouched.</aside>
+    <p>Use Macho::build_and_sign to re-sign the binary with ad-hoc signature<sup class="sn-ref"></sup><span class="sidenote">An ad-hoc signature hashes the binary without a developer identity or certificate, satisfying the loader but proving no authorship.</span>. See apple_codesign.rs for details. This is similar to <code>codesign -s - ./out</code> command.</p>
     <pre><code data-lang="rust">Macho::from(exe)<span style="color: #d73948">?</span><br>    .<span style="color: #4b69c6">write_section</span>(<span style="color: #198810">"</span><span style="color: #198810">__sect</span><span style="color: #198810">"</span>, data)<span style="color: #d73948">?</span><br>    .<span style="color: #4b69c6">build_and_sign</span>(<span style="color: #d73948">&amp;</span><span style="color: #d73948">mut</span> out)<span style="color: #d73948">?</span>;<br></code></pre>
     <pre><code>$ codesign -d -vvv ./out<br><br>Executable=/Users/divy/gh/sui/out<br>Identifier=a.out<br>Format=Mach-O thin (arm64)<br>CodeDirectory v=20400 size=10238 flags=0x20002(adhoc,linker-signed) hashes=317+0 location=embedded<br>Hash type=sha256 size=32<br>CandidateCDHash sha256=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b18<br>CandidateCDHashFull sha256=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b1876153efa17f90dc8b3a8f177<br>Hash choices=sha256<br>CMSDigest=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b1876153efa17f90dc8b3a8f177<br>CMSDigestType=2<br>CDHash=6b1abb20f2291dd9b0dbcd0659a918cb2d0e6b18<br>Signature=adhoc<br>Info.plist=not bound<br>TeamIdentifier=not set<br>Sealed Resources=none<br>Internal requirements=none</code></pre>
     <h3>ELF</h3>
     <p>Data is simply appended to the end of the file with a tag and magic descriptor. Extracted from current_exe() at run-time.</p>
-    <p>This is subject to change and may use ELF linker notes (PT_NOTE) in the future.</p>
+    <p>This is subject to change and may use ELF linker notes (PT_NOTE) in the future<sup class="sn-ref"></sup><span class="sidenote">A PT_NOTE segment is the ELF-blessed slot for vendor metadata, unlike the current trailing-append which lies outside any program header.</span>.</p>
     <h3>PE</h3>
-    <p>Resource is added into a new PE resource directory as RT_RCDATA type and extracted using FindResource and LoadResource at run-time.</p>
+    <p>Resource is added into a new PE resource directory as RT_RCDATA type<sup class="sn-ref"></sup><span class="sidenote">RT_RCDATA is the Windows resource type for raw application-defined bytes, retrieved via FindResource/LoadResource rather than a named section.</span> and extracted using FindResource and LoadResource at run-time.</p>
     <h2>Comparison with postject</h2>
     <p>Sui supports ad-hoc codesigning for Mach-O executables and Icon resources for PE executables which postject does not.</p>
     <p>Sui is much faster and lightweight compared to postject which is built on top of LIEF, a heavy C++ dependency.</p>
