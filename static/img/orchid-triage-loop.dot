@@ -1,0 +1,16 @@
+digraph G {
+  rankdir=LR;
+  graph [bgcolor="transparent", pad="0.2", nodesep="0.55", ranksep="0.9"];
+  node [shape=box, style="rounded,filled", fontname="Menlo", fontsize=12, color="#2b3440", fillcolor="#f7f7f4", fontcolor="#20252b", margin="0.16,0.1"];
+  edge [color="#5f6b7a", penwidth=1.4, arrowsize=0.8];
+
+  issue [label="new GitHub issue", fillcolor="#d9eef7"];
+  scout [label="triage scout\nread-only one-shot agent", fillcolor="#d9f3df"];
+  comment [label="structured ## Triage comment\nfiles · tests · dupes · size", fillcolor="#fdecc8"];
+  worker [label="worker session\nimplementation + draft PR", fillcolor="#e6eefb"];
+  pr [label="PR terminal state", fillcolor="#f4d9ff"];
+  lesson [label="shared lessons.md\npostmortem memory", fillcolor="#f9d9d9"];
+
+  issue -> scout -> comment -> worker -> pr -> lesson;
+  lesson -> scout [style=dashed, label="next issue", fontname="Menlo", fontsize=10];
+}

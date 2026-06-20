@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="300" viewBox="0 0 940 300">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5f6b7a" />
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="white"/>
+  <rect x="40" y="40" rx="12" ry="12" width="180" height="74" fill="#d9eef7" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="130" y="71" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">bootstrap</text>
+  <text x="130" y="89" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">98_global_scope_shared.js</text>
+  <rect x="280" y="40" rx="12" ry="12" width="180" height="90" fill="#f9d9d9" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="370" y="69" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">before</text>
+  <text x="370" y="87" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">static import node:buffer</text>
+  <text x="370" y="105" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">static import node:timers</text>
+  <rect x="520" y="40" rx="12" ry="12" width="160" height="74" fill="#fdecc8" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="600" y="71" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">22 node internals</text>
+  <text x="600" y="89" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">~700 SFIs</text>
+  <rect x="730" y="40" rx="12" ry="12" width="170" height="74" fill="#f4d9ff" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="815" y="71" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">eager startup</text>
+  <text x="815" y="89" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">snapshot</text>
+  <rect x="280" y="170" rx="12" ry="12" width="180" height="90" fill="#d9f3df" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="370" y="199" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">after</text>
+  <text x="370" y="217" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">createLazyLoader(...)</text>
+  <text x="370" y="235" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">lazy globals</text>
+  <rect x="520" y="185" rx="12" ry="12" width="160" height="60" fill="#d9eef7" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="600" y="214" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">first Buffer /</text>
+  <text x="600" y="232" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">setTimeout access</text>
+  <line x1="220" y1="77" x2="280" y2="77" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="77" x2="520" y2="77" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="680" y1="77" x2="730" y2="77" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="220" y1="205" x2="280" y2="205" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="205" x2="730" y2="114" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="595" y="147" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#5f6b7a">small bootstrap shell</text>
+  <line x1="460" y1="215" x2="520" y2="215" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="600" y1="185" x2="600" y2="114" stroke="#5f6b7a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+</svg>

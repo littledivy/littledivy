@@ -1,0 +1,18 @@
+digraph G {
+  rankdir=LR;
+  graph [bgcolor="transparent", pad="0.2", nodesep="0.55", ranksep="1.0"];
+  node [shape=box, style="rounded,filled", fontname="Menlo", fontsize=12, color="#2b3440", fillcolor="#f7f7f4", fontcolor="#20252b", margin="0.16,0.1"];
+  edge [color="#5f6b7a", penwidth=1.4, arrowsize=0.8];
+
+  bootstrap [label="bootstrap\n98_global_scope_shared.js", fillcolor="#d9eef7"];
+  eager [label="before\nstatic import node:buffer\nstatic import node:timers", fillcolor="#f9d9d9"];
+  fanout [label="22 node internals\n~700 SFIs", fillcolor="#fdecc8"];
+  snapshot [label="eager startup snapshot", fillcolor="#f4d9ff"];
+
+  lazy [label="after\ncreateLazyLoader(...)\nlazy global properties", fillcolor="#d9f3df"];
+  use [label="first Buffer/setTimeout access", fillcolor="#e6eefb"];
+
+  bootstrap -> eager -> fanout -> snapshot;
+  bootstrap -> lazy -> snapshot [label="small bootstrap shell", fontname="Menlo", fontsize=10];
+  lazy -> use -> fanout [style=dashed];
+}

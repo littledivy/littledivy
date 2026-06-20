@@ -1,0 +1,15 @@
+digraph G {
+  rankdir=LR;
+  graph [bgcolor="transparent", pad="0.2", nodesep="0.5", ranksep="0.9"];
+  node [shape=box, style="rounded,filled", fontname="Menlo", fontsize=12, color="#2b3440", fillcolor="#f7f7f4", fontcolor="#20252b", margin="0.16,0.1"];
+  edge [color="#5f6b7a", penwidth=1.4, arrowsize=0.8];
+
+  webview [label="webview\napp://...", fillcolor="#d9eef7"];
+  scheme [label="Laufey scheme handler\napp:// bridge", fillcolor="#d9f3df"];
+  memory [label="memory:deno-desktop\nDuplexStream", fillcolor="#e6eefb"];
+  serve [label="Deno.serve handler\nHTTP request/response", fillcolor="#fdecc8"];
+  tcp [label="old path\n127.0.0.1:PORT", fillcolor="#f9d9d9"];
+
+  webview -> scheme -> memory -> serve;
+  webview -> tcp [style=dashed, label="before", fontname="Menlo", fontsize=10];
+}
