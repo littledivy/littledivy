@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="310" viewBox="0 0 920 310">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#5f6b7a" /></marker></defs>
+  <rect width="100%" height="100%" fill="white"/>
+  <rect x="50" y="95" rx="12" ry="12" width="140" height="60" fill="#d9eef7" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="120" y="124" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">webview</text>
+  <text x="120" y="142" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">app://...</text>
+  <rect x="250" y="90" rx="12" ry="12" width="180" height="70" fill="#d9f3df" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="340" y="122" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">Laufey scheme handler</text>
+  <text x="340" y="140" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">app:// bridge</text>
+  <rect x="490" y="95" rx="12" ry="12" width="170" height="60" fill="#d9eef7" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="575" y="124" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">memory:deno-desktop</text>
+  <text x="575" y="142" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">DuplexStream</text>
+  <rect x="720" y="95" rx="12" ry="12" width="160" height="60" fill="#fdecc8" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="800" y="124" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">Deno.serve handler</text>
+  <text x="800" y="142" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">HTTP</text>
+  <rect x="300" y="210" rx="12" ry="12" width="170" height="60" fill="#f9d9d9" stroke="#2b3440" stroke-width="1.2"/>
+  <text x="385" y="239" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">old path</text>
+  <text x="385" y="257" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#20252b">127.0.0.1:PORT</text>
+  <line x1="190" y1="125" x2="250" y2="125" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="430" y1="125" x2="490" y2="125" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="660" y1="125" x2="720" y2="125" stroke="#5f6b7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="120" y1="155" x2="350" y2="210" stroke="#5f6b7a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text x="245" y="171" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#5f6b7a">before</text>
+</svg>
