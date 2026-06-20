@@ -1,0 +1,17 @@
+digraph G {
+  rankdir=LR;
+  graph [bgcolor="transparent", pad="0.2", nodesep="0.55", ranksep="1.0"];
+  node [shape=box, style="rounded,filled", fontname="Menlo", fontsize=12, color="#2b3440", fillcolor="#f7f7f4", fontcolor="#20252b", margin="0.16,0.1"];
+  edge [color="#5f6b7a", penwidth=1.4, arrowsize=0.8];
+
+  launch [label="process launch", fillcolor="#d9eef7"];
+  dyld [label="before\ndyld loads 8 frameworks\nbefore main()", fillcolor="#f9d9d9"];
+  ready1 [label="runtime enters main()\nafter framework init", fillcolor="#fdecc8"];
+
+  lzld [label="after\nlink through liblzld shim", fillcolor="#d9f3df"];
+  ready2 [label="main() with no launch-time\nframework loads", fillcolor="#e6eefb"];
+  first [label="first symbol use\ndlopen framework on demand", fillcolor="#f4d9ff"];
+
+  launch -> dyld -> ready1;
+  launch -> lzld -> ready2 -> first;
+}

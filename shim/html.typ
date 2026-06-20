@@ -66,6 +66,13 @@
   ])
 }
 
+/// Renders the document title as the page heading.
+#let title() = context {
+  if document.title != none {
+    html.elem("h1", attrs: (class: "post-title"), document.title)
+  }
+}
+
 /// Renders a byline (publication date) under the title, when the document has
 /// an explicit `date` set. Matches the LessWrong meta line.
 #let byline() = context {

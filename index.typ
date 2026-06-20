@@ -18,6 +18,11 @@ You can reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [
 == Posts
 
 #set list(marker: [--])
+- #html.elem("a", attrs: (href: "/node-globals-lazy"), [Keeping node globals out of Deno's startup snapshot]) — fixing an eager bootstrap import that pulled thousands of objects into every run.
+- #html.elem("a", attrs: (href: "/lzld"), [Lazy-loading macOS frameworks with lzld]) — reducing launch-time dyld work for Deno on Apple Silicon.
+- #html.elem("a", attrs: (href: "/desktop-memory"), [Deno desktop without localhost]) — replacing loopback TCP with an in-process `memory:` transport.
+- #html.elem("a", attrs: (href: "/orchid-triage"), [Orchid triage scouts and postmortem memory]) — cheap preflight plus shared lessons for a coding swarm.
+- #html.elem("a", attrs: (href: "/agentmux"), [agentmux: a tmux-backed desktop for coding agents]) — durable agent sessions with a desktop control plane on top.
 - #html.elem("a", attrs: (href: "/clawpatrol"), [clawpatrol for personal agents]) — security firewall for AI agents.
 - #html.elem("a", attrs: (href: "/resym"), [Remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
 - #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
