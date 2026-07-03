@@ -1,4 +1,4 @@
-TYPST := typst
+TYPST ?= /opt/homebrew/bin/typst
 SRC := $(wildcard *.typ)
 DOT := $(wildcard static/img/*.dot)
 HTML := $(SRC:.typ=.html)
@@ -23,4 +23,3 @@ clean: ## Clean HTML output
 	rm -f $(HTML)
 
 .PHONY: help all clean fmt
-

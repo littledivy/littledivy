@@ -23,6 +23,12 @@ You can reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [
 - #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
 - #html.elem("a", attrs: (href: "/turbocall"), [Turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.
 - #html.elem("a", attrs: (href: "/sui"), [Sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.
+- #html.elem("a", attrs: (href: "/scroll-physics-math"), [Scroll physics as a fitted model]) — calibrating iOS scroll feel from traces, not guesses.
+- #html.elem("a", attrs: (href: "/path-geometry"), [Path geometry and arc-length math]) — flattening, trimming, winding, transforms, and boolean ops.
+- #html.elem("a", attrs: (href: "/mesh-gradient-interpolation"), [Mesh gradient interpolation]) — bilinear grids, smoothstep seams, and gamma-space color mixing.
+- #html.elem("a", attrs: (href: "/control-springs"), [Control springs and press pulses]) — spring responses for buttons, toggles, sliders, and focus rings.
+- #html.elem("a", attrs: (href: "/share-sheet-motion"), [Share sheet motion]) — one-slot modal state and a damped spring that feels like iOS.
+- #html.elem("a", attrs: (href: "/liquid-glass"), [Liquid Glass morphing]) — identity, union, and frame morphing for Apple's translucent material.
 
 == Talks
 
