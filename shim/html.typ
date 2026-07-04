@@ -23,8 +23,8 @@
   html.head(..args.named(), {
     html.meta(charset: "utf-8")
     html.meta(name: "viewport", content: "width=device-width, initial-scale=1")
-    html.elem("script", attrs: (src: "theme.js?v=20260617a"))
-    html.elem("link", attrs: (rel: "stylesheet", href: "main.css?v=20260617a"))
+    html.elem("script", attrs: (src: "theme.js?v=20260704a"))
+    html.elem("link", attrs: (rel: "stylesheet", href: "main.css?v=20260704a"))
     html.elem("link", attrs: (rel: "icon", type: "image/png", href: "static/img/favicon.png"))
     if info.title != none {
       html.title(info.title)
