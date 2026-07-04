@@ -173,15 +173,15 @@ img { max-width: 100%; }
 
 
 /* post hero */
-.hero-post { min-height: 46vh; justify-content: flex-end; padding-bottom: 2.4rem; }
-.back { font-family: var(--mono); font-size: 0.78rem; color: var(--hero-faint); margin-bottom: 1.4rem; }
+.hero-post { min-height: 34vh; justify-content: flex-end; padding-top: 4.5rem; padding-bottom: 2.2rem; }
+.back { font-family: var(--mono); font-size: 0.78rem; color: var(--hero-faint); margin-bottom: 1.2rem; }
 .back:hover { color: var(--hero-ink); }
-.post-title {
+.hero-post .post-title {
   font-family: var(--display); font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.05; letter-spacing: -0.03em;
-  color: var(--hero-ink); text-wrap: balance;
+  font-size: clamp(2.6rem, 6.2vw, 4.1rem); line-height: 1.03; letter-spacing: -0.03em;
+  color: var(--hero-ink); text-wrap: balance; max-width: 18ch;
 }
-.post-meta { margin-top: 0.9rem; font-family: var(--mono); font-size: 0.8rem; color: var(--hero-dim); }
+.hero-post .post-meta { margin-top: 0.9rem; font-family: var(--mono); font-size: 0.8rem; color: var(--hero-dim); text-transform: none; letter-spacing: normal; }
 
 /* ===================================================================
    SHEET — the readable surface over the shader
