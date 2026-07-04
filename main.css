@@ -30,20 +30,6 @@
   --col: 42rem;
 }
 
-[data-theme="light"] {
-  --sheet:    #f8f7f2;
-  --ink:      #14151b;
-  --dim:      #5e6170;
-  --dim-2:    #9a9db0;
-  --border:   #e8e6dd;
-  --border-2: #dcd9cf;
-  --card:     #ffffff;
-  --accent:   #3d4fd0;
-  --code-bg:  #f2f1ea;
-  --hover:    rgba(0, 0, 0, 0.045);
-  --sheet-grid: rgba(20, 21, 27, 0.045);
-}
-
 /* ---------- fonts ---------- */
 @font-face {
   font-family: "Space Grotesk"; font-style: normal; font-weight: 500;
@@ -131,12 +117,6 @@ img { max-width: 100%; }
   font-family: var(--mono); font-size: 0.68rem; opacity: 0.7;
   border: 1px solid color-mix(in srgb, currentColor 30%, transparent); border-radius: 5px; padding: 0.05rem 0.3rem;
 }
-.tn-ico {
-  display: flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px; border-radius: 8px;
-  color: inherit; opacity: 0.82; background: none; border: none; cursor: pointer;
-}
-.tn-ico:hover { opacity: 1; background: var(--hover); }
 @media (max-width: 560px) { .tn-search span, .tn-search kbd { display: none; } }
 
 /* ===================================================================

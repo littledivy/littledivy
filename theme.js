@@ -3,19 +3,12 @@
  */
 
 (function () {
-  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+  document.documentElement.setAttribute('data-theme', 'dark');
   const st = document.createElement('style');
   st.id = 'boot-hide';
   st.textContent = 'body { visibility: hidden; }';
   (document.head || document.documentElement).appendChild(st);
 })();
-
-function toggleTheme() {
-  const html = document.documentElement;
-  const next = (html.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-}
 
 (function () {
   // homepage identity
@@ -62,7 +55,6 @@ function toggleTheme() {
 
   const ICON = {
     search: '<svg viewBox="0 0 16 16" width="15" height="15"><circle cx="7" cy="7" r="4.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.3 10.3L14 14" stroke="currentColor" stroke-width="1.4"/></svg>',
-    moon: '<svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 9.5A5 5 0 016.5 3 5 5 0 1013 9.5z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>',
   };
 
   function slug(s) {
@@ -172,9 +164,7 @@ function toggleTheme() {
         <a href="/#talks">Talks</a>
         <a href="https://github.com/littledivy?tab=repositories">Projects</a>
         <button class="tn-search" aria-label="Search">${ICON.search}<span>Search</span><kbd>⌘K</kbd></button>
-        <button class="tn-ico tn-theme" aria-label="Toggle theme">${ICON.moon}</button>
       </div>`;
-    nav.querySelector('.tn-theme').onclick = toggleTheme;
     nav.querySelector('.tn-search').onclick = openSearch;
     let ticking = false;
     const onScroll = () => {
