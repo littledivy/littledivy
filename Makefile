@@ -1,4 +1,4 @@
-TYPST ?= /opt/homebrew/bin/typst
+TYPST ?= $(shell command -v typst || echo /opt/homebrew/bin/typst)
 SRC := $(wildcard *.typ)
 DOT := $(wildcard static/img/*.dot)
 HTML := $(SRC:.typ=.html)
