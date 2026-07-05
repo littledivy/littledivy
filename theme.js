@@ -15,7 +15,7 @@
   const HOME = {
     brand: 'littledivy',
     title: 'Divy Srivastava',
-    headline: 'Divy',
+    headline: 'Divy Srivastava',
     role: 'Research and Engineering',
     story: [
       'I work at Deno, building and optimizing the runtime. Most of what I do sits close to the metal: performance engineering, compilers, cryptography, and the odd detour into AI research and graphics.',
@@ -25,9 +25,9 @@
   // Talks nav links straight to a YouTube playlist. Replace with your real playlist URL.
   const TALKS_URL = 'https://www.youtube.com/playlist?list=REPLACE_WITH_PLAYLIST_ID';
   const SOCIALS = [
-    { t: 'GitHub', href: 'https://github.com/littledivy' },
-    { t: 'X', href: 'https://x.com/undefined_void' },
-    { t: 'Email', href: 'mailto:me@littledivy.com' },
+    { t: 'GitHub', href: 'https://github.com/littledivy', icon: 'github' },
+    { t: 'X', href: 'https://x.com/undefined_void', icon: 'x' },
+    { t: 'Email', href: 'mailto:me@littledivy.com', icon: 'mail' },
   ];
   // cross-page search targets
   // full site index — every page the search can jump to
@@ -55,6 +55,9 @@
 
   const ICON = {
     search: '<svg viewBox="0 0 16 16" width="15" height="15"><circle cx="7" cy="7" r="4.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.3 10.3L14 14" stroke="currentColor" stroke-width="1.4"/></svg>',
+    github: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>',
+    x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.6l5.24 6.93 6.06-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3l13.31 17.41z"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7.5l8.5 5.5 8.5-5.5"/></svg>',
   };
 
   function slug(s) {
@@ -105,9 +108,16 @@
     const header = home
       ? buildHomeHero()
       : buildPostHero(title, (sub ? sub + '  ·  ' : '') + mins + ' min read');
-    const col = h('div', 'col'); col.appendChild(article);
-    const sheet = h('div', 'sheet'); sheet.appendChild(col);
-    const main = h('main', 'page'); main.append(header, sheet);
+    const main = h('main', 'page');
+    if (home) {
+      // posts/talks live inside the about-me column — same margin, text, spacing
+      header.querySelector('.hero-copy').appendChild(article);
+      main.append(header);
+    } else {
+      const col = h('div', 'col'); col.appendChild(article);
+      const sheet = h('div', 'sheet'); sheet.appendChild(col);
+      main.append(header, sheet);
+    }
 
     const topnav = buildTopnav();
     const prog = h('div', 'progress', '<span></span>');
@@ -141,7 +151,7 @@
          <h1 class="headline">${HOME.headline}</h1>
          <p class="hero-sub">${HOME.role}</p>
          <div class="hero-story">${HOME.story.map(p => `<p>${p}</p>`).join('')}</div>
-         <div class="socials">${SOCIALS.map(s => `<a href="${s.href}">${s.t}</a>`).join('')}</div>
+         <div class="socials">${SOCIALS.map(s => `<a href="${s.href}" aria-label="${s.t}">${ICON[s.icon] || ''}<span>${s.t}</span></a>`).join('')}</div>
        </div>`;
     return head;
   }
@@ -197,11 +207,11 @@
         try {
           const noise = m.getShaderNoiseTexture();
           await new Promise(res => { if (!noise || noise.complete) return res(); noise.onload = res; noise.onerror = res; });
-          const C = ['#20265f', '#4a5ce0', '#9fb0ff'];
+          const C = ['#171d4a', '#3a49b0', '#6f80d8'];
           const u = {
             u_colorBack: m.getShaderColorFromString('#0a0c18'),
             u_colors: C.map(m.getShaderColorFromString), u_colorsCount: C.length,
-            u_softness: 0.6, u_intensity: 0.45, u_noise: 0.55, u_shape: 6 /* blob */,
+            u_softness: 0.82, u_intensity: 0.3, u_noise: 0.5, u_shape: 6 /* blob */,
             u_noiseTexture: noise,
             u_fit: 2, u_scale: 1, u_rotation: 0, u_offsetX: 0, u_offsetY: 0,
             u_originX: 0.5, u_originY: 0.5, u_worldWidth: 0, u_worldHeight: 0,
@@ -233,33 +243,20 @@
       // newest first — sort by data-date (ISO), then reflect the order in the DOM
       lis.sort((a, b) => (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || ''));
       lis.forEach(li => ul.appendChild(li));
-      ul.classList.add('writing-grid');
-      lis.forEach((li, i) => {
+      const hasDates = lis.some(li => li.getAttribute('data-date'));
+      ul.classList.add('idx-list');
+      if (!hasDates) ul.classList.add('nodate');
+      lis.forEach(li => {
         const a = li.querySelector('a');
         if (!a) return;
         const href = a.getAttribute('href');
         const title = a.textContent.trim();
-        const tag = (li.getAttribute('data-tag') || '').trim();
-        const full = li.textContent.replace(/\s+/g, ' ').trim();
-        let desc = full.startsWith(title) ? full.slice(title.length) : full;
-        desc = desc.replace(/^\s*[\u2014\u2013-]\s*/, '').trim();
-        const yt = ytId(href);
-        const media = yt
-          ? `<span class="post-media is-talk">
-               <img class="post-thumb" loading="lazy" alt="" src="https://i.ytimg.com/vi/${yt}/maxresdefault.jpg"
-                    onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${yt}/hqdefault.jpg'">
-             </span>`
-          : `<span class="post-media"><span class="post-shader" data-idx="${i}"></span><span class="post-figs"></span></span>`;
+        const iso = li.getAttribute('data-date') || '';
+        const dfmt = iso ? iso.split('-').reverse().join('.') : ''; // 2026-05-21 -> 21.05.2026
+        li.className = 'idx-row';
         li.innerHTML =
-          `<a class="post entry" href="${href}">
-             ${media}
-             <span class="post-body">
-               <span class="post-meta"></span>
-               <span class="post-title">${title}</span>
-               ${desc ? `<span class="post-desc">${desc}</span>` : ''}
-             </span>
-           </a>`;
-        if (!yt) fillCard(li.querySelector('.entry'), href, tag);
+          (dfmt ? `<span class="idx-date">${dfmt}</span>` : '') +
+          `<a href="${href}">${title}</a>`;
       });
     });
   }

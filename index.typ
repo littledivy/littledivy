@@ -15,24 +15,32 @@ Hello; I'm Divy. I work at the #html.elem("a", attrs: (href: "https://deno.com")
 
 You can reach me at #html.elem("a", attrs: (href: "mailto:me@littledivy.com"), [me\@littledivy.com])
 
+#let row(href, title, date: none) = html.elem(
+  "li",
+  attrs: if date != none { ("data-date": date) } else { (:) },
+  html.elem("a", attrs: (href: href), title),
+)
+
 == Posts
 
-#set list(marker: [--])
-- #html.elem("a", attrs: (href: "/clawpatrol"), [clawpatrol for personal agents]) — security firewall for AI agents.
-- #html.elem("a", attrs: (href: "/resym"), [Remote stack trace symbolication]) — serializable stack trace collection for remote symbolication.
-- #html.elem("a", attrs: (href: "/sh-deno"), [sh-deno]) — apple's seatbelt sandboxing combined with deno's permission system for hardened runtime security.
-- #html.elem("a", attrs: (href: "/sui"), [Sui]) — notes on cross-platform injection arbritrary data into prebuilt binaries.
-- #html.elem("a", attrs: (href: "/turbocall"), [Turbocall]) — just-in-time compiler for generating trampoines for V8 \<-\> FFI bindings.
+#html.elem("ul", attrs: (class: "idx-list"), {
+  row("/clawpatrol", [clawpatrol: a security firewall for AI agents], date: "2026-05-21")
+  row("/resym", [Remote stack-trace symbolication], date: "2025-02-16")
+  row("/sh-deno", [sh-deno: seatbelt-sandboxing Deno's runtime], date: "2025-02-07")
+  row("/sui", [Sui: injecting data into prebuilt binaries], date: "2024-08-17")
+  row("/turbocall", [Turbocall: a JIT for V8 FFI trampolines], date: "2024-03-25")
+})
 
 == Talks
 
-#set list(marker: [--])
-- #html.elem("a", attrs: (href: "https://youtu.be/qt3-3FkPqQ8?t=450"), [Kernel to runtime]) — IIT Kanpur OOSC 3, 2025. how javascript calls become syscalls: event loops, epoll, and async i/o.
-- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=vINOqgn_ik8"), [Deno internals: op2 driver]) — about deno_core internals, runtime call overhead, and js\<-\>rust translation layer.
-- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=RKjVcl62J9w"), [Building games with deno ffi]) — how to build a cross-platform game using SDL2 in JS.
-- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=gA152Hun8cI"), [WebGPU windowing]) — about rendering a gpu-accelarated window using webgpu and window surface APIs.
-- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=5wlZDw942J8"), [Injecting r/o data into binaries]) — cross-platform tool that powers deno's compiler.
-- #html.elem("a", attrs: (href: "https://www.youtube.com/watch?v=ssYN4rFWRIU"), [JIT compiler for dynamic FFI]) — _blazing fast_ compiler for generating trampolines for ffi calls for V8.
+#html.elem("ul", attrs: (class: "idx-list nodate"), {
+  row("https://youtu.be/qt3-3FkPqQ8?t=450", [Kernel to runtime: how JS calls become syscalls])
+  row("https://www.youtube.com/watch?v=vINOqgn_ik8", [Deno internals: the op2 driver])
+  row("https://www.youtube.com/watch?v=RKjVcl62J9w", [Building cross-platform games with Deno FFI])
+  row("https://www.youtube.com/watch?v=gA152Hun8cI", [WebGPU windowing with surface APIs])
+  row("https://www.youtube.com/watch?v=5wlZDw942J8", [Injecting read-only data into binaries])
+  row("https://www.youtube.com/watch?v=ssYN4rFWRIU", [A JIT compiler for dynamic FFI])
+})
 
 #html.elem("footer", [
   #html.elem("p", [

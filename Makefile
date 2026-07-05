@@ -1,5 +1,5 @@
 TYPST ?= $(shell command -v typst || echo /opt/homebrew/bin/typst)
-SRC := $(wildcard *.typ)
+SRC := $(wildcard *.typ) $(wildcard drafts/*.typ)
 DOT := $(wildcard static/img/*.dot)
 HTML := $(SRC:.typ=.html)
 SVG := $(DOT:.dot=.svg)
@@ -12,9 +12,9 @@ all: $(SVG) $(HTML) ## Build everything
 static/img/%.svg: static/img/%.dot ## Build DOT svgs
 	dot -Tsvg $< -o $@
 
-%.html: %.typ $(SVG) ## Build typst docs
+%.html: %.typ shim/html.typ $(SVG) ## Build typst docs
 	@echo "Compiling $< → $@"
-	$(TYPST) compile --features html $< $@
+	$(TYPST) compile --root . --features html $< $@
 
 fmt: ## Format typst files
 	typstyle -i $(SRC)
