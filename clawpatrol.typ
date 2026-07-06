@@ -26,7 +26,7 @@ credentials on the fly, keeps tokens off the agent machine#sidenote[A compromise
 firewall with protocol-aware rules for the services the agent wants to reach.
 
 #figure(
-  image("./static/img/clawpatrol-agent-gateway.svg", width: 100%),
+  image("./static/img/clawpatrol-demo.png", width: 100%),
 )
 
 = Setup
