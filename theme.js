@@ -20,10 +20,13 @@
     story: [
       'I work at Deno, building and optimizing the runtime. Most of what I do sits close to the metal: performance engineering, compilers, cryptography, and the odd detour into AI research and graphics.',
       'These days the work runs more like a small lab than a personal blog — a lot of experiments, a fleet of agents, and notes from both.',
+      'I get nerd-sniped easily, and if something here caught you — or you just want to share whatever you&rsquo;re currently obsessed with — email me at <a href="mailto:me@littledivy.com">me@littledivy.com</a>.',
     ],
   };
   // Talks nav links straight to a YouTube playlist. Replace with your real playlist URL.
   const TALKS_URL = 'https://www.youtube.com/playlist?list=REPLACE_WITH_PLAYLIST_ID';
+  // talk locations, in the order talks appear in index.html (shown where posts show dates)
+  const TALK_LOCS = ['Dublin', 'Warsaw', '-', 'Warsaw', 'IITK', 'Tokyo'];
   const SOCIALS = [
     { t: 'GitHub', href: 'https://github.com/littledivy', icon: 'github' },
     { t: 'X', href: 'https://x.com/undefined_void', icon: 'x' },
@@ -110,9 +113,11 @@
       : buildPostHero(title, (sub ? sub + '  ·  ' : '') + mins + ' min read');
     const main = h('main', 'page');
     if (home) {
-      // posts/talks live inside the about-me column — same margin, text, spacing
-      header.querySelector('.hero-copy').appendChild(article);
-      main.append(header);
+      // hero over the shader holds title/role/socials; story + posts/talks go on the solid sheet
+      const story = h('div', 'home-story', `<div class="hero-story">${HOME.story.map(p => `<p>${p}</p>`).join('')}</div>`);
+      const col = h('div', 'col'); col.append(story, article);
+      const sheet = h('div', 'sheet'); sheet.appendChild(col);
+      main.append(header, sheet);
     } else {
       const col = h('div', 'col'); col.appendChild(article);
       const sheet = h('div', 'sheet'); sheet.appendChild(col);
@@ -145,12 +150,11 @@
   }
 
   function buildHomeHero() {
-    const head = h('header', 'hero');
+    const head = h('header', 'hero hero-home');
     head.innerHTML =
       `<div class="hero-copy">
          <h1 class="headline">${HOME.headline}</h1>
          <p class="hero-sub">${HOME.role}</p>
-         <div class="hero-story">${HOME.story.map(p => `<p>${p}</p>`).join('')}</div>
          <div class="socials">${SOCIALS.map(s => `<a href="${s.href}" aria-label="${s.t}">${ICON[s.icon] || ''}<span>${s.t}</span></a>`).join('')}</div>
        </div>`;
     return head;
@@ -207,11 +211,11 @@
         try {
           const noise = m.getShaderNoiseTexture();
           await new Promise(res => { if (!noise || noise.complete) return res(); noise.onload = res; noise.onerror = res; });
-          const C = ['#171d4a', '#3a49b0', '#6f80d8'];
+          const C = ['#20265f', '#4a5ce0', '#9fb0ff'];
           const u = {
             u_colorBack: m.getShaderColorFromString('#0a0c18'),
             u_colors: C.map(m.getShaderColorFromString), u_colorsCount: C.length,
-            u_softness: 0.82, u_intensity: 0.3, u_noise: 0.5, u_shape: 6 /* blob */,
+            u_softness: 0.6, u_intensity: 0.45, u_noise: 0.55, u_shape: 6 /* blob */,
             u_noiseTexture: noise,
             u_fit: 2, u_scale: 1, u_rotation: 0, u_offsetX: 0, u_offsetY: 0,
             u_originX: 0.5, u_originY: 0.5, u_worldWidth: 0, u_worldHeight: 0,
@@ -244,19 +248,22 @@
       lis.sort((a, b) => (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || ''));
       lis.forEach(li => ul.appendChild(li));
       const hasDates = lis.some(li => li.getAttribute('data-date'));
+      // talks (no dates) show a location in the left column instead, in list order
+      const useLoc = !hasDates && TALK_LOCS.length > 0;
       ul.classList.add('idx-list');
-      if (!hasDates) ul.classList.add('nodate');
-      lis.forEach(li => {
+      if (!hasDates && !useLoc) ul.classList.add('nodate');
+      if (useLoc) ul.classList.add('has-loc');
+      lis.forEach((li, i) => {
         const a = li.querySelector('a');
         if (!a) return;
         const href = a.getAttribute('href');
         const title = a.textContent.trim();
         const iso = li.getAttribute('data-date') || '';
         const dfmt = iso ? iso.split('-').reverse().join('.') : ''; // 2026-05-21 -> 21.05.2026
+        const left = dfmt ? `<span class="idx-date">${dfmt}</span>`
+          : useLoc ? `<span class="idx-loc">${TALK_LOCS[i] || ''}</span>` : '';
         li.className = 'idx-row';
-        li.innerHTML =
-          (dfmt ? `<span class="idx-date">${dfmt}</span>` : '') +
-          `<a href="${href}">${title}</a>`;
+        li.innerHTML = left + `<a href="${href}">${title}</a>`;
       });
     });
   }
@@ -310,7 +317,7 @@
         return {
           u_colorBack: m.getShaderColorFromString('#0a0c18'),
           u_colors: C.map(m.getShaderColorFromString), u_colorsCount: C.length,
-          u_softness: 0.74, u_intensity: 0.52, u_noise: 0.48, u_shape: idx % 7,
+          u_softness: 0.78, u_intensity: 0.4, u_noise: 0.48, u_shape: idx % 7,
           u_noiseTexture: noise, u_fit: 2, u_scale: 1, u_rotation: (idx * 37) % 360,
           u_offsetX: 0, u_offsetY: 0, u_originX: 0.5, u_originY: 0.5, u_worldWidth: 0, u_worldHeight: 0,
         };
@@ -319,7 +326,7 @@
         ents.forEach(e => {
           if (!e.isIntersecting || e.target._m) return;
           const el = e.target, idx = +el.dataset.idx || 0;
-          try { el._m = new m.ShaderMount(el, m.grainGradientFragmentShader, mkU(idx), undefined, 0.32, idx * 90, 1); } catch (err) {}
+          try { el._m = new m.ShaderMount(el, m.grainGradientFragmentShader, mkU(idx), undefined, 0.22, idx * 90, 1); } catch (err) {}
           obs.unobserve(el);
         });
       }, { rootMargin: '300px 0px' });
@@ -563,102 +570,3 @@
   });
 })();
 
-/* ---- link hover previews (internal posts + external) ---- */
-const OG_ENDPOINT = 'https://og-preview.littledivy.workers.dev';
-(function () {
-  const cache = new Map();
-  let card, showTimer = 0, hideTimer = 0, curLink = null;
-  function classify(href) {
-    if (!href || href[0] === '#' || href.startsWith('mailto:') || href.startsWith('javascript:')) return null;
-    let u; try { u = new URL(href, location.href); } catch (e) { return null; }
-    if (!/^https?:$/.test(u.protocol)) return null;
-    if (u.origin === location.origin) return u.pathname === location.pathname ? null : 'internal';
-    return 'external';
-  }
-  const host = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } };
-  const clip = (s, n) => { const w = (s || '').split(/\s+/); return w.length > n ? w.slice(0, n).join(' ') + '…' : (s || ''); };
-  async function fetchHtml(href) {
-    let r = await fetch(href);
-    if (!r.ok && !/\.html?$/.test(href)) r = await fetch(href.replace(/\/+$/, '') + '.html');
-    if (!r.ok) throw new Error('404');
-    return r.text();
-  }
-  function loadInternal(href) {
-    return fetchHtml(href).then(html => {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const title = (doc.querySelector('h1') || doc.querySelector('title') || {}).textContent || href;
-      const date = (doc.querySelector('.byline') || {}).textContent || '';
-      const paras = Array.from(doc.querySelectorAll('body > p, main > p, .prose > p'))
-        .filter(p => !p.classList.contains('byline'))
-        .map(p => p.textContent.trim()).filter(Boolean);
-      let ex = paras.join(' ');
-      if (!ex) ex = (doc.querySelector('meta[name="description"]') || {}).content || '';
-      return { kind: 'internal', title: title.trim(), date: date.trim(), desc: clip(ex, 55), domain: 'littledivy.com' };
-    });
-  }
-  function loadExternal(href) {
-    const fav = 'https://www.google.com/s2/favicons?domain=' + host(href) + '&sz=64';
-    return fetch(OG_ENDPOINT + '/?url=' + encodeURIComponent(href))
-      .then(r => r.json()).then(d => ({
-        kind: 'external', title: d.title || host(href), desc: clip(d.description, 40),
-        image: d.image || '', logo: d.logo || fav, domain: d.domain || host(href),
-      })).catch(() => ({ kind: 'external', title: host(href), desc: '', logo: fav, domain: host(href) }));
-  }
-  function load(href, kind) {
-    if (cache.has(href)) return cache.get(href);
-    const pr = (kind === 'internal' ? loadInternal(href) : loadExternal(href)).catch(() => null);
-    cache.set(href, pr);
-    return pr;
-  }
-  function ensureCard() {
-    if (card) return card;
-    card = document.createElement('div');
-    card.className = 'link-preview';
-    card.addEventListener('mouseenter', () => clearTimeout(hideTimer));
-    card.addEventListener('mouseleave', hide);
-    document.body.appendChild(card);
-    return card;
-  }
-  function render(c, d) {
-    c.innerHTML = '';
-    c.classList.toggle('has-image', !!d.image);
-    if (d.image) {
-      const im = document.createElement('img'); im.className = 'lp-image'; im.src = d.image; im.loading = 'lazy';
-      im.onerror = () => im.remove(); c.appendChild(im);
-    }
-    const body = document.createElement('div'); body.className = 'lp-body';
-    const dom = document.createElement('div'); dom.className = 'lp-domain';
-    if (d.logo) { const f = document.createElement('img'); f.src = d.logo; f.onerror = () => f.remove(); dom.appendChild(f); }
-    const ds = document.createElement('span'); ds.textContent = d.domain || ''; dom.appendChild(ds);
-    body.appendChild(dom);
-    const t = document.createElement('div'); t.className = 'lp-title'; t.textContent = d.title; body.appendChild(t);
-    if (d.date) { const m = document.createElement('div'); m.className = 'lp-meta'; m.textContent = d.date; body.appendChild(m); }
-    if (d.desc) { const x = document.createElement('div'); x.className = 'lp-desc'; x.textContent = d.desc; body.appendChild(x); }
-    c.appendChild(body);
-  }
-  function place(c, a) {
-    const r = a.getBoundingClientRect(), w = 340;
-    c.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + 'px';
-    if (r.bottom + 220 > window.innerHeight) { c.style.top = 'auto'; c.style.bottom = (window.innerHeight - r.top + 8) + 'px'; }
-    else { c.style.bottom = 'auto'; c.style.top = (r.bottom + 8) + 'px'; }
-  }
-  function show(a, kind) {
-    const c = ensureCard();
-    if (kind === 'external') {
-      const hn = host(a.href);
-      render(c, { kind: 'external', domain: hn, title: hn, desc: '', logo: 'https://www.google.com/s2/favicons?domain=' + hn + '&sz=64' });
-      place(c, a); c.classList.add('visible');
-    }
-    load(a.href, kind).then(d => { if (!d || curLink !== a) return; render(c, d); place(c, a); c.classList.add('visible'); });
-  }
-  function hide() { hideTimer = setTimeout(() => { if (card) card.classList.remove('visible'); curLink = null; }, 180); }
-  document.addEventListener('mouseover', e => {
-    const a = e.target.closest('a');
-    if (!a || a.closest('.topnav, .search-overlay, .entry')) return;
-    const kind = classify(a.getAttribute('href'));
-    if (!kind) return;
-    clearTimeout(hideTimer); curLink = a; clearTimeout(showTimer);
-    showTimer = setTimeout(() => show(a, kind), kind === 'internal' ? 130 : 220);
-  });
-  document.addEventListener('mouseout', e => { if (e.target.closest('a')) { clearTimeout(showTimer); hide(); } });
-})();

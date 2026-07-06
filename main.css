@@ -151,7 +151,7 @@ body.shell { background: #0a0c18; }
 .hero-story p { font-size: 0.98rem; line-height: 1.62; color: var(--hero-dim); margin-top: 1rem; }
 .hero-story p:first-child { margin-top: 0; }
 .socials { display: flex; gap: 1.4rem; margin-top: 2rem; font-family: var(--mono); font-size: 0.82rem; }
-.socials a { display: inline-flex; align-items: center; gap: 0.42rem; color: var(--hero-faint); }
+.socials a { display: inline-flex; align-items: center; gap: 0.42rem; color: var(--hero-ink); }
 .socials a:hover { color: var(--hero-ink); }
 .socials svg { width: 15px; height: 15px; display: block; flex: none; }
 
@@ -198,8 +198,12 @@ body.shell { background: #0a0c18; }
   background: var(--sheet);
   min-height: 60vh;
 }
-/* homepage: hero + list share one shader surface — no separate panel */
-.is-home .sheet { background: transparent; box-shadow: none; }
+/* homepage now mirrors post pages: title over shader, content on a solid sheet */
+.hero-home { min-height: 25vh; justify-content: flex-end; padding-top: 4.5rem; padding-bottom: 2.2rem; }
+.home-story { margin-bottom: 2.6rem; }
+.home-story .hero-story { margin-top: 0; }
+.hero-story a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+.hero-story a:hover { border-bottom-color: var(--accent); }
 .col { max-width: var(--col); margin: 0 auto; padding: 3rem clamp(1.1rem, 4vw, 1.6rem) 6rem; }
 
 /* ===================================================================
@@ -315,29 +319,13 @@ code { font-family: var(--mono); font-size: 0.85em; }
   margin-top: 0.6rem; max-width: 52ch;
 }
 .is-home .idx-list.nodate .idx-row { grid-template-columns: 1fr; }
+.is-home .idx-list.has-loc .idx-row { grid-template-columns: 5.6rem 1fr; }
+.is-home .idx-loc { font-family: var(--mono); font-size: 0.74rem; color: var(--hero-faint); white-space: nowrap; }
 .is-home .idx-row:first-child { margin-top: 0; }
 .is-home .idx-date { font-family: var(--mono); font-size: 0.74rem; color: var(--hero-faint); white-space: nowrap; }
 .is-home .idx-row a { color: var(--hero-ink); text-decoration: none; }
 .is-home .idx-row a:hover { text-decoration: underline; text-decoration-color: var(--hero-faint); }
 
-/* ===================================================================
-   LINK HOVER PREVIEW
-   =================================================================== */
-.link-preview {
-  position: fixed; z-index: 70; width: 20rem; max-width: calc(100vw - 1rem);
-  background: var(--sheet); border: 1px solid var(--border-2); border-radius: 14px;
-  box-shadow: 0 18px 50px rgba(0,0,0,0.4); overflow: hidden;
-  opacity: 0; transform: translateY(5px); pointer-events: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-.link-preview.visible { opacity: 1; transform: none; pointer-events: auto; }
-.lp-image { display: block; width: 100%; height: 140px; object-fit: cover; background: var(--code-bg); border-bottom: 1px solid var(--border); }
-.lp-body { padding: 0.85rem 1rem 0.95rem; }
-.lp-domain { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.7rem; color: var(--dim); margin-bottom: 0.4rem; }
-.lp-domain img { width: 15px; height: 15px; border-radius: 3px; flex: 0 0 auto; }
-.lp-title { font-family: var(--display); font-weight: 500; font-size: 1.02rem; line-height: 1.28; color: var(--ink); margin-bottom: 0.3rem; letter-spacing: -0.02em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.lp-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--dim); margin-bottom: 0.35rem; }
-.lp-desc { font-size: 0.85rem; line-height: 1.45; color: var(--dim); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* ===================================================================
    SEARCH OVERLAY
