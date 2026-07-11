@@ -32,7 +32,7 @@ jobs:
       - name: Stage site
         run: |
           mkdir _site
-          cp -R *.html CNAME main.css theme.js fonts katex static me.gpg _site/
+          cp -R *.html CNAME main.css theme.js for-prutha robots.txt fonts katex static me.gpg _site/
           touch _site/.nojekyll
 
       - name: Deploy to GitHub Pages
