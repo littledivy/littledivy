@@ -148,7 +148,7 @@ body.shell { background: #0a0c18; }
 }
 .hero-sub { margin-top: 1.3rem; font-size: 1.06rem; color: var(--hero-dim); max-width: 40ch; }
 .hero-story { margin-top: 1.9rem; max-width: 52ch; }
-.hero-story p { font-size: 1.02rem; line-height: 1.72; color: var(--hero-dim); margin-top: 1rem; }
+.hero-story p { font-size: 1.14rem; line-height: 1.72; color: var(--hero-dim); margin-top: 1rem; }
 .hero-story p:first-child { margin-top: 0; }
 .socials { display: flex; gap: 1.4rem; margin-top: 2rem; font-family: var(--mono); font-size: 0.82rem; }
 .socials a { display: inline-flex; align-items: center; gap: 0.42rem; color: var(--hero-ink); }
