@@ -20,7 +20,6 @@
 == Posts
 
 #html.elem("ul", attrs: (class: "idx-list"), {
-  row("/deno-desktop", [What's next with Deno Desktop], date: "2026-07-09")
   row("/clawpatrol", [A security firewall for AI agents], date: "2026-05-21")
   row("/resym", [Remote stack-trace symbolication], date: "2025-02-16")
   row("/sh-deno", [Seatbelt sandboxing Deno's runtime], date: "2025-02-07")
