@@ -125,7 +125,7 @@ body.shell { background: #0a0c18; }
 /* ===================================================================
    HERO — sits directly on the shader
    =================================================================== */
-.page { width: 100%; }
+.page { width: 100%; display: flex; flex-direction: column; min-height: 100vh; }
 .hero {
   position: relative; z-index: 1;
   max-width: var(--col); margin: 0 auto;
@@ -148,7 +148,7 @@ body.shell { background: #0a0c18; }
 }
 .hero-sub { margin-top: 1.3rem; font-size: 1.06rem; color: var(--hero-dim); max-width: 40ch; }
 .hero-story { margin-top: 1.9rem; max-width: 52ch; }
-.hero-story p { font-size: 0.98rem; line-height: 1.62; color: var(--hero-dim); margin-top: 1rem; }
+.hero-story p { font-size: 1.02rem; line-height: 1.72; color: var(--hero-dim); margin-top: 1rem; }
 .hero-story p:first-child { margin-top: 0; }
 .socials { display: flex; gap: 1.4rem; margin-top: 2rem; font-family: var(--mono); font-size: 0.82rem; }
 .socials a { display: inline-flex; align-items: center; gap: 0.42rem; color: var(--hero-ink); }
@@ -197,6 +197,7 @@ body.shell { background: #0a0c18; }
   position: relative; z-index: 2;
   background: var(--sheet);
   min-height: 60vh;
+  flex: 1 0 auto;
 }
 /* homepage now mirrors post pages: title over shader, content on a solid sheet */
 .hero-home { min-height: 25vh; justify-content: flex-end; padding-top: 4.5rem; padding-bottom: 2.2rem; }
