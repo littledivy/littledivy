@@ -40,7 +40,7 @@ jobs:
         if: github.event.action != 'closed'
         run: |
           mkdir _site
-          cp -R *.html CNAME main.css theme.js fonts static me.gpg _site/
+          cp -R *.html *.pdf CNAME main.css theme.js fonts static me.gpg _site/
           touch _site/.nojekyll
 
       - name: Checkout preview branch
