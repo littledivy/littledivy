@@ -23,8 +23,7 @@
   html.head(..args.named(), {
     html.meta(charset: "utf-8")
     html.meta(name: "viewport", content: "width=device-width, initial-scale=1")
-    html.elem("script", attrs: (src: "/theme.js?v=20260705zm"))
-    html.elem("link", attrs: (rel: "stylesheet", href: "/main.css?v=20260705zm"))
+    html.elem("link", attrs: (rel: "stylesheet", href: "/main.css?v=20260721k"))
     html.elem("link", attrs: (rel: "icon", type: "image/png", href: "/static/img/favicon.png"))
     if info.title != none {
       html.title(info.title)
@@ -58,9 +57,11 @@
 
 #let nav-bar() = {
   html.elem("nav", [
-    #html.elem("a", attrs: (href: "/"), [Home])
+    #html.elem("a", attrs: (href: "/"), [home])
     #text("   ")
-    #html.elem("a", attrs: (href: "https://github.com/littledivy?tab=repositories"), [Projects])
+    #html.elem("a", attrs: (href: "https://github.com/littledivy?tab=repositories"), [projects])
+    #text("   ")
+    #html.elem("a", attrs: (href: "/cv.pdf"), [cv])
   ])
 }
 
