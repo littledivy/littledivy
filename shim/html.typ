@@ -23,7 +23,7 @@
   html.head(..args.named(), {
     html.meta(charset: "utf-8")
     html.meta(name: "viewport", content: "width=device-width, initial-scale=1")
-    html.elem("link", attrs: (rel: "stylesheet", href: "/main.css?v=20260721k"))
+    html.elem("link", attrs: (rel: "stylesheet", href: "/main.css?v=20260721l"))
     html.elem("link", attrs: (rel: "icon", type: "image/png", href: "/static/img/favicon.png"))
     if info.title != none {
       html.title(info.title)
@@ -65,6 +65,10 @@
   ])
 }
 
+#let site-footer() = html.elem("footer", [
+  #html.elem("a", attrs: (href: "/me.gpg"), [pgp])
+])
+
 /// Renders a byline (publication date) under the title, when the document has
 /// an explicit `date` set. Matches the LessWrong meta line.
 #let byline() = context {
@@ -94,7 +98,7 @@
 #let M(src) = html.elem("div", attrs: (class: "math-tex math-display"), src.text)
 
 #let html-shim(doc) = context {
-  default-html(get-document-info())(doc)
+  default-html(get-document-info())(doc + site-footer())
 }
 
 #let clawpatrol-html(doc) = context {
@@ -116,5 +120,5 @@
       html.meta(name: "twitter:description", content: info.description.text)
       html.meta(name: "twitter:image", content: og-image)
     }),
-  )(doc)
+  )(doc + site-footer())
 }
