@@ -1,0 +1,40 @@
+name: mirror-to-dgit
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: mirror-to-dgit
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror public repos to git.littledivy.com
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DGIT_TOKEN: ${{ secrets.DGIT_TOKEN }}
+        run: |
+          set -uo pipefail
+          AUTH=$(printf 'x:%s' "$DGIT_TOKEN" | base64 -w0)
+          gh repo list littledivy --source --visibility public --limit 300 \
+            --json name,diskUsage \
+            | jq -r '.[] | select(.diskUsage <= 95000) | .name' \
+            | while read -r repo; do
+                rm -rf work.git
+                if ! git clone --mirror --quiet "https://github.com/littledivy/$repo.git" work.git; then
+                  echo "CLONE-FAIL $repo"; continue
+                fi
+                if git -C work.git -c http.extraHeader="Authorization: Basic $AUTH" \
+                     -c http.postBuffer=104857600 \
+                     push --quiet "https://git.littledivy.com/$repo.git" \
+                     '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'; then
+                  echo "OK   $repo"
+                else
+                  echo "PUSH-FAIL $repo"
+                fi
+                rm -rf work.git
+              done
