@@ -42,6 +42,7 @@ i get nerd-sniped easily. If something here caught you, or you just want to talk
 
 #html.elem("ol", attrs: (class: "idx-list"), {
   project("https://github.com/denoland/deno", [Deno], [Runtime work across FFI, compilation, permissions, and native tooling.])
+  project("https://dactyl.dev/blog/how-dactyl-works/", [Dactyl], [An iOS simulator in the browser: SwiftUI reimplemented and compiled to Wasm, with native Jetpack Compose widgets on Android.])
   project("https://github.com/littledivy/laufey", [laufey], [A cross-platform desktop application framework with native windows, webview and Chromium backends. Powers Deno Desktop.])
   project("https://github.com/littledivy/v8x", [v8x], [Author of a drop-in V8 ABI compatibility layer that runs deno_core unchanged on JavaScriptCore and QuickJS.])
   project("https://github.com/denoland/clawpatrol", [Clawpatrol], [A gateway firewall that inspects agent tool traffic and enforces policy before execution.])
@@ -53,6 +54,7 @@ i get nerd-sniped easily. If something here caught you, or you just want to talk
 == posts:
 
 #html.elem("ol", attrs: (class: "idx-list"), {
+  row("https://dactyl.dev/blog/how-dactyl-works/", [How Dactyl works], date: "26.08.2026")
   row("/clawpatrol", [A security firewall for AI agents], date: "21.05.2026")
   row("/resym", [Remote stack-trace symbolication], date: "16.02.2025")
   row("/sh-deno", [Seatbelt sandboxing Deno's runtime], date: "07.02.2025")
